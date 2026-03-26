@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0c0c0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>💪 ওজন বৃদ্ধি ট্র্যাকার</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   🎨 THEME: NEON NIGHT v4 (Final)
+   Deep Space BG + Neon Lime/Purple Accents
+   Layout: Frosted Glass · Glowing Cards · Grid
+══════════════════════════════════════ */
+:root {
+  --bg-deep-space: #0c0c0f; --bg-card: #131318; --bg-card-hover: #1a1a20; --bg-frost: rgba(18, 18, 22, 0.75);
+  --border-dim: rgba(255, 255, 255, 0.08); --border-light: rgba(255, 255, 255, 0.15);
+  --lime: #a3ff2e; --purple: #b37dff; --pink: #ff7dd3; --cyan: #3fefff;
+  --g-lime: linear-gradient(135deg, #a3ff2e, #8cff00); --g-purple: linear-gradient(135deg, #b37dff, #9955ff);
+  --g-cyan: linear-gradient(135deg, #3fefff, #00d4d4);
+  --text-bright: #f0f0f5; --text-dim: #828290; --text-dark: #4a4a58;
+  --glow-lime: 0 0 24px rgba(163, 255, 46, 0.25), 0 2px 8px rgba(163, 255, 46, 0.1);
+  --glow-purple: 0 0 24px rgba(179, 125, 255, 0.2); --glow-cyan: 0 0 24px rgba(63, 239, 255, 0.2);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --r-s: 12px; --r-m: 16px; --r-l: 24px; --r-xl: 32px;
+  --nav-h: 72px; --top-h: 60px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}
+body{font-family:'Inter','Hind Siliguri',sans-serif;background:var(--bg-deep-space);color:var(--text-bright);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;user-select:none}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 50% 40% at 20% 15%,rgba(163,255,46,0.06) 0%,transparent 60%),radial-gradient(ellipse 40% 30% at 80% 85%,rgba(179,125,255,0.05) 0%,transparent 55%)}
+input,button{font-family:inherit} button{cursor:pointer;border:none;outline:none;background:transparent}
+input:focus{outline:2px solid rgba(163,255,46,0.5);outline-offset:2px;border-radius:var(--r-s)}
+.hidden{display:none!important}
+
+.splash{position:fixed;inset:0;z-index:9999;background:var(--bg-deep-space);display:flex;align-items:center;justify-content:center;transition:opacity .7s ease;overflow:hidden}
+.splash.fade-out{opacity:0;pointer-events:none}
+.splash-wrap{text-align:center;animation:popIn .9s cubic-bezier(.34,1.56,.64,1) both}
+.splash-logo{width:110px;height:110px;margin:0 auto 24px;border-radius:var(--r-xl);background:var(--bg-card);border:1px solid var(--border-dim);display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:var(--glow-lime),var(--shadow-card);animation:logoPulse 2.5s ease-in-out infinite}
+.splash h1{font-size:24px;font-weight:700;background:var(--g-lime);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.splash p{color:var(--text-dim);font-size:14px;margin-bottom:40px}
+
+.notif-banner{position:fixed;top:16px;left:16px;right:16px;z-index:9100;background:var(--bg-frost);border:1px solid var(--border-dim);color:var(--text-bright);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;backdrop-filter:blur(20px);box-shadow:var(--shadow-card);border-radius:var(--r-m);transform:translateY(0);transition:transform .35s ease,opacity .35s ease;opacity:1}
+.notif-banner.hidden{transform:translateY(-120%);opacity:0}
+.notif-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--g-lime);border-radius:var(--r-m) 0 0 var(--r-m)}
+.notif-banner button{color:var(--text-dim);width:28px;height:28px;font-size:14px}
+
+.app{display:flex;flex-direction:column;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:200;height:var(--top-h);background:var(--bg-frost);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--border-dim);display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.app-logo{width:36px;height:36px;border-radius:var(--r-s);background:var(--bg-card);border:1px solid var(--border-dim);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--glow-lime)}
+.app-title-wrap .app-title{font-size:15px;font-weight:700}
+.app-title-wrap .app-date{font-size:11px;color:var(--text-dim);margin-top:2px}
+.topbar-right{display:flex;gap:8px}
+.icon-btn{background:rgba(255,255,255,.05);border:1px solid var(--border-dim);border-radius:var(--r-s);width:38px;height:38px;font-size:17px;color:var(--text-dim);transition:all .2s}
+.icon-btn:hover{background:var(--bg-card-hover);color:var(--lime)}
+.icon-btn:active{transform:scale(.9)}
+
+.hero-progress{padding:24px 18px;background:radial-gradient(circle at 10% 10%,rgba(163,255,46,0.05),transparent 40%),var(--bg-card);border-radius:0 0 var(--r-xl) var(--r-xl);border:1px solid var(--border-dim);border-top:none;margin:0 4px;box-shadow:var(--shadow-card)}
+.hero-band{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.hero-left .hero-label{font-size:12px;color:var(--text-dim);letter-spacing:.6px;margin-bottom:6px}
+.hero-left .hero-percent{font-size:52px;font-weight:800;line-height:1;background:var(--g-lime);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-left .hero-tasks{font-size:13px;color:var(--text-dim);margin-top:8px}
+.hero-ring-wrap{position:relative}
+#ring-fill{transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
+.ring-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;animation:floatY 3s ease infinite}
+.streak-row{display:flex;gap:10px}
+.streak-chip{flex:1;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid var(--border-dim);border-radius:var(--r-s);padding:8px 12px;font-size:12px;color:var(--text-dim)}
+.streak-chip span{color:var(--lime);font-weight:700;font-size:14px}
+
+.bottom-nav{position:fixed;bottom:14px;left:14px;right:14px;z-index:200;height:var(--nav-h);background:var(--bg-frost);backdrop-filter:blur(28px) saturate(200%);border:1px solid var(--border-dim);display:flex;align-items:center;padding:0 8px;border-radius:var(--r-xl);box-shadow:var(--shadow-card)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:8px 2px;border-radius:var(--r-m);color:var(--text-dim);transition:all .25s cubic-bezier(.34,1.56,.64,1);position:relative}
+.nav-btn.active{color:var(--lime);background:rgba(163,255,46,.08)}
+.nav-btn.active .nav-icon{filter:drop-shadow(var(--glow-lime))}
+.nav-btn:active{transform:scale(.9)}
+.nav-icon{font-size:22px;line-height:1;transition:filter .2s}
+.nav-label{font-size:10px;font-weight:600;letter-spacing:.3px}
+
+.pages-container{flex:1;overflow:hidden;padding-bottom:calc(var(--nav-h) + 14px)}
+.page{display:none;height:100%;overflow:hidden}
+.page.active{display:block}
+.page-scroll{height:100%;overflow-y:auto;padding:20px 18px 28px;scrollbar-width:none}
+.page-scroll::-webkit-scrollbar{display:none}
+.page-sub{font-size:13px;color:var(--text-dim);margin:-10px 0 18px}
+.section-title{font-size:18px;font-weight:600;color:var(--text-bright);margin:24px 0 14px;display:flex;align-items:center;gap:8px}
+.section-title:first-child{margin-top:0}
+.section-title i{font-size:16px;color:var(--lime);font-style:normal}
+.card{background:var(--bg-card);border:1px solid var(--border-dim);border-radius:var(--r-m);transition:all .25s;position:relative;overflow:hidden}
+.card:active{transform:scale(.98);background:var(--bg-card-hover)}
+.card-glow-lime::before{content:'';position:absolute;inset:0;border-radius:inherit;border:1px solid transparent;background:radial-gradient(ellipse 90% 70% at 50% 0%,rgba(163,255,46,0.15),transparent 60%) border-box;mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;pointer-events:none}
+.card-glow-purple::before{content:'';position:absolute;inset:0;border-radius:inherit;border:1px solid transparent;background:radial-gradient(ellipse 90% 70% at 50% 0%,rgba(179,125,255,0.15),transparent 60%) border-box;mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;pointer-events:none}
+
+.home-tasks-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.home-task-card{background:var(--bg-card);border:1px solid var(--border-dim);border-radius:var(--r-l);padding:16px;text-align:center;position:relative;transition:all .3s ease}
+.home-task-card.done{opacity:.5}
+.home-task-card.non-clickable{cursor:default}
+.home-task-card:not(.non-clickable):active{transform:scale(.96)}
+.task-icon{font-size:28px;line-height:1;margin-bottom:10px}
+.task-name{font-size:14px;font-weight:600;margin-bottom:4px}
+.task-time{font-size:11px;color:var(--text-dim)}
+.task-check{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid var(--border-dim);display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.home-task-card.done .task-check{background:var(--lime);border-color:transparent;color:var(--bg-deep-space);font-weight:700;box-shadow:var(--glow-lime)}
+
+.shopping-card{border-radius:var(--r-l);overflow:hidden}
+.shop-header{padding:12px 16px;font-size:12px;color:var(--text-dim);background:rgba(179,125,255,.05);border-bottom:1px solid var(--border-dim)}
+.shop-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border-dim);transition:background .2s}
+.shop-item:last-child{border-bottom:none}
+.shop-item.bought{opacity:.4;text-decoration:line-through}
+.shop-item:active{background:var(--bg-card-hover)}
+.shop-icon{font-size:22px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border-radius:var(--r-s)}
+.shop-info{flex:1}
+.shop-name{font-size:14px;font-weight:500}
+.shop-cb{width:26px;height:26px;border-radius:8px;background:var(--bg-card-hover);border:1px solid var(--border-dim);display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;flex-shrink:0;transition:all .25s}
+.shop-item.bought .shop-cb{background:var(--purple);border-color:transparent;color:var(--bg-deep-space);font-weight:700}
+.weight-log-card{padding:18px;border-radius:var(--r-l)}
+.wl-row{display:flex;align-items:center;gap:10px}
+.wl-row input{flex:1;background:var(--bg-deep-space);border:1px solid var(--border-dim);border-radius:var(--r-s);padding:14px;color:var(--text-bright);font-size:16px;transition:border-color .2s;text-align:center}
+.btn-green{background:var(--g-lime);color:#0c0c0f;border-radius:var(--r-s);padding:14px 20px;font-size:14px;font-weight:700;transition:all .2s;box-shadow:var(--glow-lime)}
+.btn-green:active{transform:scale(.95)}
+.weight-history{margin-top:16px;display:flex;flex-direction:column;gap:4px}
+.wh-item{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-dim);padding:8px 12px;border-radius:var(--r-s)}
+.wh-item .wh-val{color:var(--lime);font-weight:600;font-size:14px}
+
+.item-list{display:flex;flex-direction:column;gap:12px}
+.list-item{padding:16px;display:flex;align-items:center;gap:14px;border-radius:var(--r-l)}
+.li-icon{font-size:24px;flex-shrink:0;width:50px;height:50px;border-radius:var(--r-m);background:var(--bg-deep-space);border:1px solid var(--border-dim);display:flex;align-items:center;justify-content:center}
+.li-info{flex:1}
+.li-name{font-size:15px;font-weight:600}
+.li-desc{font-size:12px;color:var(--text-dim);margin-top:4px;line-height:1.4}
+.shake-hero{padding:28px 22px;text-align:center;margin-bottom:12px;border-radius:var(--r-xl)}
+.sh-icon{font-size:52px;margin-bottom:14px;display:block;position:relative;z-index:1;animation:floatY 3s ease infinite}
+.shake-hero h2{font-size:24px;font-weight:700;margin-bottom:6px;background:var(--g-purple);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.shake-hero p{font-size:14px;color:var(--text-dim);margin-bottom:20px}
+.sh-macros{display:flex;justify-content:center;gap:24px}
+.sh-macro strong{display:block;font-size:22px;font-weight:700;color:var(--purple)}
+.sh-macro span{font-size:11px;color:var(--text-dim)}
+.shake-note{background:rgba(179,125,255,.05);border:1px solid var(--border-dim);color:var(--purple);padding:14px;font-size:13px;font-weight:500;border-radius:var(--r-m);text-align:center;margin-top:16px}
+.shake-task-card{padding:18px;display:flex;align-items:center;gap:14px;border-radius:var(--r-l)}
+.stc-icon{font-size:36px}
+.stc-info{flex:1}
+.stc-title{font-size:15px;font-weight:600}
+.stc-time{font-size:12px;color:var(--text-dim);margin-top:4px}
+.task-complete-btn{background:var(--g-purple);color:var(--text-bright);border-radius:var(--r-s);padding:14px 20px;font-size:14px;font-weight:600;transition:all .2s;flex-shrink:0;box-shadow:var(--glow-purple)}
+.task-complete-btn.done{background:var(--bg-card-hover);color:var(--text-dark);box-shadow:none;border:1px solid var(--border-dim)}
+
+.exercise-card{padding:18px;border-radius:var(--r-l)}
+.exercise-card.done{opacity:.6}
+.ec-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ec-header{flex:1}
+.ec-name{font-size:18px;font-weight:700}
+.ec-sets{font-size:13px;color:var(--text-dim);margin-top:4px}
+.ec-icon{font-size:32px;flex-shrink:0;width:60px;height:60px;border-radius:var(--r-m);background:var(--bg-deep-space);border:1px solid var(--border-dim);display:flex;align-items:center;justify-content:center}
+.exercise-card:not(.done) .ec-icon{animation:iconPulse 2s infinite ease-in-out}
+.ec-btn{width:100%;background:var(--bg-card-hover);border:1px solid var(--border-dim);color:var(--text-bright);border-radius:var(--r-s);padding:14px;font-size:14px;font-weight:600;transition:all .2s;margin-top:16px}
+.ec-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.ec-btn:disabled{opacity:.4;pointer-events:none;background:transparent;color:var(--text-dark);border-color:transparent}
+.exercise-complete-card{padding:18px;margin-top:12px;border-radius:var(--r-l)}
+.ex-status-text{font-size:13px;color:var(--text-dim);margin-bottom:12px;text-align:center}
+.ex-mini-progress{height:8px;background:var(--bg-deep-space);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.ex-mini-bar{height:100%;background:var(--g-cyan);transition:width .6s ease;border-radius:8px;box-shadow:var(--glow-cyan)}
+.btn-exercise-done{width:100%;background:var(--bg-card-hover);color:var(--text-dark);border:1px solid var(--border-dim);border-radius:var(--r-m);padding:16px;font-size:16px;font-weight:700;transition:all .25s}
+.btn-exercise-done:not(:disabled){background:var(--g-lime);color:var(--bg-deep-space);border:none;box-shadow:var(--glow-lime);animation:glowPulse 2s ease infinite}
+
+.chart-card{padding:18px;border-radius:var(--r-l)}
+.no-data-msg{font-size:13px;color:var(--text-dim);text-align:center;padding:24px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.stat-card{padding:20px;text-align:center;border-radius:var(--r-l)}
+.stat-val{font-size:24px;font-weight:700;background:var(--g-lime);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.stat-lbl{font-size:12px;color:var(--text-dim)}
+.info-card{padding:16px;display:flex;align-items:center;gap:14px;border-radius:var(--r-m)}
+.info-icon{font-size:22px;flex-shrink:0;width:44px;height:44px;border-radius:var(--r-s);background:var(--bg-deep-space);border:1px solid var(--border-dim);display:flex;align-items:center;justify-content:center}
+.info-text h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.info-text p{font-size:12px;color:var(--text-dim);line-height:1.5}
+
+.settings-section{border-radius:var(--r-l);overflow:hidden;margin-bottom:16px}
+.settings-title{padding:12px 18px;font-size:12px;font-weight:600;color:var(--text-dim);letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--border-dim);background:var(--bg-card-hover)}
+.settings-item{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border-dim)}
+.settings-item:last-child{border-bottom:none}
+.si-info .si-name{font-size:14px;font-weight:500}
+.toggle{position:relative;width:50px;height:28px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--bg-deep-space);border-radius:28px;transition:all .3s cubic-bezier(.4,0,.2,1);border:1px solid var(--border-dim)}
+.toggle-slider::before{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:var(--text-dark);left:3px;top:50%;transform:translateY(-50%);transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.toggle input:checked+.toggle-slider{background:var(--lime);border-color:transparent}
+.toggle input:checked+.toggle-slider::before{transform:translate(22px,-50%);background:var(--bg-deep-space)}
+.time-input,.num-input{background:var(--bg-deep-space);border:1px solid var(--border-dim);border-radius:var(--r-s);padding:9px 12px;color:var(--text-bright);font-size:13px;width:90px}
+.btn-small-lime{background:var(--lime);color:var(--bg-deep-space);border-radius:var(--r-s);padding:9px 13px;font-size:12px;font-weight:700;box-shadow:var(--glow-lime)}
+.btn-danger{display:block;background:rgba(255,125,211,.1);border:1px solid rgba(255,125,211,.2);color:var(--pink);border-radius:var(--r-m);padding:14px;font-size:14px;font-weight:600;margin:18px;width:calc(100% - 36px);transition:all .2s}
+.btn-outline{display:block;background:transparent;border:1px solid var(--border-dim);color:var(--text-dim);border-radius:var(--r-m);padding:14px;font-size:14px;margin:0 18px 18px;width:calc(100% - 36px);transition:all .2s}
+.app-info-card{padding:28px;text-align:center;margin-bottom:24px;position:relative;overflow:hidden;border-radius:var(--r-xl)}
+.ai-icon{font-size:48px;margin-bottom:14px;display:block}
+.ai-title{font-size:22px;font-weight:700;background:var(--g-lime);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ai-version{font-size:12px;color:var(--text-dim);margin:6px 0 12px}
+.ai-desc{font-size:13px;color:var(--text-dim);line-height:1.6}
+
+.modal{position:fixed;inset:0;z-index:5000;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.modal:not(.hidden){opacity:1;pointer-events:auto}
+.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px)}
+.modal-content{position:relative;width:100%;background:var(--bg-card);border-radius:var(--r-xl) var(--r-xl) 0 0;border-top:1px solid var(--border-dim);padding:0 0 30px;max-height:90vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.modal:not(.hidden) .modal-content{transform:translateY(0)}
+.modal-content::before{content:'';display:block;width:40px;height:4px;border-radius:2px;background:var(--text-dark);margin:12px auto 0}
+.modal-header{display:flex;align-items:center;gap:14px;padding:18px 22px 16px;border-bottom:1px solid var(--border-dim);position:sticky;top:0;background:var(--bg-card);z-index:1}
+.modal-header h3{flex:1;font-size:18px;font-weight:700}
+.modal-close{background:var(--bg-card-hover);border:1px solid var(--border-dim);border-radius:var(--r-s);width:36px;height:36px;font-size:14px;color:var(--text-dim);display:flex;align-items:center;justify-content:center}
+.modal-body{padding:24px}
+.timer-ring-wrap{display:flex;justify-content:center;margin:16px 0 12px;position:relative}
+.timer-center-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.timer-display{font-size:52px;font-weight:700;background:var(--g-lime);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-2px;line-height:1;display:block}
+.timer-label{font-size:13px;color:var(--text-dim);text-align:center;margin-bottom:20px}
+.timer-controls{display:flex;gap:12px;margin-bottom:14px}
+.btn-timer-start,.btn-timer-pause{flex:2;border-radius:var(--r-m);padding:16px;font-size:16px;font-weight:700;transition:all .2s}
+.btn-timer-start{background:var(--g-lime);color:var(--bg-deep-space);box-shadow:var(--glow-lime)}
+.btn-timer-pause{background:rgba(179,125,255,.1);color:var(--purple);border:1px solid rgba(179,125,255,.2)}
+.btn-timer-reset{flex:1;background:var(--bg-card-hover);color:var(--text-dim);border:1px solid var(--border-dim);border-radius:var(--r-m);padding:16px;font-size:16px}
+.btn-timer-complete{width:100%;background:var(--g-lime);color:var(--bg-deep-space);border-radius:var(--r-m);padding:18px;font-size:16px;font-weight:800;box-shadow:var(--glow-lime);transition:all .2s;animation:glowPulse 2s ease infinite}
+
+@keyframes popIn{from{opacity:0;transform:translateY(22px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes logoPulse{0%,100%{transform:scale(1);box-shadow:var(--glow-lime),var(--shadow-card)}50%{transform:scale(1.05);box-shadow:0 0 32px rgba(163,255,46,0.4),0 2px 8px rgba(163,255,46,0.2),var(--shadow-card)}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes glowPulse{0%,100%{box-shadow:var(--glow-lime)}50%{box-shadow:0 0 40px rgba(163,255,46,0.5),0 4px 12px rgba(163,255,46,0.3)}}
+@keyframes iconPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+</style>
+</head>
+<body>
+
+<audio id="alarm-audio" loop preload="none"><source src="Song 1.mp3" type="audio/mpeg"></audio>
+
+<div id="splash" class="splash">
+  <div class="splash-wrap">
+    <div class="splash-logo">💪</div><h1>ওজন বৃদ্ধি ট্র্যাকার</h1><p>আপনার সুস্বাস্থ্যের সঙ্গী</p>
+  </div>
+</div>
+
+<div id="notif-banner" class="notif-banner hidden"><span id="notif-text">🔔 রিমাইন্ডার</span><button onclick="dismissNotif()">✕</button></div>
+
+<div id="app" class="app hidden">
+  <header class="topbar">
+    <div class="topbar-left"><div class="app-logo">💪</div><div class="app-title-wrap"><div class="app-title">ওজন ট্র্যাকার</div><div class="app-date" id="top-date"></div></div></div>
+    <div class="topbar-right"><button class="icon-btn" onclick="toggleNotifPermission()">🔔</button><button class="icon-btn" onclick="navigateTo('settings')">⚙️</button></div>
+  </header>
+
+  <div class="hero-progress">
+    <div class="hero-band">
+      <div class="hero-left"><div class="hero-label">আজকের অগ্রগতি</div><div class="hero-percent" id="hero-percent">0%</div><div class="hero-tasks" id="hero-tasks">০/০ কাজ সম্পন্ন</div></div>
+      <div class="hero-ring-wrap">
+        <svg width="92" height="92" viewBox="0 0 92 92"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#a3ff2e"/><stop offset="100%" style="stop-color:#8cff00"/></linearGradient></defs><circle cx="46" cy="46" r="39" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="7"/><circle id="ring-fill" cx="46" cy="46" r="39" fill="none" stroke="url(#ringGrad)" stroke-width="7" stroke-dasharray="245" stroke-dashoffset="245" stroke-linecap="round" transform="rotate(-90 46 46)"/></svg>
+        <div class="ring-emoji" id="ring-emoji">🌱</div>
+      </div>
+    </div>
+    <div class="streak-row"><span class="streak-chip">🔥 <span>&nbsp;</span><span id="streak-count">0</span> দিনের ধারাবাহিকতা</span><span class="streak-chip">⚖️ <span>&nbsp;</span><span id="weight-display">-- কেজি</span></span></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-page="home" onclick="navigateTo('home')"><span class="nav-icon">🏠</span><span class="nav-label">হোম</span></button>
+    <button class="nav-btn" data-page="shake" onclick="navigateTo('shake')"><span class="nav-icon">🥤</span><span class="nav-label">শেক</span></button>
+    <button class="nav-btn" data-page="exercise" onclick="navigateTo('exercise')"><span class="nav-icon">🏋️</span><span class="nav-label">ব্যায়াম</span></button>
+    <button class="nav-btn" data-page="progress" onclick="navigateTo('progress')"><span class="nav-icon">📊</span><span class="nav-label">অগ্রগতি</span></button>
+  </nav>
+
+  <main class="pages-container">
+    <div class="page active" id="page-home">
+      <div class="page-scroll">
+        <div class="section-title"><i>⚡</i> আজকের কাজ</div>
+        <div class="home-tasks-grid" id="home-tasks-grid"></div>
+        <div class="section-title"><i>🛒</i> আজকের বাজার তালিকা</div>
+        <div class="shopping-card card"><div class="shop-header">যেকোনো একটি আইটেম কিনলেই "বাজার করুন" টাস্কটি সম্পন্ন হবে</div><div id="shopping-list"></div></div>
+        <div class="section-title"><i>⚖️</i> আজকের ওজন রেকর্ড</div>
+        <div class="weight-log-card card card-glow-lime"><div class="wl-row"><input type="number" id="weight-input" placeholder="যেমন: ৫৫.৫" step="0.1" min="30" max="150"><button class="btn-green" onclick="logWeight()">সংরক্ষণ</button></div><div id="weight-history" class="weight-history"></div></div>
+      </div>
+    </div>
+    <div class="page" id="page-shake">
+      <div class="page-scroll">
+        <div class="shake-hero card card-glow-purple"><div class="sh-icon">🥤</div><h2>বাজেট পাওয়ার শেক</h2><p>প্রতি গ্লাসে ≈ ৫৮০ ক্যালোরি</p><div class="sh-macros"><div class="sh-macro"><strong>২২g</strong><span>প্রোটিন</span></div><div class="sh-macro"><strong>৭৫g</strong><span>কার্বস</span></div><div class="sh-macro"><strong>১৮g</strong><span>ফ্যাট</span></div></div></div>
+        <div class="section-title"><i>🥘</i> উপকরণ (১ গ্লাস)</div><div id="ingredients-list" class="item-list"></div>
+        <div class="shake-note">💡 সেরা ফলাফলের জন্য সব উপকরণ ব্লেন্ডারে ভালোভাবে মিক্স করুন।</div>
+        <div class="section-title"><i>✅</i> আজকের শেক</div>
+        <div class="shake-task-card card card-glow-purple" id="shake-task-card"><div class="stc-icon">🥤</div><div class="stc-info"><div class="stc-title">রাতের শেক তৈরি করুন</div><div class="stc-time">রাত ৯:১৫ টায়</div></div><button class="task-complete-btn" id="shake-task-btn" onclick="completeShakeTask()"><span id="shake-btn-text">✓ করুন</span></button></div>
+      </div>
+    </div>
+    <div class="page" id="page-exercise">
+      <div class="page-scroll">
+        <div class="section-title"><i>🏋️</i> আজকের ব্যায়াম</div><p class="page-sub">রাত ৯:৪৫ টায় • ১৫–২০ মিনিট</p>
+        <div id="exercise-list" class="item-list"></div>
+        <div class="exercise-complete-card card"><div id="ex-status-text" class="ex-status-text">সব ব্যায়াম সম্পন্ন করুন</div><div class="ex-mini-progress"><div class="ex-mini-bar" id="ex-mini-bar" style="width:0%"></div></div><button class="btn-exercise-done" id="ex-done-btn" onclick="markAllExerciseDone()" disabled>🏆 সব ব্যায়াম সম্পন্ন!</button></div>
+      </div>
+    </div>
+    <div class="page" id="page-progress">
+      <div class="page-scroll">
+        <div class="section-title"><i>⚖️</i> ওজনের গ্রাফ</div>
+        <div class="chart-card card card-glow-lime"><canvas id="weight-chart" height="200"></canvas><div id="no-weight-data" class="no-data-msg">ওজন রেকর্ড করুন এবং গ্রাফ দেখুন</div></div>
+        <div class="stats-grid" id="stats-grid"></div>
+        <div class="section-title"><i>💡</i> শেকের উপকারিতা</div><div class="item-list" id="benefits-cards"></div>
+      </div>
+    </div>
+    <div class="page" id="page-settings">
+      <div class="page-scroll">
+        <div class="section-title"><i>⚙️</i> সেটিংস</div>
+        <div class="settings-section card"><div class="settings-title">🔔 অ্যালার্ম ও রিমাইন্ডার</div><div class="settings-item"><div class="si-info"><div class="si-name">🌅 সকালের অ্যালার্ম</div></div><div class="si-controls"><input type="time" id="alarm-time" value="06:30" class="time-input"><label class="toggle"><input type="checkbox" id="alarm-toggle" onchange="saveSettings()"><span class="toggle-slider"></span></label></div></div><div class="settings-item"><div class="si-info"><div class="si-name">🍳 নাস্তার রিমাইন্ডার</div></div><label class="toggle"><input type="checkbox" id="breakfast-toggle" checked onchange="saveSettings()"><span class="toggle-slider"></span></label></div><div class="settings-item"><div class="si-info"><div class="si-name">🥤 শেকের রিমাইন্ডার</div></div><label class="toggle"><input type="checkbox" id="shake-toggle" checked onchange="saveSettings()"><span class="toggle-slider"></span></label></div><div class="settings-item"><div class="si-info"><div class="si-name">🏋️ ব্যায়ামের রিমাইন্ডার</div></div><label class="toggle"><input type="checkbox" id="exercise-toggle" checked onchange="saveSettings()"><span class="toggle-slider"></span></label></div><div class="settings-item"><div class="si-info"><div class="si-name">😴 ঘুমের রিমাইন্ডার</div></div><label class="toggle"><input type="checkbox" id="sleep-toggle" checked onchange="saveSettings()"><span class="toggle-slider"></span></label></div></div>
+        <div class="settings-section card"><div class="settings-title">👤 আমার তথ্য</div><div class="settings-item"><div class="si-info"><div class="si-name">লক্ষ্য ওজন</div></div><div class="si-controls"><input type="number" id="target-weight-setting" placeholder="কেজি" class="num-input" step="0.1"><button class="btn-small-lime" onclick="saveTargetWeight()">সংরক্ষণ</button></div></div></div>
+        <div class="settings-section card hidden"><div class="settings-title">☁️ ডেটা সিঙ্ক</div><div id="firebase-status"></div><div id="user-uid-display"></div></div>
+        <div class="settings-section card"><div class="settings-title">🗄️ ডেটা ব্যবস্থাপনা</div><button class="btn-danger" onclick="resetTodayTasks()">🔄 আজকের কাজ রিসেট করুন</button><button class="btn-outline" onclick="exportData()">📤 ডেটা এক্সপোর্ট (.csv)</button></div>
+        <div class="app-info-card card card-glow-lime"><div class="ai-icon">💪</div><div class="ai-title">ওজন বৃদ্ধি ট্র্যাকার</div><div class="ai-version">সংস্করণ ৫.৫ • Final Edition</div><div class="ai-desc">প্রতিদিন মাত্র ৭০ টাকায় স্বাস্থ্যকর ওজন বৃদ্ধির সঙ্গী</div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="timer-modal" class="modal hidden">
+  <div class="modal-overlay" onclick="closeTimerModal()"></div>
+  <div class="modal-content">
+    <div class="modal-header"><h3 id="modal-exercise-name">ব্যায়াম</h3><button class="modal-close" onclick="closeTimerModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="timer-ring-wrap">
+        <svg class="timer-ring-svg" width="180" height="180" viewBox="0 0 180 180"><defs><linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#a3ff2e"/><stop offset="100%" style="stop-color:#8cff00"/></linearGradient></defs><circle cx="90" cy="90" r="80" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/><circle id="timer-ring-arc" cx="90" cy="90" r="80" fill="none" stroke="url(#timerGrad)" stroke-width="10" stroke-dasharray="502" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 90 90)"/></svg>
+        <div class="timer-center-text"><span class="timer-display" id="timer-display">00:00</span></div>
+      </div>
+      <div class="timer-label" id="timer-label">শুরু করতে প্রস্তুত</div>
+      <div class="timer-controls"><button id="timer-start-btn" class="btn-timer-start" onclick="startTimer()">▶ শুরু</button><button id="timer-pause-btn" class="btn-timer-pause hidden" onclick="pauseTimer()">⏸ থামান</button><button id="timer-reset-btn" class="btn-timer-reset" onclick="resetTimer()">↺ রিসেট</button></div>
+      <button id="timer-complete-btn" class="btn-timer-complete hidden" onclick="completeExercise()">✅ ব্যায়াম সম্পন্ন!</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════
+// 🔥 FIREBASE CONFIGURATION
+// ══════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID"
+};
+// ══════════════════════════════════════════════════
+
+let db=null, auth=null, messaging=null, userId=null;
+let currentPage='home', timerInterval=null, timerSeconds=0, timerRunning=false;
+let currentExerciseId=null, weightChart=null, alarmPlaying=false;
+
+const HOME_TASKS = [
+    {id: 'r1', icon: '🌅', name: 'ঘুম থেকে ওঠা', time: '৬:৩০ AM', isDone: s => s.routineDone?.r1},
+    {id: 'r2', icon: '🍳', name: 'নাস্তা করা', time: '৭:০০ AM', isDone: s => s.routineDone?.r2},
+    {id: 'qt1', icon: '🛒', name: 'বাজার করা', time: 'স্বয়ংক্রিয়', isDone: s => s.quickTasks?.qt1, nonClickable: true},
+    {id: 'r8', icon: '🥤', name: 'শেক পান', time: '৯:১৫ PM', isDone: s => s.shakeDone},
+    {id: 'r9', icon: '🏋️', name: 'ব্যায়াম করা', time: '৯:৪৫ PM', isDone: s => s.allExerciseDone, nonClickable: true},
+    {id: 'qt4', icon: '⚖️', name: 'ওজন রেকর্ড', time: 'যেকোনো সময়', isDone: s => s.quickTasks?.qt4, nonClickable: true},
+];
+const INGREDIENTS=[{icon:'🥛',name:'ফুল ফ্যাট দুধ',amount:'২৫০ মিলি'},{icon:'🍌',name:'পাকা কলা',amount:'২টি মাঝারি'},{icon:'🥜',name:'চিনাবাদাম',amount:'৩০ গ্রাম'},{icon:'🌾',name:'ওটস',amount:'৩০ গ্রাম'},{icon:'🥚',name:'ডিম',amount:'১টি'}];
+const SHOPPING=[{icon:'🥛',name:'ফুল ফ্যাট দুধ',qty:'১ পাউচ'},{icon:'🍌',name:'পাকা কলা',qty:'২টি'},{icon:'🥜',name:'চিনাবাদাম',qty:'~৩০গ্রাম'},{icon:'🌾',name:'ওটস',qty:'~৩০গ্রাম'},{icon:'🥚',name:'ডিম',qty:'১টি'}];
+const EXERCISES=[{id:'ex1',icon:'💪',name:'পুশআপ',sets:'১৫টি × ৩ সেট',duration:300},{id:'ex2',icon:'🦵',name:'স্কোয়াট',sets:'২০টি × ৩ সেট',duration:300},{id:'ex3',icon:'🏃',name:'লাঞ্জ',sets:'১০টি প্রতি পা × ২ সেট',duration:240},{id:'ex4',icon:'🤸',name:'স্ট্রেচিং',sets:'৫ মিনিট',duration:300}];
+const BENEFITS=[{icon:'⚡',title:'এনার্জি বুস্ট',desc:'কলা ও ওটস দ্রুত শক্তি দেয়।'},{icon:'💪',title:'মাংসপেশি বৃদ্ধি',desc:'ডিম ও দুধের প্রোটিন মাংসপেশি তৈরিতে সাহায্য করে।'},{icon:'🧠',title:'মস্তিষ্কের পুষ্টি',desc:'বাদামে ওমেগা ফ্যাট আছে যা মস্তিষ্কের জন্য ভালো।'}];
+let todayState={date:'',routineDone:{},quickTasks:{},shoppingBought:{},shakeDone:false,exerciseDone:{},allExerciseDone:false};
+let appSettings={alarmEnabled:false,alarmTime:'06:30',breakfastReminder:true,shakeReminder:true,exerciseReminder:true,sleepReminder:true};
+let weightData=[];
+
+function initFirebase(){try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();auth=firebase.auth();messaging=firebase.messaging();db.enablePersistence({synchronizeTabs:true}).catch(()=>{});auth.signInAnonymously().then(r=>{userId=r.user.uid;loadUserData();initNotifications();}).catch(()=>{loadLocalData()});auth.onAuthStateChanged(u=>{if(u){userId=u.uid;loadUserData()}})}catch(e){loadLocalData()}}
+function getTK(){const d=new Date();return`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`}
+async function loadUserData(){const k=getTK();if(!db||!userId){loadLocalData();return}try{const[td,sd,ws]=await Promise.all([db.collection('users').doc(userId).collection('dailyState').doc(k).get(),db.collection('users').doc(userId).collection('settings').doc('app').get(),db.collection('users').doc(userId).collection('weightLog').orderBy('timestamp','desc').limit(90).get()]);if(td.exists)todayState={...todayState,...td.data()};else todayState.date=k;if(sd.exists)appSettings={...appSettings,...sd.data()};weightData=ws.docs.map(d=>d.data());renderAll();applySettings();}catch(e){loadLocalData()}}
+function loadLocalData(){const k=getTK();const s=localStorage.getItem('ts_'+k);if(s)todayState=JSON.parse(s);else todayState.date=k;const ss=localStorage.getItem('appSet');if(ss)appSettings=JSON.parse(ss);const sw=localStorage.getItem('wData');if(sw)weightData=JSON.parse(sw);renderAll();applySettings();}
+async function saveTodayState(){const k=getTK();localStorage.setItem('ts_'+k,JSON.stringify(todayState));if(db&&userId){try{await db.collection('users').doc(userId).collection('dailyState').doc(k).set(todayState,{merge:true})}catch(e){}}updateHero();}
+async function saveSettings(){const s=getSettings();appSettings=s;localStorage.setItem('appSet',JSON.stringify(s));if(db&&userId){try{await db.collection('users').doc(userId).collection('settings').doc('app').set(s,{merge:true})}catch(e){}}}
+function getSettings(){return{alarmEnabled:document.getElementById('alarm-toggle')?.checked||false,alarmTime:document.getElementById('alarm-time')?.value||'06:30',breakfastReminder:document.getElementById('breakfast-toggle')?.checked||false,shakeReminder:document.getElementById('shake-toggle')?.checked||false,exerciseReminder:document.getElementById('exercise-toggle')?.checked||false,sleepReminder:document.getElementById('sleep-toggle')?.checked||false,}}
+function applySettings(){const g=id=>document.getElementById(id);if(g('alarm-toggle'))g('alarm-toggle').checked=appSettings.alarmEnabled||false;if(g('alarm-time'))g('alarm-time').value=appSettings.alarmTime||'06:30';if(g('breakfast-toggle'))g('breakfast-toggle').checked=appSettings.breakfastReminder!==false;if(g('shake-toggle'))g('shake-toggle').checked=appSettings.shakeReminder!==false;if(g('exercise-toggle'))g('exercise-toggle').checked=appSettings.exerciseReminder!==false;if(g('sleep-toggle'))g('sleep-toggle').checked=appSettings.sleepReminder!==false;}
+
+function renderAll(){rDate();rHero();rHomeTasksGrid();rShop();rIng();rExList();rStats();rBenefits();rWHistory();rShakeBtn();rChart()}
+function rDate(){const n=new Date();const D=['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'];const M=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];document.getElementById('top-date').textContent=`${D[n.getDay()]}, ${n.getDate()} ${M[n.getMonth()]}`;}
+function rHero(){const total=HOME_TASKS.length;const done=HOME_TASKS.filter(p=>p.isDone(todayState)).length;const pct=total>0?Math.round((done/total)*100):0;document.getElementById('hero-percent').textContent=pct+'%';document.getElementById('hero-tasks').textContent=`${done}/${total} কাজ সম্পন্ন`;document.getElementById('ring-fill').style.strokeDashoffset=245-(pct/100)*245;document.getElementById('ring-emoji').textContent=pct<25?'🌱':pct<50?'💪':pct<75?'🔥':pct<100?'⚡':'🏆';document.getElementById('streak-count').textContent=parseInt(localStorage.getItem('streak')||'0');document.getElementById('weight-display').textContent=weightData.length>0?weightData[0].weight+' কেজি':'-- কেজি';}
+function updateHero(){rHero()}
+function rHomeTasksGrid(){const c=document.getElementById('home-tasks-grid');if(!c)return;c.innerHTML=HOME_TASKS.map(p=>{const done=p.isDone(todayState);const nonClickable=p.nonClickable||false;const clickHandler=nonClickable?'':`onclick="toggleHomeTask('${p.id}')"`;return`<div class="home-task-card ${done?'done':''} ${nonClickable?'non-clickable':''}" ${clickHandler}><div class="task-icon">${p.icon}</div><div class="task-name">${p.name}</div><div class="task-time">${p.time}</div><div class="task-check">${done?'✓':''}</div></div>`}).join('');}
+function toggleHomeTask(id){if(id.startsWith('r')){if(!todayState.routineDone)todayState.routineDone={};todayState.routineDone[id]=!todayState.routineDone[id]}if(id==='r8'){todayState.shakeDone=!todayState.shakeDone;rShakeBtn()}saveTodayState();rHomeTasksGrid();vib()}
+function rShop(){const c=document.getElementById('shopping-list');if(!c)return;c.innerHTML=SHOPPING.map((s,i)=>{const b=todayState.shoppingBought?.[i]||false;return`<div class="shop-item ${b?'bought':''}" onclick="tShop(${i})"><div class="shop-cb">${b?'✓':''}</div><div class="shop-icon">${s.icon}</div><div class="shop-info"><div class="shop-name">${s.name}</div></div></div>`}).join('');}
+function tShop(i){if(!todayState.shoppingBought)todayState.shoppingBought={};todayState.shoppingBought[i]=!todayState.shoppingBought[i];const isAnyItemChecked=Object.values(todayState.shoppingBought||{}).some(status=>status);if(!todayState.quickTasks)todayState.quickTasks={};todayState.quickTasks['qt1']=isAnyItemChecked;saveTodayState();rShop();rHomeTasksGrid();vib()}
+function rIng(){const c=document.getElementById('ingredients-list');if(!c)return;c.innerHTML=INGREDIENTS.map(i=>`<div class="list-item card"><div class="li-icon">${i.icon}</div><div class="li-info"><div class="li-name">${i.name}</div><div class="li-desc">${i.amount}</div></div></div>`).join('');}
+function completeShakeTask(){todayState.shakeDone=!todayState.shakeDone;if(!todayState.routineDone)todayState.routineDone={};todayState.routineDone['r8']=todayState.shakeDone;saveTodayState();rShakeBtn();rHomeTasksGrid();if(todayState.shakeDone)showBanner('🥤 শেক খাওয়া সম্পন্ন! দারুণ!');vib();}
+function rShakeBtn(){const btn=document.getElementById('shake-task-btn'),txt=document.getElementById('shake-btn-text');if(!btn)return;if(todayState.shakeDone){btn.classList.add('done');txt.textContent='✓ সম্পন্ন'}else{btn.classList.remove('done');txt.textContent='✓ করুন'}}
+function rExList(){const c=document.getElementById('exercise-list');if(!c)return;c.innerHTML=EXERCISES.map(ex=>{const done=todayState.exerciseDone?.[ex.id]||false;return`<div class="exercise-card card ${done?'done':''}" id="exc-${ex.id}"><div class="ec-top"><div class="ec-header"><div class="ec-name">${ex.name}</div><div class="ec-sets">${ex.sets}</div></div><div class="ec-icon">${ex.icon}</div></div><button class="ec-btn" onclick="openTimer('${ex.id}')" ${done?'disabled':''}>${done?'✅ সম্পন্ন হয়েছে':'▶ শুরু করুন'}</button></div>`;}).join('');updExProgress();}
+function updExProgress(){const total=EXERCISES.length;const done=Object.values(todayState.exerciseDone||{}).filter(Boolean).length;const pct=total>0?(done/total)*100:0;const bar=document.getElementById('ex-mini-bar');const txt=document.getElementById('ex-status-text');const btn=document.getElementById('ex-done-btn');if(bar)bar.style.width=pct+'%';if(txt)txt.textContent=`${done}/${total} ব্যায়াম সম্পন্ন`;if(btn)btn.disabled=done<total;}
+function markAllExerciseDone(){EXERCISES.forEach(ex=>{if(!todayState.exerciseDone)todayState.exerciseDone={};todayState.exerciseDone[ex.id]=true});todayState.allExerciseDone=true;if(!todayState.routineDone)todayState.routineDone={};todayState.routineDone['r9']=true;saveTodayState();rExList();rHomeTasksGrid();showBanner('🏆 সব ব্যায়াম সম্পন্ন! অসাধারণ!');updStreak();vib([100,50,100]);}
+
+function openTimer(id){const ex=EXERCISES.find(e=>e.id===id);if(!ex)return;currentExerciseId=id;timerSeconds=ex.duration;timerRunning=false;clearInterval(timerInterval);const modal=document.getElementById('timer-modal');modal.querySelector('#modal-exercise-name').textContent=ex.name;modal.querySelector('#timer-display').textContent=fmtTime(timerSeconds);modal.querySelector('#timer-label').textContent=`${ex.sets} • ${Math.floor(ex.duration/60)} মিনিট`;modal.querySelector('#timer-start-btn').classList.remove('hidden');modal.querySelector('#timer-pause-btn').classList.add('hidden');modal.querySelector('#timer-complete-btn').classList.add('hidden');modal.querySelector('#timer-ring-arc').style.strokeDashoffset='0';modal.classList.remove('hidden');}
+function closeTimerModal(){clearInterval(timerInterval);timerRunning=false;stopAlarm();document.getElementById('timer-modal').classList.add('hidden')}
+function startTimer(){if(timerRunning)return;timerRunning=true;document.getElementById('timer-start-btn').classList.add('hidden');document.getElementById('timer-pause-btn').classList.remove('hidden');document.getElementById('timer-label').textContent='চলছে...';const ex=EXERCISES.find(e=>e.id===currentExerciseId);const total=ex?ex.duration:timerSeconds;timerInterval=setInterval(()=>{timerSeconds--;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('timer-ring-arc').style.strokeDashoffset=502*(1-timerSeconds/total);if(timerSeconds<=0){clearInterval(timerInterval);timerRunning=false;document.getElementById('timer-display').textContent='00:00';document.getElementById('timer-label').textContent='✅ সময় শেষ!';document.getElementById('timer-pause-btn').classList.add('hidden');document.getElementById('timer-complete-btn').classList.remove('hidden');playAlarm();vib([200,100,200]);}},1000);}
+function pauseTimer(){clearInterval(timerInterval);timerRunning=false;document.getElementById('timer-pause-btn').classList.add('hidden');document.getElementById('timer-start-btn').classList.remove('hidden');document.getElementById('timer-label').textContent='বিরতি...'}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;stopAlarm();const ex=EXERCISES.find(e=>e.id===currentExerciseId);if(ex)timerSeconds=ex.duration;document.getElementById('timer-display').textContent=fmtTime(timerSeconds);document.getElementById('timer-ring-arc').style.strokeDashoffset='0';document.getElementById('timer-start-btn').classList.remove('hidden');document.getElementById('timer-pause-btn').classList.add('hidden');document.getElementById('timer-complete-btn').classList.add('hidden');document.getElementById('timer-label').textContent='শুরু করতে প্রস্তুত';}
+function completeExercise(){stopAlarm();if(!todayState.exerciseDone)todayState.exerciseDone={};todayState.exerciseDone[currentExerciseId]=true;saveTodayState();closeTimerModal();rExList();showBanner('✅ ব্যায়াম সম্পন্ন! দারুণ কাজ!');vib([100,50,100]);if(EXERCISES.every(ex=>todayState.exerciseDone?.[ex.id]))setTimeout(()=>markAllExerciseDone(),800);}
+function fmtTime(s){return`${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`}
+
+async function logWeight(){const inp=document.getElementById('weight-input');const val=parseFloat(inp.value);if(!val||val<30||val>200){showBanner('⚠️ সঠিক ওজন দিন (৩০–২০০ কেজি)');return}const k=getTK();const entry={date:k,weight:val,timestamp:new Date()};weightData.unshift(entry);weightData.sort((a,b)=>b.timestamp-a.timestamp);if(weightData.length>90)weightData=weightData.slice(0,90);localStorage.setItem('wData',JSON.stringify(weightData));if(db&&userId){try{await db.collection('users').doc(userId).collection('weightLog').add(entry)}catch(e){}}if(!todayState.quickTasks)todayState.quickTasks={};todayState.quickTasks['qt4']=true;saveTodayState();inp.value='';rWHistory();rChart();rHomeTasksGrid();updateHero();document.getElementById('weight-display').textContent=val+' কেজি';showBanner('⚖️ ওজন সংরক্ষিত: '+val+' কেজি');vib();}
+function rWHistory(){const c=document.getElementById('weight-history');if(!c)return;const r=weightData.slice(0,5);if(r.length===0){c.innerHTML='<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:10px">এখনো কোনো ওজন রেকর্ড নেই</div>';return}c.innerHTML=r.map(w=>`<div class="wh-item"><span>${new Date(w.timestamp.seconds*1000||w.timestamp).toLocaleDateString('bn-BD')}</span><span class="wh-val">${w.weight} কেজি</span></div>`).join('');}
+function rChart(){const cv=document.getElementById('weight-chart');const nd=document.getElementById('no-weight-data');if(!cv)return;const r=[...weightData].reverse().slice(-30);if(r.length<2){cv.style.display='none';if(nd)nd.style.display='block';return}cv.style.display='block';if(nd)nd.style.display='none';if(weightChart)weightChart.destroy();weightChart=new Chart(cv,{type:'line',data:{labels:r.map(w=>new Date(w.timestamp.seconds*1000||w.timestamp).toLocaleDateString('bn-BD',{month:'short',day:'numeric'})),datasets:[{label:'ওজন (কেজি)',data:r.map(w=>w.weight),borderColor:'#a3ff2e',backgroundColor:'rgba(163,255,46,0.1)',borderWidth:2.5,pointBackgroundColor:'#fff',pointRadius:4,tension:0.4,fill:true}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'var(--text-dark)',font:{size:10}},grid:{color:'rgba(255,255,255,0.03)'}},y:{ticks:{color:'var(--text-dark)',font:{size:10}},grid:{color:'rgba(255,255,255,0.03)'}}}}});}
+function rStats(){const c=document.getElementById('stats-grid');if(!c)return;const streak=parseInt(localStorage.getItem('streak')||'0');const sw=parseFloat(localStorage.getItem('startWeight')||'0');const cw=weightData.length>0?weightData[0].weight:0;const gained=sw>0&&cw>0?(cw-sw).toFixed(1):'--';c.innerHTML=[{val:streak+' দিন',lbl:'ধারাবাহিকতা'},{val:(gained!=='--'?(gained>0?'+':'')+gained:'--')+' কেজি',lbl:'মোট বৃদ্ধি'}].map(s=>`<div class="stat-card card"><div class="stat-val">${s.val}</div><div class="stat-lbl">${s.lbl}</div></div>`).join('');}
+function rBenefits(){const c=document.getElementById('benefits-cards');if(!c)return;c.innerHTML=BENEFITS.map(b=>`<div class="info-card card"><div class="info-icon">${b.icon}</div><div class="info-text"><h4>${b.title}</h4><p>${b.desc}</p></div></div>`).join('');}
+
+function navigateTo(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const pe=document.getElementById('page-'+page);if(pe)pe.classList.add('active');const nb=document.querySelector(`[data-page="${page}"]`);if(nb)nb.classList.add('active');currentPage=page;const topBar=document.querySelector('.topbar');const settingsBtn=topBar.querySelector('.icon-btn:last-of-type');if(page==='settings'){settingsBtn.style.display='none'}else{settingsBtn.style.display='flex'}if(page==='progress')setTimeout(rChart,100);}
+function toggleNotifPermission(){if(!('Notification'in window)){showBanner('⚠️ নোটিফিকেশন সমর্থিত নয়');return}if(Notification.permission==='granted'){showBanner('✅ নোটিফিকেশন চালু আছে')}else{Notification.requestPermission().then(p=>{if(p==='granted'){showBanner('✅ নোটিফিকেশন চালু হয়েছে!');initNotifications()}else{showBanner('⚠️ নোটিফিকেশন অনুমতি দিন')}})}}
+function saveTargetWeight(){const v=parseFloat(document.getElementById('target-weight-setting').value);if(v>0){localStorage.setItem('targetWeight',v);showBanner('🎯 লক্ষ্য ওজন সংরক্ষিত: '+v+' কেজি')}}
+function resetTodayTasks(){if(confirm('আজকের সব কাজ রিসেট হবে। নিশ্চিত?')){todayState={date:getTK(),routineDone:{},quickTasks:{},shoppingBought:{},shakeDone:false,exerciseDone:{},allExerciseDone:false};saveTodayState();renderAll();showBanner('🔄 আজকের কাজ রিসেট হয়েছে')}}
+function exportData(){let csvContent="data:text/csv;charset=utf-8,";csvContent+="Date,Weight (kg)\n";weightData.forEach(row=>{let date=new Date(row.timestamp.seconds*1000||row.timestamp).toLocaleDateString('en-CA');csvContent+=`${date},${row.weight}\n`});const encodedUri=encodeURI(csvContent);const link=document.createElement("a");link.setAttribute("href",encodedUri);link.setAttribute("download",`weight_data_${getTK()}.csv`);document.body.appendChild(link);link.click();document.body.removeChild(link)}
+function updStreak(){const k=getTK();const last=localStorage.getItem('lastSD');let streak=parseInt(localStorage.getItem('streak')||'0');const today=new Date(k);if(last){const diff=Math.round((today-new Date(last))/(1000*60*60*24));if(diff===1)streak++;else if(diff>1)streak=1}else{streak=1;localStorage.setItem('startWeight',weightData.length>0?weightData[0].weight:'0')}localStorage.setItem('streak',streak);localStorage.setItem('lastSD',k);document.getElementById('streak-count').textContent=streak;}
+
+function playAlarm(){const a=document.getElementById('alarm-audio');if(!a)return;a.currentTime=0;const p=a.play();if(p!==undefined){p.then(()=>showAlarmBanner()).catch(()=>showAlarmBannerManual())}}
+function stopAlarm(){const a=document.getElementById('alarm-audio');if(!a)return;a.pause();a.currentTime=0;alarmPlaying=false}
+function showAlarmBanner(){const b=document.getElementById('notif-banner'),t=document.getElementById('notif-text');if(!b||!t)return;t.innerHTML=`🔔 অ্যালার্ম বাজছে! <button onclick="stopAlarmAndDismiss()" style="background:rgba(255,125,211,.2);color:#ff7dd3;border-radius:8px;padding:4px 12px;">⏹ বন্ধ করুন</button>`;b.classList.remove('hidden');}
+function showAlarmBannerManual(){const b=document.getElementById('notif-banner'),t=document.getElementById('notif-text');if(!b||!t)return;t.innerHTML=`🔔 অ্যালার্ম! <button onclick="startAlarmManual()" style="background:rgba(163,255,46,.2);color:#a3ff2e;border-radius:8px;padding:4px 12px;">▶ বাজান</button>`;b.classList.remove('hidden');}
+function startAlarmManual(){const a=document.getElementById('alarm-audio');if(a){a.currentTime=0;a.play();showAlarmBanner()}}
+function stopAlarmAndDismiss(){stopAlarm();dismissNotif()}
+function showBanner(msg){const b=document.getElementById('notif-banner'),t=document.getElementById('notif-text');if(!b||!t)return;t.textContent=msg;b.classList.remove('hidden');setTimeout(()=>b.classList.add('hidden'),3500);}
+function dismissNotif(){document.getElementById('notif-banner').classList.add('hidden')}
+function vib(p=[50]){if('vibrate'in navigator)navigator.vibrate(p)}
+
+// Firebase Cloud Messaging (FCM)
+function initNotifications() {
+    if (!messaging || Notification.permission !== 'granted') return;
+    messaging.getToken({ vapidKey: 'YOUR_VAPID_KEY_FROM_FIREBASE_SETTINGS' })
+        .then(token => {
+            if (token && db && userId) {
+                db.collection('users').doc(userId).collection('settings').doc('app').set({ fcmToken: token }, { merge: true });
+                console.log('FCM Token stored.');
+            }
+        }).catch(err => console.error('FCM token error:', err));
+    
+    messaging.onMessage(payload => {
+        showBanner(`🔔 ${payload.notification.title}: ${payload.notification.body}`);
+        vib([100, 50, 100]);
+    });
+}
+/*
+Firebase Cloud Functions Setup (index.js):
+Firebase-ভিত্তিক নোটিফিকেশনের জন্য, আপনাকে আপনার প্রজেক্টে Cloud Functions সেটআপ করতে হবে।
+এখানে একটি উদাহরণ দেওয়া হলো যা প্রতিদিন ব্যবহারকারীকে রিমাইন্ডার পাঠাবে।
+  
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+exports.scheduleReminders = functions.pubsub.schedule('every 15 minutes').onRun(async context => {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    
+    // Example: Shake reminder at 21:15 (9:15 PM)
+    if (hours === 21 && minutes >= 15 && minutes < 30) {
+        await sendReminders('shakeReminder', '🥤 পাওয়ার শেক', 'এখনই আপনার পাওয়ার শেক তৈরি করে পান করুন!');
+    }
+    return null;
+});
+
+async function sendReminders(settingKey, title, body) {
+    const db = admin.firestore();
+    const usersSnap = await db.collection('users').get();
+
+    usersSnap.forEach(async userDoc => {
+        const settings = (await userDoc.ref.collection('settings').doc('app').get()).data();
+        const state = (await userDoc.ref.collection('dailyState').doc(getTodayKey()).get()).data();
+
+        // Send notification if enabled and task is not done
+        if (settings && settings[settingKey] && settings.fcmToken && (!state || !state.shakeDone)) {
+             const message = { notification: { title, body }, token: settings.fcmToken };
+             try { await admin.messaging().send(message); } catch (e) {}
+        }
+    });
+}
+function getTodayKey(){ const d = new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+*/
+
+window.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{document.getElementById('splash').classList.add('fade-out');setTimeout(()=>{document.getElementById('splash').style.display='none';document.getElementById('app').classList.remove('hidden')},700);},2500);initFirebase();});
+</script>
+</body>
+</html>
