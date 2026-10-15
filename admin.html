@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA MINING - Admin Secure Terminal</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#040b16',
+                        midnight: '#0a1122',
+                        card: '#11192b',
+                        electric: '#00f0ff',
+                        violet: '#8b5cf6',
+                        emerald: '#00ff87',
+                        danger: '#ff3366',
+                        textMuted: '#94a3b8'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            background-color: #040b16; 
+            color: #f8fafc; 
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent body scroll, handle in containers */
+        }
+        
+        .hide { display: none !important; }
+        
+        /* Glassmorphism & Cards */
+        .glass-panel {
+            background: rgba(17, 25, 43, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .admin-card {
+            background: #11192b;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar & Navigation */
+        .sidebar-item { transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .sidebar-item:hover { background: rgba(255, 255, 255, 0.03); color: #fff; }
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(0, 240, 255, 0.1) 0%, rgba(0,0,0,0) 100%);
+            color: #00f0ff;
+            border-left: 3px solid #00f0ff;
+        }
+
+        /* Tables */
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        th { text-align: left; padding: 1rem; color: #94a3b8; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); }
+        td { padding: 1rem; font-size: 0.875rem; border-bottom: 1px solid rgba(255,255,255,0.02); vertical-align: middle; }
+        tr:hover td { background: rgba(255,255,255,0.01); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Form Inputs */
+        .input-dark {
+            background: #0a1122;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .input-dark:focus {
+            outline: none;
+            border-color: #00f0ff;
+            box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2);
+        }
+
+        /* Glow effects */
+        .glow-electric { box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
+        .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-image: linear-gradient(to right, #00f0ff, #8b5cf6); }
+    </style>
+</head>
+<body class="flex h-screen w-full">
+
+    <div id="toast" class="fixed top-6 right-6 z-[100] bg-card border border-gray-700 text-white px-6 py-4 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-[-20px] opacity-0 pointer-events-none flex items-center gap-3">
+        <i data-lucide="info" class="w-5 h-5 text-electric"></i>
+        <span id="toast-msg" class="font-medium">Notification</span>
+    </div>
+
+    <!-- LOGIN VIEW -->
+    <div id="view-login" class="absolute inset-0 z-50 flex items-center justify-center bg-navy w-full h-full">
+        <!-- Background decorative elements -->
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-electric opacity-10 blur-[100px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-violet opacity-10 blur-[100px]"></div>
+        
+        <div class="glass-panel p-10 w-full max-w-md rounded-2xl relative z-10 mx-4">
+            <div class="flex flex-col items-center gap-3 mb-8">
+                <div class="w-16 h-16 rounded-2xl bg-midnight border border-electric/30 flex items-center justify-center glow-electric mb-2">
+                    <i data-lucide="shield-check" class="w-8 h-8 text-electric"></i>
+                </div>
+                <h1 class="text-3xl font-bold tracking-tight text-gradient">NEXORA MINING</h1>
+                <p class="text-sm text-textMuted uppercase tracking-widest font-semibold">Admin Secure Terminal</p>
+            </div>
+            
+            <form id="login-form" onsubmit="event.preventDefault(); return false;">
+                <div class="mb-5">
+                    <label class="block text-xs text-textMuted mb-2 ml-1 uppercase">Administrator Email</label>
+                    <input type="email" id="admin-email" value="00mdhasan321@gmail.com" required class="input-dark">
+                </div>
+                <div class="mb-8">
+                    <label class="block text-xs text-textMuted mb-2 ml-1 uppercase">Secure Password</label>
+                    <input type="password" id="admin-password" required class="input-dark">
+                </div>
+                <button id="btn-login" type="button" class="w-full bg-electric text-navy font-bold py-3.5 rounded-lg hover:bg-cyan-300 transition-colors flex justify-center items-center gap-2">
+                    <i data-lucide="log-in" class="w-5 h-5"></i>
+                    Authorize Access
+                </button>
+            </form>
+            <div class="mt-6 text-center text-xs text-textMuted">
+                <i data-lucide="lock" class="w-3 h-3 inline mr-1"></i> End-to-end encrypted connection
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN ADMIN APP -->
+    <div id="main-admin" class="hide flex w-full h-full relative">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 glass-panel border-r border-gray-800 flex flex-col h-full shrink-0 z-20">
+            <div class="h-20 border-b border-gray-800/50 flex items-center px-6 gap-3 shrink-0">
+                <div class="w-8 h-8 rounded bg-electric/10 flex items-center justify-center border border-electric/30">
+                    <i data-lucide="cpu" class="w-5 h-5 text-electric"></i>
+                </div>
+                <span class="font-bold text-lg text-white tracking-wider">NEXORA</span>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto py-6 flex flex-col gap-1 px-3">
+                <div class="text-xs text-gray-500 uppercase font-semibold mb-2 ml-3">Dashboard</div>
+                <button class="nav-btn sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-lg text-left" data-target="v-overview">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 opacity-70"></i> <span>Overview</span>
+                </button>
+                
+                <div class="text-xs text-gray-500 uppercase font-semibold mt-6 mb-2 ml-3">Management</div>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left" data-target="v-users">
+                    <i data-lucide="users" class="w-5 h-5 opacity-70"></i> <span>Users</span>
+                </button>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left" data-target="v-catalog">
+                    <i data-lucide="bot" class="w-5 h-5 opacity-70"></i> <span>Robot Catalog</span>
+                </button>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left" data-target="v-user-robots">
+                    <i data-lucide="cpu" class="w-5 h-5 opacity-70"></i> <span>User Robots</span>
+                </button>
+                
+                <div class="text-xs text-gray-500 uppercase font-semibold mt-6 mb-2 ml-3">Financials</div>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left" data-target="v-deposits">
+                    <i data-lucide="arrow-down-circle" class="w-5 h-5 opacity-70"></i> <span>Deposits</span> 
+                    <span id="badge-dep" class="ml-auto bg-electric/20 text-electric text-[10px] font-bold px-2 py-0.5 rounded-full hide">0</span>
+                </button>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left" data-target="v-withdrawals">
+                    <i data-lucide="arrow-up-circle" class="w-5 h-5 opacity-70"></i> <span>Withdrawals</span> 
+                    <span id="badge-wit" class="ml-auto bg-danger/20 text-danger text-[10px] font-bold px-2 py-0.5 rounded-full hide">0</span>
+                </button>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left" data-target="v-transactions">
+                    <i data-lucide="list-ordered" class="w-5 h-5 opacity-70"></i> <span>Transactions</span>
+                </button>
+                
+                <div class="text-xs text-gray-500 uppercase font-semibold mt-6 mb-2 ml-3">System</div>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left" data-target="v-settings">
+                    <i data-lucide="settings" class="w-5 h-5 opacity-70"></i> <span>App Settings</span>
+                </button>
+            </nav>
+            
+            <div class="p-4 border-t border-gray-800/50 shrink-0">
+                <div class="flex items-center gap-3 px-2 py-2 mb-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-electric to-violet flex items-center justify-center text-navy font-bold text-sm">AD</div>
+                    <div class="overflow-hidden">
+                        <div class="text-sm font-semibold truncate">Super Admin</div>
+                        <div class="text-[10px] text-gray-400 truncate">UID: 5e5kn6...</div>
+                    </div>
+                </div>
+                <button id="btn-logout" class="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-gray-800/50 transition">
+                    <i data-lucide="log-out" class="w-4 h-4"></i> Secure Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 flex flex-col h-full bg-midnight overflow-hidden">
+            <!-- Header -->
+            <header class="h-20 border-b border-gray-800/50 flex items-center justify-between px-8 shrink-0 bg-midnight/80 backdrop-blur-md">
+                <h2 id="page-title" class="text-xl font-semibold tracking-wide text-white">Overview</h2>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald/10 border border-emerald/20 text-emerald text-xs font-medium">
+                        <span class="w-2 h-2 rounded-full bg-emerald animate-pulse"></span>
+                        Live DB Connected
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable View Container -->
+            <div class="flex-1 overflow-y-auto p-8 relative">
+                
+                <!-- VIEW: OVERVIEW -->
+                <div id="v-overview" class="admin-view flex flex-col gap-8">
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        <div class="admin-card p-6 border-t-2 border-electric">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-textMuted text-sm font-medium">Total Registered Users</div>
+                                <div class="p-2 bg-electric/10 rounded-lg"><i data-lucide="users" class="w-5 h-5 text-electric"></i></div>
+                            </div>
+                            <h3 class="text-3xl font-bold" id="stat-users">0</h3>
+                        </div>
+                        <div class="admin-card p-6 border-t-2 border-violet">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-textMuted text-sm font-medium">Active Robots</div>
+                                <div class="p-2 bg-violet/10 rounded-lg"><i data-lucide="cpu" class="w-5 h-5 text-violet"></i></div>
+                            </div>
+                            <h3 class="text-3xl font-bold" id="stat-robots">0</h3>
+                        </div>
+                        <div class="admin-card p-6 border-t-2 border-emerald">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-textMuted text-sm font-medium">Pending Deposits</div>
+                                <div class="p-2 bg-emerald/10 rounded-lg"><i data-lucide="arrow-down-circle" class="w-5 h-5 text-emerald"></i></div>
+                            </div>
+                            <h3 class="text-3xl font-bold" id="stat-deposits">0</h3>
+                        </div>
+                        <div class="admin-card p-6 border-t-2 border-danger">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-textMuted text-sm font-medium">Pending Withdrawals</div>
+                                <div class="p-2 bg-danger/10 rounded-lg"><i data-lucide="arrow-up-circle" class="w-5 h-5 text-danger"></i></div>
+                            </div>
+                            <h3 class="text-3xl font-bold" id="stat-withdrawals">0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: USERS -->
+                <div id="v-users" class="admin-view hide flex flex-col gap-6">
+                    <div class="admin-card overflow-hidden">
+                        <div class="p-4 border-b border-gray-800/50 flex justify-between items-center bg-card">
+                            <h3 class="font-semibold text-white">Registered Users</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left whitespace-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>UID</th>
+                                        <th>User Details</th>
+                                        <th>Status</th>
+                                        <th>Joined Date</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-users">
+                                    <!-- Populated by JS -->
+                                    <tr><td colspan="5" class="text-center text-textMuted py-8">Loading live data...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: ROBOT CATALOG -->
+                <div id="v-catalog" class="admin-view hide flex flex-col gap-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-white">Robot Marketplace Catalog</h3>
+                        <button onclick="window.openRobotModal()" class="bg-electric text-navy px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-cyan-300 transition shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add New Robot
+                        </button>
+                    </div>
+                    <div class="admin-card overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left whitespace-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Robot Name</th>
+                                        <th>Category</th>
+                                        <th>Price (৳)</th>
+                                        <th>Duration</th>
+                                        <th>Reward Rate</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-catalog">
+                                    <tr><td colspan="7" class="text-center text-textMuted py-8">Loading live catalog...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: USER ROBOTS -->
+                <div id="v-user-robots" class="admin-view hide flex flex-col gap-6">
+                    <div class="admin-card overflow-hidden">
+                        <div class="p-4 border-b border-gray-800/50">
+                            <h3 class="font-semibold text-white">Active User Robots</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left whitespace-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Ownership ID</th>
+                                        <th>User UID</th>
+                                        <th>Robot ID</th>
+                                        <th>Purchased At</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-user-robots">
+                                    <tr><td colspan="5" class="text-center text-textMuted py-8">Loading user robots...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: DEPOSITS -->
+                <div id="v-deposits" class="admin-view hide flex flex-col gap-6">
+                    <div class="admin-card overflow-hidden">
+                        <div class="p-4 border-b border-gray-800/50">
+                            <h3 class="font-semibold text-white">Deposit Requests</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left whitespace-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>User UID</th>
+                                        <th>Method</th>
+                                        <th>Reference ID</th>
+                                        <th>Amount (৳)</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-deposits">
+                                    <tr><td colspan="6" class="text-center text-textMuted py-8">Loading deposits...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: WITHDRAWALS -->
+                <div id="v-withdrawals" class="admin-view hide flex flex-col gap-6">
+                    <div class="admin-card overflow-hidden">
+                        <div class="p-4 border-b border-gray-800/50">
+                            <h3 class="font-semibold text-white">Withdrawal Requests</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left whitespace-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>User UID</th>
+                                        <th>Method</th>
+                                        <th>Destination Details</th>
+                                        <th>Amount (৳)</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-withdrawals">
+                                    <tr><td colspan="6" class="text-center text-textMuted py-8">Loading withdrawals...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- VIEW: TRANSACTIONS -->
+                <div id="v-transactions" class="admin-view hide flex flex-col gap-6">
+                    <div class="admin-card overflow-hidden">
+                        <div class="p-4 border-b border-gray-800/50">
+                            <h3 class="font-semibold text-white">Global Ledger & Transactions</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left whitespace-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>TXN ID</th>
+                                        <th>User UID</th>
+                                        <th>Type</th>
+                                        <th>Amount (৳)</th>
+                                        <th>Status</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tb-transactions">
+                                    <tr><td colspan="6" class="text-center text-textMuted py-8">Loading ledger...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: SETTINGS -->
+                <div id="v-settings" class="admin-view hide flex flex-col gap-6">
+                    <div class="admin-card p-6 max-w-2xl">
+                        <h3 class="text-lg font-semibold mb-6">Platform Settings</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs text-textMuted mb-2">Application Name</label>
+                                <input type="text" value="NEXORA MINING" disabled class="input-dark opacity-50 cursor-not-allowed">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-textMuted mb-2">Primary Currency</label>
+                                <input type="text" value="BDT (৳)" disabled class="input-dark opacity-50 cursor-not-allowed">
+                            </div>
+                            <div class="flex items-center gap-3 pt-4 border-t border-gray-800/50 mt-4">
+                                <div class="w-10 h-6 bg-electric/20 rounded-full relative cursor-pointer">
+                                    <div class="w-4 h-4 bg-electric rounded-full absolute top-1 right-1"></div>
+                                </div>
+                                <span class="text-sm">System Live (Maintenance Mode Off)</span>
+                            </div>
+                            <p class="text-xs text-yellow-500 mt-4"><i data-lucide="alert-triangle" class="w-3 h-3 inline"></i> Real financial settings and payment gateways must be configured via Cloud Functions backend.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ROBOT MODAL -->
+    <div id="modal-robot" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center hide opacity-0 transition-opacity">
+        <div class="admin-card w-full max-w-md p-6 m-4 transform scale-95 transition-transform duration-200" id="modal-robot-content">
+            <h3 class="text-xl font-bold mb-4" id="modal-robot-title">Add/Edit Robot</h3>
+            <form id="form-robot" class="space-y-4" onsubmit="event.preventDefault(); window.saveRobot();">
+                <input type="hidden" id="rob-id">
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Name</label>
+                    <input type="text" id="rob-name" required class="input-dark p-2 text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-textMuted mb-1">Category</label>
+                        <select id="rob-category" class="input-dark p-2 text-sm appearance-none">
+                            <option value="Starter">Starter</option>
+                            <option value="Basic">Basic</option>
+                            <option value="Pro">Pro</option>
+                            <option value="Elite">Elite</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-textMuted mb-1">Price (৳)</label>
+                        <input type="number" id="rob-price" required class="input-dark p-2 text-sm">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-textMuted mb-1">Duration (Days)</label>
+                        <input type="number" id="rob-duration" required class="input-dark p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-textMuted mb-1">Reward Rate / Hr (৳)</label>
+                        <input type="number" step="0.01" id="rob-rate" required class="input-dark p-2 text-sm">
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 pt-2">
+                    <input type="checkbox" id="rob-enabled" checked class="w-4 h-4 rounded border-gray-600 bg-gray-700 text-electric focus:ring-electric">
+                    <label class="text-sm">Available for Sale</label>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="window.closeRobotModal()" class="flex-1 py-2 rounded-lg bg-gray-800 text-white font-medium hover:bg-gray-700 transition">Cancel</button>
+                    <button type="submit" class="flex-1 py-2 rounded-lg bg-electric text-navy font-bold hover:bg-cyan-300 transition">Save Robot</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FIREBASE & LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getDatabase, ref, get, set, push, onValue, update, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        // MASTER PROMPT PROVIDED CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEz88Sx7BdGOQ2ZHG_z_XBKntOhS3XJK8",
+            authDomain: "rewardsapp-395d0.firebaseapp.com",
+            databaseURL: "https://rewardsapp-395d0-default-rtdb.firebaseio.com",
+            projectId: "rewardsapp-395d0",
+            storageBucket: "rewardsapp-395d0.firebasestorage.app",
+            messagingSenderId: "709199854223",
+            appId: "1:709199854223:web:dbed4018e3cd7218530efa"
+        };
+
+        const SUPER_ADMIN_UID = "5e5kn6NcJZOwqBwHaQB1fDNgPDz1";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // UI Initialization
+        lucide.createIcons();
+        const el = (id) => document.getElementById(id);
+        const show = (id) => el(id).classList.remove('hide');
+        const hide = (id) => el(id).classList.add('hide');
+        
+        // Toast System
+        window.showToast = (msg, isError = false) => {
+            const t = el('toast');
+            el('toast-msg').innerText = msg;
+            
+            // Style adjustment
+            if(isError) {
+                t.classList.remove('border-gray-700');
+                t.classList.add('border-danger', 'bg-danger/10');
+            } else {
+                t.classList.remove('border-danger', 'bg-danger/10');
+                t.classList.add('border-gray-700', 'bg-card');
+            }
+
+            t.classList.remove('opacity-0', 'translate-y-[-20px]');
+            setTimeout(() => {
+                t.classList.add('opacity-0', 'translate-y-[-20px]');
+            }, 4000);
+        }
+
+        // Navigation Logic
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                const target = e.currentTarget;
+                target.classList.add('active');
+                
+                document.querySelectorAll('.admin-view').forEach(v => hide(v.id));
+                show(target.dataset.target);
+                el('page-title').innerText = target.querySelector('span').innerText.trim();
+            });
+        });
+
+        // 1. Auth & Admin Authorization Check
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // VERY IMPORTANT: Check if the logged in user is the specific Admin UID or in the adminUsers node
+                if (user.uid === SUPER_ADMIN_UID) {
+                    hide('view-login'); 
+                    show('main-admin');
+                    window.showToast("Secure connection established.");
+                    initAdminDataListeners();
+                } else {
+                    // Fallback to checking DB node if additional admins exist
+                    try {
+                        const snap = await get(ref(db, `adminUsers/${user.uid}`));
+                        if(snap.exists() && snap.val() === true) {
+                            hide('view-login'); 
+                            show('main-admin');
+                            window.showToast("Secure connection established.");
+                            initAdminDataListeners();
+                        } else {
+                            await signOut(auth);
+                            window.showToast("Unauthorized. Admin access denied.", true);
+                        }
+                    } catch(e) {
+                        await signOut(auth);
+                        window.showToast("Permission denied connecting to database.", true);
+                    }
+                }
+            } else {
+                show('view-login'); 
+                hide('main-admin');
+                
+                // Detach listeners if necessary by refreshing or managing unsub functions
+            }
+        });
+
+        el('btn-login').onclick = async () => {
+            const email = el('admin-email').value;
+            const pass = el('admin-password').value;
+            if(!email || !pass) return window.showToast("Enter credentials", true);
+            
+            const btn = el('btn-login');
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Authenticating...`;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                // The onAuthStateChanged will handle the rest
+            } catch(e) { 
+                window.showToast(e.message, true); 
+                btn.innerHTML = `<i data-lucide="log-in" class="w-5 h-5"></i> Authorize Access`;
+            }
+        };
+
+        el('btn-logout').onclick = () => signOut(auth);
+
+        // Formats
+        const formatMoney = (val) => Number(val).toLocaleString('en-IN') + ' ৳';
+        const formatDate = (ts) => ts ? new Date(ts).toLocaleString() : 'N/A';
+        const badgeHTML = (status) => {
+            const map = {
+                'active': 'bg-emerald/20 text-emerald',
+                'pending': 'bg-amber-500/20 text-amber-500',
+                'approved': 'bg-electric/20 text-electric',
+                'rejected': 'bg-danger/20 text-danger',
+                'expired': 'bg-gray-500/20 text-gray-400',
+                'suspended': 'bg-danger/20 text-danger'
+            };
+            const c = map[status.toLowerCase()] || 'bg-gray-500/20 text-gray-400';
+            return `<span class="${c} px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${status}</span>`;
+        };
+
+        function initAdminDataListeners() {
+            // 1. Users
+            onValue(ref(db, 'users'), (snap) => {
+                let count = 0; let html = '';
+                if(snap.exists()) {
+                    snap.forEach(child => {
+                        count++;
+                        const u = child.val();
+                        const uid = child.key;
+                        const status = u.accountStatus || 'active';
+                        html += `
+                        <tr class="hover:bg-white/5 transition-colors group">
+                            <td class="font-mono text-xs text-electric/70">${uid.substring(0,8)}...</td>
+                            <td>
+                                <div class="font-medium text-sm text-white">${u.profile?.name || 'Unknown'}</div>
+                                <div class="text-xs text-textMuted">${u.profile?.email || 'N/A'}</div>
+                            </td>
+                            <td>${badgeHTML(status)}</td>
+                            <td class="text-xs text-textMuted">${formatDate(u.createdAt)}</td>
+                            <td class="text-right">
+                                <button onclick="window.toggleUserStatus('${uid}', '${status}')" class="text-xs text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded transition">
+                                    ${status === 'active' ? 'Suspend' : 'Restore'}
+                                </button>
+                            </td>
+                        </tr>`;
+                    });
+                } else {
+                    html = `<tr><td colspan="5" class="text-center text-textMuted py-8">No users found.</td></tr>`;
+                }
+                el('tb-users').innerHTML = html;
+                el('stat-users').innerText = count;
+            });
+
+            // 2. Robot Catalog
+            onValue(ref(db, 'robotCatalog'), (snap) => {
+                let count = 0; let html = '';
+                if(snap.exists()) {
+                    snap.forEach(child => {
+                        count++;
+                        const r = child.val();
+                        const id = child.key;
+                        html += `
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="font-medium text-white">${r.name}</td>
+                            <td class="text-xs text-textMuted uppercase">${r.category}</td>
+                            <td class="font-bold text-electric">${formatMoney(r.price)}</td>
+                            <td class="text-sm">${r.duration} Days</td>
+                            <td class="text-sm">${formatMoney(r.rewardRate)}/hr</td>
+                            <td>${badgeHTML(r.enabled ? 'active' : 'suspended')}</td>
+                            <td class="text-right">
+                                <button onclick="window.editRobot('${id}')" class="text-xs text-electric hover:underline">Edit</button>
+                            </td>
+                        </tr>`;
+                    });
+                } else {
+                    html = `<tr><td colspan="7" class="text-center text-textMuted py-8">No robots configured. Add one to start.</td></tr>`;
+                }
+                el('tb-catalog').innerHTML = html;
+                el('stat-robots').innerText = count;
+            });
+
+            // 3. User Robots (Active ones)
+            onValue(ref(db, 'userRobots'), (snap) => {
+                let html = '';
+                if(snap.exists()) {
+                    snap.forEach(userNode => {
+                        const uid = userNode.key;
+                        userNode.forEach(robNode => {
+                            const ur = robNode.val();
+                            html += `
+                            <tr>
+                                <td class="font-mono text-xs text-textMuted">${robNode.key.substring(0,8)}...</td>
+                                <td class="font-mono text-xs text-electric/70">${uid.substring(0,8)}...</td>
+                                <td class="text-sm">${ur.robotId || 'Unknown'}</td>
+                                <td class="text-xs text-textMuted">${formatDate(ur.purchasedAt)}</td>
+                                <td>${badgeHTML(ur.status || 'pending')}</td>
+                            </tr>`;
+                        });
+                    });
+                } else {
+                    html = `<tr><td colspan="5" class="text-center text-textMuted py-8">No robots currently owned by users.</td></tr>`;
+                }
+                el('tb-user-robots').innerHTML = html;
+            });
+
+            // 4. Deposits
+            onValue(ref(db, 'depositRequests'), (snap) => {
+                let pendingCount = 0; let html = '';
+                if(snap.exists()) {
+                    snap.forEach(userNode => {
+                        const uid = userNode.key;
+                        userNode.forEach(reqNode => {
+                            const req = reqNode.val();
+                            const rid = reqNode.key;
+                            if(req.status === 'pending') pendingCount++;
+                            
+                            html += `
+                            <tr class="hover:bg-white/5">
+                                <td class="font-mono text-xs text-electric/70">${uid.substring(0,8)}...</td>
+                                <td class="text-sm uppercase">${req.paymentMethod}</td>
+                                <td class="font-mono text-xs text-textMuted">${req.paymentReference}</td>
+                                <td class="font-bold text-emerald">${formatMoney(req.amount)}</td>
+                                <td>${badgeHTML(req.status)}</td>
+                                <td class="text-right">
+                                    ${req.status === 'pending' ? `
+                                        <button onclick="window.processFinance('deposit', '${uid}', '${rid}', ${req.amount}, 'approved')" class="bg-emerald/10 text-emerald hover:bg-emerald/20 px-2 py-1 rounded text-xs mr-2 transition">Approve</button>
+                                        <button onclick="window.processFinance('deposit', '${uid}', '${rid}', ${req.amount}, 'rejected')" class="bg-danger/10 text-danger hover:bg-danger/20 px-2 py-1 rounded text-xs transition">Reject</button>
+                                    ` : '<span class="text-xs text-textMuted">Reviewed</span>'}
+                                </td>
+                            </tr>`;
+                        });
+                    });
+                } else {
+                    html = `<tr><td colspan="6" class="text-center text-textMuted py-8">No deposits found.</td></tr>`;
+                }
+                el('tb-deposits').innerHTML = html;
+                el('stat-deposits').innerText = pendingCount;
+                if(pendingCount>0) { show('badge-dep'); el('badge-dep').innerText = pendingCount; } else hide('badge-dep');
+            });
+
+            // 5. Withdrawals
+            onValue(ref(db, 'withdrawalRequests'), (snap) => {
+                let pendingCount = 0; let html = '';
+                if(snap.exists()) {
+                    snap.forEach(userNode => {
+                        const uid = userNode.key;
+                        userNode.forEach(reqNode => {
+                            const req = reqNode.val();
+                            const rid = reqNode.key;
+                            if(req.status === 'pending') pendingCount++;
+                            
+                            html += `
+                            <tr class="hover:bg-white/5">
+                                <td class="font-mono text-xs text-electric/70">${uid.substring(0,8)}...</td>
+                                <td class="text-sm uppercase">${req.paymentMethod}</td>
+                                <td class="font-mono text-xs text-textMuted truncate max-w-[150px]">${req.destinationDetails}</td>
+                                <td class="font-bold text-danger">${formatMoney(req.amount)}</td>
+                                <td>${badgeHTML(req.status)}</td>
+                                <td class="text-right">
+                                    ${req.status === 'pending' ? `
+                                        <button onclick="window.processFinance('withdrawal', '${uid}', '${rid}', ${req.amount}, 'approved')" class="bg-electric/10 text-electric hover:bg-electric/20 px-2 py-1 rounded text-xs mr-2 transition">Approve</button>
+                                        <button onclick="window.processFinance('withdrawal', '${uid}', '${rid}', ${req.amount}, 'rejected')" class="bg-danger/10 text-danger hover:bg-danger/20 px-2 py-1 rounded text-xs transition">Reject</button>
+                                    ` : '<span class="text-xs text-textMuted">Reviewed</span>'}
+                                </td>
+                            </tr>`;
+                        });
+                    });
+                } else {
+                    html = `<tr><td colspan="6" class="text-center text-textMuted py-8">No withdrawals found.</td></tr>`;
+                }
+                el('tb-withdrawals').innerHTML = html;
+                el('stat-withdrawals').innerText = pendingCount;
+                if(pendingCount>0) { show('badge-wit'); el('badge-wit').innerText = pendingCount; } else hide('badge-wit');
+            });
+            
+            // 6. Transactions (Ledger)
+            onValue(ref(db, 'walletTransactions'), (snap) => {
+                let html = '';
+                // Need to flatten and sort by time
+                let txns = [];
+                if(snap.exists()) {
+                    snap.forEach(userNode => {
+                        const uid = userNode.key;
+                        userNode.forEach(txNode => {
+                            txns.push({uid, id: txNode.key, ...txNode.val()});
+                        });
+                    });
+                    
+                    txns.sort((a,b) => b.createdAt - a.createdAt);
+                    
+                    txns.forEach(tx => {
+                       let color = 'text-white';
+                       if(tx.type === 'deposit' || tx.type === 'mining_reward') color = 'text-emerald';
+                       if(tx.type === 'withdrawal' || tx.type === 'purchase') color = 'text-danger';
+                       
+                       html += `
+                        <tr>
+                            <td class="font-mono text-[10px] text-textMuted">${tx.id}</td>
+                            <td class="font-mono text-xs text-electric/70">${tx.uid.substring(0,8)}...</td>
+                            <td class="text-xs uppercase font-semibold">${tx.type.replace('_',' ')}</td>
+                            <td class="font-bold ${color}">${formatMoney(tx.amount)}</td>
+                            <td>${badgeHTML(tx.status)}</td>
+                            <td class="text-xs text-textMuted">${formatDate(tx.createdAt)}</td>
+                        </tr>`; 
+                    });
+                } else {
+                    html = `<tr><td colspan="6" class="text-center text-textMuted py-8">Ledger is empty.</td></tr>`;
+                }
+                el('tb-transactions').innerHTML = html;
+            });
+        }
+
+
+        // 1. Toggle User Status
+        window.toggleUserStatus = async (uid, currentStatus) => {
+            const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
+            if(!confirm(`Are you sure you want to ${newStatus} user ${uid}?`)) return;
+            try {
+                await update(ref(db, `users/${uid}`), { accountStatus: newStatus, updatedAt: serverTimestamp() });
+                window.showToast(`User marked as ${newStatus}`);
+            } catch (e) {
+                window.showToast("Update failed: " + e.message, true);
+            }
+        };
+
+        // 2. Robot Modal Management
+        window.openRobotModal = () => {
+            el('form-robot').reset();
+            el('rob-id').value = '';
+            el('modal-robot-title').innerText = 'Add New Robot';
+            const m = el('modal-robot');
+            show('modal-robot');
+            setTimeout(()=> { m.classList.remove('opacity-0'); m.querySelector('div').classList.remove('scale-95'); }, 10);
+        };
+        
+        window.closeRobotModal = () => {
+            const m = el('modal-robot');
+            m.classList.add('opacity-0'); m.querySelector('div').classList.add('scale-95');
+            setTimeout(()=> hide('modal-robot'), 200);
+        };
+        
+        window.editRobot = async (id) => {
+            try {
+                const snap = await get(ref(db, `robotCatalog/${id}`));
+                if(snap.exists()){
+                    const r = snap.val();
+                    el('rob-id').value = id;
+                    el('rob-name').value = r.name || '';
+                    el('rob-category').value = r.category || 'Basic';
+                    el('rob-price').value = r.price || 0;
+                    el('rob-duration').value = r.duration || 0;
+                    el('rob-rate').value = r.rewardRate || 0;
+                    el('rob-enabled').checked = r.enabled !== false;
+                    
+                    el('modal-robot-title').innerText = 'Edit Robot';
+                    const m = el('modal-robot');
+                    show('modal-robot');
+                    setTimeout(()=> { m.classList.remove('opacity-0'); m.querySelector('div').classList.remove('scale-95'); }, 10);
+                }
+            } catch(e) { window.showToast("Error loading robot", true); }
+        };
+        
+        window.saveRobot = async () => {
+            const id = el('rob-id').value;
+            const data = {
+                name: el('rob-name').value,
+                category: el('rob-category').value,
+                price: parseFloat(el('rob-price').value),
+                duration: parseInt(el('rob-duration').value),
+                rewardRate: parseFloat(el('rob-rate').value),
+                enabled: el('rob-enabled').checked,
+                updatedAt: serverTimestamp()
+            };
+            
+            try {
+                if(id) {
+                    await update(ref(db, `robotCatalog/${id}`), data);
+                    window.showToast("Robot updated successfully");
+                } else {
+                    data.publishedAt = serverTimestamp();
+                    await push(ref(db, `robotCatalog`), data);
+                    window.showToast("Robot added to catalog");
+                }
+                window.closeRobotModal();
+            } catch(e) {
+                window.showToast("Failed to save: " + e.message, true);
+            }
+        };
+
+        // 3. Financial Processing
+        // IMPORTANT NOTE FROM PROMPT: In a real production system, financial approvals that update wallets MUST be done 
+        // via Cloud Functions to ensure atomicity. As this is frontend code interacting directly with RTDB, we are performing
+        // sequential updates. Appropriate DB rules are required to secure this.
+        window.processFinance = async (type, uid, reqId, amount, newStatus) => {
+            if(!confirm(`Are you sure you want to mark this ${type} as ${newStatus.toUpperCase()}?`)) return;
+            
+            try {
+                const path = type === 'deposit' ? 'depositRequests' : 'withdrawalRequests';
+                
+                // 1. Update the request status
+                await update(ref(db, `${path}/${uid}/${reqId}`), { 
+                    status: newStatus, 
+                    reviewedAt: serverTimestamp(),
+                    reviewedBy: auth.currentUser.uid 
+                });
+                
+                // 2. If approved, we must update the wallet balance (Frontend implementation for demo completeness, but read note above)
+                if(newStatus === 'approved') {
+                    const walletRef = ref(db, `wallets/${uid}`);
+                    const walletSnap = await get(walletRef);
+                    let currentBalance = 0;
+                    if(walletSnap.exists() && walletSnap.val().cachedBalance) {
+                        currentBalance = parseFloat(walletSnap.val().cachedBalance);
+                    }
+                    
+                    let newBalance = currentBalance;
+                    if(type === 'deposit') newBalance += parseFloat(amount);
+                    if(type === 'withdrawal') newBalance -= parseFloat(amount); // Note: Assuming withdrawal wasn't already deducted
+                    
+                    await update(walletRef, { 
+                        cachedBalance: newBalance,
+                        updatedAt: serverTimestamp() 
+                    });
+                    
+                    // 3. Log to transactions ledger
+                    await push(ref(db, `walletTransactions/${uid}`), {
+                        type: type,
+                        amount: parseFloat(amount),
+                        status: 'successful',
+                        referenceId: reqId,
+                        createdAt: serverTimestamp()
+                    });
+                }
+                
+                window.showToast(`${type} marked as ${newStatus}`);
+            } catch(e) {
+                window.showToast("Financial update failed: " + e.message, true);
+            }
+        };
+
+    </script>
+</body>
+</html>

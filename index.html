@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEXORA MINING - AI Robot Earning</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#040b16',
+                        midnight: '#0a1122',
+                        card: 'rgba(17, 25, 43, 0.7)',
+                        cardSolid: '#11192b',
+                        electric: '#00f0ff',
+                        violet: '#8b5cf6',
+                        emerald: '#00ff87',
+                        danger: '#ff3366',
+                        textMuted: '#94a3b8'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body { 
+            background-color: #000; 
+            color: #f8fafc; 
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Mobile App Shell Constraints */
+        .app-shell {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #040b16;
+            height: 100dvh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.1);
+        }
+
+        .hide { display: none !important; }
+        
+        /* Glassmorphism & UI Elements */
+        .glass-card {
+            background: rgba(17, 25, 43, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+        }
+        
+        .input-dark {
+            background: #0a1122;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            border-radius: 0.75rem;
+            padding: 0.875rem 1rem;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .input-dark:focus {
+            outline: none;
+            border-color: #00f0ff;
+            box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2);
+        }
+
+        /* Gradients & Glows */
+        .text-gradient { 
+            background-clip: text; 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-image: linear-gradient(to right, #00f0ff, #8b5cf6); 
+        }
+        .glow-btn {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glow-btn:active { transform: scale(0.98); box-shadow: 0 0 5px rgba(0, 240, 255, 0.5); }
+
+        /* Bottom Nav */
+        .nav-item {
+            color: #64748b;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+        .nav-item.active { color: #00f0ff; }
+        .nav-item.active i { transform: translateY(-2px); filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5)); }
+
+        /* Scrollbar hiding for clean app look */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Spin Wheel */
+        .wheel-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 4px solid #11192b;
+            box-shadow: 0 0 20px rgba(0,240,255,0.2), inset 0 0 20px rgba(0,240,255,0.1);
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #ff3366;
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 10;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeUp 0.4s ease forwards; }
+    </style>
+</head>
+<body>
+
+    <!-- App Shell -->
+    <div class="app-shell">
+        
+        <!-- Background Ambient Effects -->
+        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[40%] rounded-full bg-electric opacity-5 blur-[100px] pointer-events-none"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[40%] rounded-full bg-violet opacity-5 blur-[100px] pointer-events-none"></div>
+
+        <!-- Global Toast Notification -->
+        <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[200] bg-cardSolid border border-gray-700 text-white px-5 py-3 rounded-xl shadow-2xl transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-3 w-11/12 max-w-[400px]">
+            <i data-lucide="info" class="w-5 h-5 text-electric shrink-0" id="toast-icon"></i>
+            <span id="toast-msg" class="font-medium text-sm">Notification</span>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SPLASH SCREEN -->
+        <!-- ========================================== -->
+        <div id="screen-splash" class="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-navy w-full h-full">
+            <div class="w-24 h-24 rounded-3xl bg-cardSolid border border-electric/30 flex items-center justify-center glow-btn mb-6 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-tr from-electric/20 to-transparent animate-pulse"></div>
+                <i data-lucide="cpu" class="w-12 h-12 text-electric relative z-10"></i>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">NEXORA</h1>
+            <p class="text-electric tracking-widest text-xs font-semibold">MINING NETWORK</p>
+            <div class="mt-12 flex gap-2">
+                <div class="w-2 h-2 rounded-full bg-electric animate-bounce" style="animation-delay: 0s"></div>
+                <div class="w-2 h-2 rounded-full bg-electric animate-bounce" style="animation-delay: 0.1s"></div>
+                <div class="w-2 h-2 rounded-full bg-electric animate-bounce" style="animation-delay: 0.2s"></div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- AUTHENTICATION SCREEN -->
+        <!-- ========================================== -->
+        <div id="screen-auth" class="hide absolute inset-0 z-50 flex flex-col bg-navy w-full h-full overflow-y-auto no-scrollbar pb-10">
+            <div class="px-6 pt-12 pb-8 flex flex-col items-center">
+                <div class="w-16 h-16 rounded-2xl bg-cardSolid border border-electric/30 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.2)] mb-4">
+                    <i data-lucide="cpu" class="w-8 h-8 text-electric"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white">Start Your Journey</h2>
+                <p class="text-textMuted text-sm mt-1">Access the next-gen AI mining platform.</p>
+            </div>
+
+            <div class="px-6 flex-1 flex flex-col">
+                <!-- Auth Toggle -->
+                <div class="flex p-1 bg-cardSolid rounded-xl mb-6">
+                    <button id="btn-tab-login" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-card text-electric shadow-sm transition">Sign In</button>
+                    <button id="btn-tab-register" class="flex-1 py-2 text-sm font-semibold rounded-lg text-textMuted hover:text-white transition">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="form-login" class="space-y-4 animate-fade-up" onsubmit="event.preventDefault(); window.handleAuth('login');">
+                    <div>
+                        <input type="email" id="login-email" placeholder="Email Address" required class="input-dark">
+                    </div>
+                    <div>
+                        <input type="password" id="login-pass" placeholder="Secure Password" required class="input-dark">
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="button" class="text-xs text-electric hover:underline">Forgot Password?</button>
+                    </div>
+                    <button type="submit" id="btn-submit-login" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl hover:bg-cyan-300 transition glow-btn flex justify-center items-center gap-2">
+                        <span>Authenticate</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="form-register" class="hide space-y-4 animate-fade-up" onsubmit="event.preventDefault(); window.handleAuth('register');">
+                    <div>
+                        <input type="text" id="reg-name" placeholder="Full Name" required class="input-dark">
+                    </div>
+                    <div>
+                        <input type="email" id="reg-email" placeholder="Email Address" required class="input-dark">
+                    </div>
+                    <div>
+                        <input type="password" id="reg-pass" placeholder="Create Password" required class="input-dark">
+                    </div>
+                    <div class="flex items-center gap-2 mt-2 px-1">
+                        <input type="checkbox" id="reg-terms" required class="w-4 h-4 rounded border-gray-600 bg-gray-700 text-electric focus:ring-electric">
+                        <label class="text-xs text-textMuted">I accept the <a href="#" class="text-electric">Terms</a> & <a href="#" class="text-electric">Privacy Policy</a></label>
+                    </div>
+                    <button type="submit" id="btn-submit-register" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl hover:bg-cyan-300 transition glow-btn mt-2 flex justify-center items-center gap-2">
+                        <span>Create Account</span> <i data-lucide="user-plus" class="w-4 h-4"></i>
+                    </button>
+                </form>
+
+                <div class="relative my-8 flex items-center justify-center">
+                    <div class="absolute border-t border-white/10 w-full"></div>
+                    <span class="bg-navy px-3 text-xs text-textMuted relative z-10">OR CONTINUE WITH</span>
+                </div>
+
+                <button onclick="window.handleGoogleAuth()" class="w-full bg-cardSolid border border-white/10 text-white font-semibold py-3.5 rounded-xl hover:bg-white/5 transition flex justify-center items-center gap-3">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    Google Connection
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- MAIN APP SHELL -->
+        <!-- ========================================== -->
+        <div id="screen-main" class="hide flex flex-col h-full w-full relative">
+            
+            <!-- Top Header -->
+            <header class="h-16 px-5 flex items-center justify-between shrink-0 bg-navy/90 backdrop-blur-md z-20">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.switchTab('profile')">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-electric to-violet flex items-center justify-center text-navy font-bold text-sm" id="user-avatar-initial">U</div>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-textMuted leading-none">Welcome back,</span>
+                        <span class="text-sm font-semibold text-white leading-tight truncate w-32" id="header-user-name">User</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="w-9 h-9 rounded-full bg-cardSolid border border-white/5 flex items-center justify-center text-white relative hover:bg-white/5">
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                        <span class="absolute top-2 right-2 w-1.5 h-1.5 bg-danger rounded-full"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Scrollable Content Area -->
+            <main class="flex-1 overflow-y-auto no-scrollbar pb-24 relative z-10" id="main-content-area">
+                
+                <!-- VIEW: HOME -->
+                <div id="tab-home" class="view-section px-5 py-4 space-y-6">
+                    <!-- Dashboard Cards -->
+                    <div class="glass-card p-5 relative overflow-hidden">
+                        <div class="absolute right-[-20%] top-[-20%] w-[50%] h-[100%] bg-electric/10 blur-[30px] rounded-full"></div>
+                        <h3 class="text-xs font-semibold text-textMuted uppercase tracking-wider mb-1">Available Balance</h3>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-4xl font-extrabold text-white" id="home-balance">0.00</span>
+                            <span class="text-lg text-electric font-bold">৳</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 pt-4 border-t border-white/10">
+                            <div>
+                                <div class="text-[10px] text-textMuted uppercase mb-0.5">Total Earnings</div>
+                                <div class="font-semibold text-sm text-emerald">৳ <span id="home-total-earnings">0.00</span></div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-textMuted uppercase mb-0.5">Active Robots</div>
+                                <div class="font-semibold text-sm text-violet flex items-center gap-1">
+                                    <i data-lucide="cpu" class="w-3 h-3"></i> <span id="home-total-robots">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="window.openDepositModal()" class="glass-card p-4 flex flex-col items-center justify-center gap-2 hover:bg-white/5 transition">
+                            <div class="w-10 h-10 rounded-full bg-emerald/10 flex items-center justify-center text-emerald">
+                                <i data-lucide="arrow-down-circle" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-sm font-medium">Deposit</span>
+                        </button>
+                        <button onclick="window.switchTab('wallet')" class="glass-card p-4 flex flex-col items-center justify-center gap-2 hover:bg-white/5 transition">
+                            <div class="w-10 h-10 rounded-full bg-danger/10 flex items-center justify-center text-danger">
+                                <i data-lucide="arrow-up-circle" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-sm font-medium">Withdraw</span>
+                        </button>
+                    </div>
+
+                    <!-- Daily Interactions -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="window.claimDailyCheckIn()" class="glass-card p-4 relative overflow-hidden group text-left border-electric/30 hover:border-electric transition">
+                            <div class="absolute inset-0 bg-gradient-to-br from-electric/10 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+                            <i data-lucide="calendar-check" class="w-6 h-6 text-electric mb-2"></i>
+                            <div class="font-semibold text-sm">Daily Check-In</div>
+                            <div class="text-xs text-textMuted mt-1">Claim reward</div>
+                        </button>
+                        <button onclick="window.openSpinModal()" class="glass-card p-4 relative overflow-hidden group text-left border-violet/30 hover:border-violet transition">
+                            <div class="absolute inset-0 bg-gradient-to-br from-violet/10 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+                            <i data-lucide="dribbble" class="w-6 h-6 text-violet mb-2"></i>
+                            <div class="font-semibold text-sm">Spin & Win</div>
+                            <div class="text-xs text-textMuted mt-1">Try your luck</div>
+                        </button>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div>
+                        <div class="flex justify-between items-end mb-3">
+                            <h3 class="font-semibold text-sm">Recent Activity</h3>
+                            <button onclick="window.switchTab('wallet')" class="text-xs text-electric">View All</button>
+                        </div>
+                        <div class="glass-card p-0 overflow-hidden" id="home-recent-txns">
+                            <div class="p-6 text-center text-sm text-textMuted flex flex-col items-center gap-2">
+                                <i data-lucide="activity" class="w-6 h-6 opacity-50"></i>
+                                Loading transactions...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: BUY ROBOTS -->
+                <div id="tab-buy" class="view-section hide px-5 py-4 space-y-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="text-xl font-bold text-white">Marketplace</h2>
+                        <span class="text-xs px-2 py-1 bg-electric/20 text-electric rounded-lg font-medium">Live Catalog</span>
+                    </div>
+                    
+                    <div id="marketplace-container" class="space-y-4">
+                        <div class="p-10 text-center text-sm text-textMuted flex flex-col items-center gap-3 glass-card">
+                            <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-electric"></i>
+                            Fetching live catalog...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: MY ROBOTS -->
+                <div id="tab-my-robots" class="view-section hide px-5 py-4 space-y-4">
+                    <h2 class="text-xl font-bold text-white mb-2">My Robots</h2>
+                    
+                    <div id="my-robots-container" class="space-y-4">
+                        <div class="p-10 text-center text-sm text-textMuted flex flex-col items-center gap-3 glass-card">
+                            <i data-lucide="cpu" class="w-8 h-8 opacity-50"></i>
+                            Loading your miners...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: TASKS -->
+                <div id="tab-tasks" class="view-section hide px-5 py-4 space-y-4">
+                    <h2 class="text-xl font-bold text-white mb-2">Earn Extra</h2>
+                    <div class="glass-card p-6 text-center border-dashed border-gray-600">
+                        <div class="w-12 h-12 bg-cardSolid rounded-full mx-auto flex items-center justify-center mb-3 text-textMuted">
+                            <i data-lucide="target" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-medium text-white mb-1">No Active Tasks</h3>
+                        <p class="text-xs text-textMuted">Check back later for new promotional tasks and rewards.</p>
+                    </div>
+                </div>
+
+                <!-- VIEW: WALLET -->
+                <div id="tab-wallet" class="view-section hide px-5 py-4 space-y-6">
+                    <h2 class="text-xl font-bold text-white">Wallet</h2>
+                    
+                    <div class="glass-card p-6 relative overflow-hidden bg-gradient-to-br from-[#11192b] to-[#1a2542]">
+                        <h3 class="text-xs font-semibold text-textMuted uppercase tracking-wider mb-2">Total Balance</h3>
+                        <div class="flex items-baseline gap-2 mb-6">
+                            <span class="text-4xl font-extrabold text-white" id="wallet-balance">0.00</span>
+                            <span class="text-xl text-emerald font-bold">৳</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="window.openDepositModal()" class="flex-1 bg-electric text-navy font-bold py-2.5 rounded-lg hover:bg-cyan-300 transition text-sm flex items-center justify-center gap-2">
+                                <i data-lucide="arrow-down" class="w-4 h-4"></i> Deposit
+                            </button>
+                            <button onclick="window.openWithdrawModal()" class="flex-1 bg-cardSolid border border-white/10 text-white font-bold py-2.5 rounded-lg hover:bg-white/5 transition text-sm flex items-center justify-center gap-2">
+                                <i data-lucide="arrow-up" class="w-4 h-4"></i> Withdraw
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-card p-4">
+                            <div class="text-xs text-textMuted mb-1">Pending Deposits</div>
+                            <div class="font-bold text-emerald">৳ <span id="wallet-pending-dep">0.00</span></div>
+                        </div>
+                        <div class="glass-card p-4">
+                            <div class="text-xs text-textMuted mb-1">Pending Withdrawals</div>
+                            <div class="font-bold text-danger">৳ <span id="wallet-pending-wit">0.00</span></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-sm mb-3">Ledger History</h3>
+                        <div class="glass-card p-0 overflow-hidden" id="wallet-full-history">
+                            <div class="p-8 text-center text-sm text-textMuted flex flex-col items-center gap-3">
+                                <i data-lucide="file-text" class="w-6 h-6 opacity-50"></i>
+                                No transactions yet.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: PROFILE -->
+                <div id="tab-profile" class="view-section hide px-5 py-4 space-y-6">
+                    <h2 class="text-xl font-bold text-white mb-4">Profile & Settings</h2>
+                    
+                    <div class="glass-card p-5 flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-electric to-violet flex items-center justify-center text-navy font-bold text-2xl" id="profile-avatar-initial">U</div>
+                        <div class="overflow-hidden flex-1">
+                            <h3 class="text-lg font-bold truncate text-white" id="profile-name">User Name</h3>
+                            <p class="text-xs text-textMuted truncate mb-1" id="profile-email">user@email.com</p>
+                            <span class="inline-block px-2 py-0.5 bg-emerald/20 text-emerald text-[10px] rounded font-bold uppercase">Verified</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-2">
+                        <button class="w-full flex items-center justify-between p-3 hover:bg-white/5 rounded-lg transition text-left">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-cardSolid flex items-center justify-center text-textMuted"><i data-lucide="shield" class="w-4 h-4"></i></div>
+                                <span class="text-sm font-medium">Security Details</span>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-textMuted"></i>
+                        </button>
+                        <button class="w-full flex items-center justify-between p-3 hover:bg-white/5 rounded-lg transition text-left border-t border-white/5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-cardSolid flex items-center justify-center text-textMuted"><i data-lucide="bell" class="w-4 h-4"></i></div>
+                                <span class="text-sm font-medium">Notifications</span>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-textMuted"></i>
+                        </button>
+                    </div>
+
+                    <button onclick="window.handleLogout()" class="w-full glass-card p-4 flex items-center justify-center gap-2 text-danger hover:bg-danger/10 transition border border-danger/20">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                        <span class="font-bold text-sm">Secure Logout</span>
+                    </button>
+                    
+                    <div class="text-center mt-8">
+                        <div class="text-[10px] text-textMuted">NEXORA MINING v1.0.0</div>
+                        <div class="text-[10px] text-emerald mt-1 flex items-center justify-center gap-1">
+                            <div class="w-1.5 h-1.5 rounded-full bg-emerald"></div> Live Database Connected
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Bottom Navigation -->
+            <nav class="h-[70px] bg-cardSolid/95 backdrop-blur-lg border-t border-white/10 shrink-0 flex items-center justify-around px-2 z-20 pb-safe">
+                <button class="nav-item active flex-1 py-2" data-target="home">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    <span>Home</span>
+                </button>
+                <button class="nav-item flex-1 py-2" data-target="buy">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                    <span>Buy</span>
+                </button>
+                <button class="nav-item flex-1 py-2" data-target="my-robots">
+                    <i data-lucide="cpu" class="w-5 h-5"></i>
+                    <span>My Robots</span>
+                </button>
+                <button class="nav-item flex-1 py-2" data-target="tasks">
+                    <i data-lucide="check-square" class="w-5 h-5"></i>
+                    <span>Tasks</span>
+                </button>
+                <button class="nav-item flex-1 py-2" data-target="wallet">
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
+                    <span>Wallet</span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODALS -->
+    <!-- ========================================== -->
+
+    <!-- Spin Wheel Modal -->
+    <div id="modal-spin" class="hide fixed inset-0 z-[250] flex flex-col justify-center items-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300 w-full h-full">
+        <div class="glass-card w-[90%] max-w-[340px] p-6 flex flex-col items-center relative transform scale-95 transition-transform duration-300" id="spin-content">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 class="text-xl font-bold text-white mb-1">Spin & Win</h3>
+            <p class="text-xs text-textMuted mb-6">Win daily cash rewards instantly!</p>
+            
+            <div class="wheel-container mb-8" id="wheel">
+                <div class="wheel-pointer"></div>
+                <!-- Segments generated via JS -->
+            </div>
+            
+            <button id="btn-spin" onclick="window.executeSpin()" class="w-full bg-violet text-white font-bold py-3.5 rounded-xl hover:bg-purple-500 transition glow-btn">
+                SPIN NOW
+            </button>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div id="modal-deposit" class="hide fixed inset-0 z-[250] flex flex-col justify-end items-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300 w-full h-full">
+        <div class="glass-card w-full max-w-[480px] rounded-t-2xl rounded-b-none p-6 transform translate-y-full transition-transform duration-300" id="deposit-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white">Deposit Funds</h3>
+                <button onclick="window.closeModals()" class="text-textMuted hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <form id="form-deposit" onsubmit="event.preventDefault(); window.submitDeposit();" class="space-y-4 pb-4">
+                <div>
+                    <label class="block text-xs text-textMuted mb-1 uppercase">Method</label>
+                    <select id="dep-method" class="input-dark appearance-none" required>
+                        <option value="bkash">bKash</option>
+                        <option value="nagad">Nagad</option>
+                        <option value="rocket">Rocket</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1 uppercase">Amount (৳)</label>
+                    <input type="number" id="dep-amount" min="100" placeholder="Min 100 ৳" required class="input-dark">
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1 uppercase">Transaction / Reference ID</label>
+                    <input type="text" id="dep-ref" placeholder="TrxID" required class="input-dark">
+                </div>
+                
+                <div class="p-3 bg-cardSolid border border-electric/20 rounded-lg text-xs text-electric mt-2">
+                    <i data-lucide="info" class="w-3 h-3 inline"></i> Send money to official merchant number: <strong>01700-000000</strong> before submitting this request.
+                </div>
+                
+                <button type="submit" id="btn-submit-dep" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl mt-4 hover:bg-cyan-300 transition">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="modal-withdraw" class="hide fixed inset-0 z-[250] flex flex-col justify-end items-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300 w-full h-full">
+        <div class="glass-card w-full max-w-[480px] rounded-t-2xl rounded-b-none p-6 transform translate-y-full transition-transform duration-300" id="withdraw-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white">Withdraw Funds</h3>
+                <button onclick="window.closeModals()" class="text-textMuted hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <form id="form-withdraw" onsubmit="event.preventDefault(); window.submitWithdraw();" class="space-y-4 pb-4">
+                <div>
+                    <div class="text-xs text-textMuted uppercase mb-1">Available to Withdraw</div>
+                    <div class="text-xl font-bold text-emerald mb-4">৳ <span id="modal-wit-avail">0.00</span></div>
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1 uppercase">Method</label>
+                    <select id="wit-method" class="input-dark appearance-none" required>
+                        <option value="bkash">bKash (Personal)</option>
+                        <option value="nagad">Nagad (Personal)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1 uppercase">Destination Number</label>
+                    <input type="text" id="wit-dest" placeholder="01XXX-XXXXXX" required class="input-dark">
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1 uppercase">Amount (৳)</label>
+                    <input type="number" id="wit-amount" min="100" placeholder="Min 100 ৳" required class="input-dark">
+                </div>
+                
+                <button type="submit" id="btn-submit-wit" class="w-full bg-danger text-white font-bold py-3.5 rounded-xl mt-4 hover:bg-red-500 transition">Confirm Withdrawal</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT & FIREBASE INTEGRATION -->
+    <!-- ========================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getDatabase, ref, onValue, set, push, update, serverTimestamp, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        // Firebase Configuration (Strictly from Master Prompt)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEz88Sx7BdGOQ2ZHG_z_XBKntOhS3XJK8",
+            authDomain: "rewardsapp-395d0.firebaseapp.com",
+            databaseURL: "https://rewardsapp-395d0-default-rtdb.firebaseio.com",
+            projectId: "rewardsapp-395d0",
+            storageBucket: "rewardsapp-395d0.firebasestorage.app",
+            messagingSenderId: "709199854223",
+            appId: "1:709199854223:web:dbed4018e3cd7218530efa"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const provider = new GoogleAuthProvider();
+
+        let currentUser = null;
+        let userWallet = { cachedBalance: 0, pendingWithdrawal: 0, pendingDeposit: 0 };
+        
+        // UI Helpers
+        lucide.createIcons();
+        const el = (id) => document.getElementById(id);
+        const hide = (id) => el(id).classList.add('hide');
+        const show = (id) => el(id).classList.remove('hide');
+        const formatMoney = (val) => Number(val || 0).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+        const formatDate = (ts) => ts ? new Date(ts).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) : 'N/A';
+        
+        // Toast
+        window.showToast = (msg, type = 'info') => {
+            const t = el('toast');
+            el('toast-msg').innerText = msg;
+            const icon = el('toast-icon');
+            
+            t.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 z-[200] border px-5 py-3 rounded-xl shadow-2xl transition-all duration-300 flex items-center gap-3 w-11/12 max-w-[400px]';
+            if(type === 'error') {
+                t.classList.add('bg-danger/20', 'border-danger', 'text-white');
+                icon.setAttribute('data-lucide', 'alert-circle');
+                icon.setAttribute('class', 'w-5 h-5 text-danger shrink-0');
+            } else if (type === 'success') {
+                t.classList.add('bg-emerald/20', 'border-emerald', 'text-white');
+                icon.setAttribute('data-lucide', 'check-circle');
+                icon.setAttribute('class', 'w-5 h-5 text-emerald shrink-0');
+            } else {
+                t.classList.add('bg-cardSolid', 'border-gray-700', 'text-white');
+                icon.setAttribute('data-lucide', 'info');
+                icon.setAttribute('class', 'w-5 h-5 text-electric shrink-0');
+            }
+            lucide.createIcons();
+
+            t.classList.remove('opacity-0', '-translate-y-10');
+            setTimeout(() => t.classList.add('opacity-0', '-translate-y-10'), 3000);
+        };
+
+        // Navigation
+        window.switchTab = (tabId) => {
+            document.querySelectorAll('.view-section').forEach(v => hide(v.id));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            
+            show(`tab-${tabId}`);
+            const btn = document.querySelector(`.nav-item[data-target="${tabId}"]`);
+            if(btn) btn.classList.add('active');
+            
+            // Scroll to top
+            el('main-content-area').scrollTo(0,0);
+        };
+
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', (e) => window.switchTab(e.currentTarget.dataset.target));
+        });
+
+        // Auth Tabs
+        el('btn-tab-login').onclick = () => {
+            show('form-login'); hide('form-register');
+            el('btn-tab-login').classList.replace('text-textMuted', 'text-electric');
+            el('btn-tab-login').classList.replace('hover:text-white', 'bg-card');
+            el('btn-tab-register').classList.replace('text-electric', 'text-textMuted');
+            el('btn-tab-register').classList.replace('bg-card', 'hover:text-white');
+        };
+        el('btn-tab-register').onclick = () => {
+            hide('form-login'); show('form-register');
+            el('btn-tab-register').classList.replace('text-textMuted', 'text-electric');
+            el('btn-tab-register').classList.replace('hover:text-white', 'bg-card');
+            el('btn-tab-login').classList.replace('text-electric', 'text-textMuted');
+            el('btn-tab-login').classList.replace('bg-card', 'hover:text-white');
+        };
+
+        // Initialize App
+        setTimeout(() => {
+            // Check auth state after splash
+            onAuthStateChanged(auth, async (user) => {
+                hide('screen-splash');
+                if (user) {
+                    currentUser = user;
+                    hide('screen-auth');
+                    show('screen-main');
+                    initLiveListeners(user.uid);
+                    await syncProfileInfo(user);
+                } else {
+                    currentUser = null;
+                    show('screen-auth');
+                    hide('screen-main');
+                }
+            });
+        }, 2000);
+
+        // Auth Logic
+        window.handleAuth = async (type) => {
+            const btn = el(`btn-submit-${type}`);
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing...`;
+            lucide.createIcons();
+
+            try {
+                if(type === 'login') {
+                    const email = el('login-email').value;
+                    const pass = el('login-pass').value;
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    const name = el('reg-name').value;
+                    const email = el('reg-email').value;
+                    const pass = el('reg-pass').value;
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    
+                    // Create Profile & Wallet DB Structure
+                    await set(ref(db, `users/${cred.user.uid}`), {
+                        profile: { name: name, email: email },
+                        accountStatus: 'active',
+                        createdAt: serverTimestamp()
+                    });
+                    
+                    try {
+                        // Attempt to init wallet (May be blocked by strict rules, gracefully catch if so)
+                        await set(ref(db, `wallets/${cred.user.uid}`), {
+                            cachedBalance: 0,
+                            pendingDeposit: 0,
+                            pendingWithdrawal: 0,
+                            updatedAt: serverTimestamp()
+                        });
+                    } catch(walletErr) {
+                        console.warn("Wallet init deferred to backend rules.");
+                    }
+                }
+                window.showToast("Authentication successful", "success");
+            } catch(e) {
+                window.showToast(e.message, "error");
+                btn.innerHTML = originalText;
+            }
+        };
+
+        window.handleGoogleAuth = async () => {
+            try {
+                const res = await signInWithPopup(auth, provider);
+                const userRef = ref(db, `users/${res.user.uid}`);
+                const snap = await get(userRef);
+                
+                // If new user via google, init db
+                if(!snap.exists()) {
+                    await set(userRef, {
+                        profile: { name: res.user.displayName, email: res.user.email },
+                        accountStatus: 'active',
+                        createdAt: serverTimestamp()
+                    });
+                    
+                    try {
+                        await set(ref(db, `wallets/${res.user.uid}`), {
+                            cachedBalance: 0, pendingDeposit: 0, pendingWithdrawal: 0, updatedAt: serverTimestamp()
+                        });
+                    } catch(walletErr) {
+                        console.warn("Wallet init deferred to backend rules.");
+                    }
+                }
+                window.showToast("Signed in with Google", "success");
+            } catch(e) {
+                window.showToast("Google sign in failed", "error");
+            }
+        };
+
+        window.handleLogout = () => { signOut(auth); };
+
+        async function syncProfileInfo(user) {
+            try {
+                const snap = await get(ref(db, `users/${user.uid}/profile`));
+                const data = snap.val() || { name: user.displayName || 'User', email: user.email };
+                
+                el('header-user-name').innerText = data.name;
+                el('profile-name').innerText = data.name;
+                el('profile-email').innerText = data.email;
+                
+                const initial = data.name.charAt(0).toUpperCase();
+                el('user-avatar-initial').innerText = initial;
+                el('profile-avatar-initial').innerText = initial;
+            } catch (error) {
+                console.warn("Profile sync permission/network error:", error);
+                
+                // Graceful fallback to Firebase Auth object
+                const fallbackName = user.displayName || 'User';
+                el('header-user-name').innerText = fallbackName;
+                el('profile-name').innerText = fallbackName;
+                el('profile-email').innerText = user.email || 'N/A';
+                
+                const initial = fallbackName.charAt(0).toUpperCase();
+                el('user-avatar-initial').innerText = initial;
+                el('profile-avatar-initial').innerText = initial;
+            }
+        }
+
+        // ==========================================
+        // REALTIME DATABASE LISTENERS
+        // ==========================================
+        function initLiveListeners(uid) {
+            
+            // 1. Wallet Listener
+            onValue(ref(db, `wallets/${uid}`), (snap) => {
+                if(snap.exists()){
+                    const w = snap.val();
+                    userWallet = w;
+                    const bal = formatMoney(w.cachedBalance);
+                    el('home-balance').innerText = bal;
+                    el('wallet-balance').innerText = bal;
+                    el('modal-wit-avail').innerText = bal;
+                    
+                    // Note: In actual implementation, Admin Panel handles total earnings. 
+                    // We'll approximate total earnings dynamically from transactions below if not saved explicitly.
+                }
+            });
+
+            // 2. Robot Catalog Listener (Marketplace)
+            onValue(ref(db, `robotCatalog`), (snap) => {
+                let html = '';
+                if(snap.exists()) {
+                    snap.forEach(child => {
+                        const r = child.val();
+                        if(r.enabled) {
+                            html += `
+                            <div class="glass-card p-4 flex gap-4">
+                                <div class="w-20 h-24 bg-cardSolid rounded-lg border border-white/5 flex items-center justify-center shrink-0 relative overflow-hidden group">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-electric/20 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+                                    <i data-lucide="bot" class="w-10 h-10 text-electric relative z-10"></i>
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex justify-between items-start">
+                                            <h3 class="font-bold text-white leading-tight">${r.name}</h3>
+                                            <span class="text-[10px] bg-white/10 px-1.5 py-0.5 rounded text-textMuted uppercase">${r.category}</span>
+                                        </div>
+                                        <div class="text-xs text-emerald mt-1">Earns: ৳${r.rewardRate}/hr</div>
+                                        <div class="text-[10px] text-textMuted">Duration: ${r.duration} Days</div>
+                                    </div>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="font-bold text-electric">৳ ${formatMoney(r.price)}</div>
+                                        <button onclick="window.purchaseRobot('${child.key}', ${r.price}, '${r.name}')" class="bg-electric text-navy text-xs font-bold px-3 py-1.5 rounded hover:bg-cyan-300 transition">BUY NOW</button>
+                                    </div>
+                                </div>
+                            </div>`;
+                        }
+                    });
+                } else {
+                    html = `<div class="p-10 text-center text-sm text-textMuted glass-card">No robots currently available.</div>`;
+                }
+                el('marketplace-container').innerHTML = html;
+                lucide.createIcons();
+            });
+
+            // 3. User Robots Listener (My Robots)
+            onValue(ref(db, `userRobots/${uid}`), (snap) => {
+                let html = '';
+                let count = 0;
+                if(snap.exists()) {
+                    snap.forEach(child => {
+                        count++;
+                        const ur = child.val();
+                        const isActive = ur.status === 'active';
+                        const statusColor = isActive ? 'text-emerald' : 'text-amber-500';
+                        const bgAnim = isActive ? 'animate-pulse' : '';
+                        
+                        html += `
+                        <div class="glass-card p-4 relative overflow-hidden border ${isActive ? 'border-electric/30' : 'border-white/5'}">
+                            ${isActive ? '<div class="absolute top-0 right-0 w-32 h-32 bg-electric/10 rounded-full blur-[30px]"></div>' : ''}
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded bg-cardSolid flex items-center justify-center border border-white/10">
+                                        <i data-lucide="cpu" class="w-4 h-4 text-electric"></i>
+                                    </div>
+                                    <div class="font-bold text-white text-sm">Robot ID: ${ur.robotId.substring(0,8)}...</div>
+                                </div>
+                                <div class="text-[10px] uppercase font-bold px-2 py-1 bg-cardSolid rounded border border-white/5 ${statusColor} flex items-center gap-1">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-current ${bgAnim}"></div>
+                                    ${ur.status}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 mt-3 p-3 bg-cardSolid rounded-lg border border-white/5">
+                                <div>
+                                    <div class="text-[10px] text-textMuted uppercase mb-0.5">Purchased</div>
+                                    <div class="text-xs">${formatDate(ur.purchasedAt)}</div>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-textMuted uppercase mb-0.5">Mined So Far</div>
+                                    <div class="text-xs font-bold text-emerald">৳ ${formatMoney(ur.minedAmount || 0)}</div>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                } else {
+                    html = `<div class="p-10 text-center text-sm text-textMuted glass-card">You don't own any robots yet. Head to the Marketplace to start mining!</div>`;
+                }
+                el('my-robots-container').innerHTML = html;
+                el('home-total-robots').innerText = count;
+                lucide.createIcons();
+            });
+
+            // 4. Transactions Listener
+            onValue(ref(db, `walletTransactions/${uid}`), (snap) => {
+                let txns = [];
+                let totalEarned = 0;
+                let pendingDep = 0;
+                let pendingWit = 0;
+                
+                if(snap.exists()) {
+                    snap.forEach(child => txns.push({id: child.key, ...child.val()}));
+                }
+
+                // Process derived stats
+                txns.sort((a,b) => b.createdAt - a.createdAt);
+                
+                let histHtml = '';
+                let recentHtml = '';
+                
+                if(txns.length > 0) {
+                    txns.forEach((tx, idx) => {
+                        // Calc derived
+                        if(tx.status === 'successful' && (tx.type === 'mining_reward' || tx.type === 'spin_reward' || tx.type === 'daily_checkin')) {
+                            totalEarned += tx.amount;
+                        }
+                        
+                        let icon = 'activity'; let color = 'text-white'; let sign = '';
+                        if(tx.type === 'deposit' || tx.type === 'mining_reward' || tx.type.includes('reward')) { icon = 'arrow-down-left'; color = 'text-emerald'; sign = '+'; }
+                        if(tx.type === 'withdrawal' || tx.type === 'purchase') { icon = 'arrow-up-right'; color = 'text-danger'; sign = '-'; }
+                        
+                        let statusBadge = '';
+                        if(tx.status === 'pending') statusBadge = '<span class="text-[9px] px-1.5 py-0.5 bg-amber-500/20 text-amber-500 rounded uppercase">Pending</span>';
+                        if(tx.status === 'rejected') statusBadge = '<span class="text-[9px] px-1.5 py-0.5 bg-danger/20 text-danger rounded uppercase">Rejected</span>';
+                        
+                        const row = `
+                        <div class="flex items-center justify-between p-4 border-b border-white/5 hover:bg-white/5 transition">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-cardSolid border border-white/10 flex items-center justify-center ${color}">
+                                    <i data-lucide="${icon}" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-white capitalize flex items-center gap-2">
+                                        ${tx.type.replace('_',' ')} ${statusBadge}
+                                    </div>
+                                    <div class="text-[10px] text-textMuted">${formatDate(tx.createdAt)}</div>
+                                </div>
+                            </div>
+                            <div class="font-bold ${color} text-sm">${sign}৳ ${formatMoney(tx.amount)}</div>
+                        </div>`;
+                        
+                        histHtml += row;
+                        if(idx < 3) recentHtml += row;
+                    });
+                } else {
+                    histHtml = `<div class="p-8 text-center text-sm text-textMuted">No transactions yet.</div>`;
+                    recentHtml = `<div class="p-6 text-center text-sm text-textMuted">No recent activity.</div>`;
+                }
+                
+                el('wallet-full-history').innerHTML = histHtml;
+                el('home-recent-txns').innerHTML = recentHtml;
+                el('home-total-earnings').innerText = formatMoney(totalEarned);
+                lucide.createIcons();
+            });
+
+            // Pending Amounts (Derived from deposit/withdrawal requests)
+            onValue(ref(db, `depositRequests/${uid}`), snap => {
+                let p = 0;
+                if(snap.exists()) snap.forEach(c => { if(c.val().status === 'pending') p+= c.val().amount; });
+                el('wallet-pending-dep').innerText = formatMoney(p);
+            });
+            onValue(ref(db, `withdrawalRequests/${uid}`), snap => {
+                let p = 0;
+                if(snap.exists()) snap.forEach(c => { if(c.val().status === 'pending') p+= c.val().amount; });
+                el('wallet-pending-wit').innerText = formatMoney(p);
+            });
+        }
+
+        // ==========================================
+        // ACTIONS (Purchases, Modals, etc.)
+        // ==========================================
+
+        window.purchaseRobot = async (robotId, price, name) => {
+            if(!currentUser) return;
+            if(userWallet.cachedBalance < price) {
+                return window.showToast(`Insufficient balance. You need ৳${formatMoney(price)}`, "error");
+            }
+            if(!confirm(`Purchase ${name} for ৳${price}?`)) return;
+
+            try {
+                // 1. Deduct Balance (Frontend simulation of backend for MVP. Real app uses cloud functions)
+                const newBalance = userWallet.cachedBalance - price;
+                await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: newBalance, updatedAt: serverTimestamp() });
+                
+                // 2. Add to UserRobots
+                await push(ref(db, `userRobots/${currentUser.uid}`), {
+                    robotId: robotId,
+                    status: 'active',
+                    purchasedAt: serverTimestamp(),
+                    minedAmount: 0
+                });
+
+                // 3. Log Transaction
+                await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                    type: 'purchase',
+                    amount: price,
+                    status: 'successful',
+                    referenceId: robotId,
+                    createdAt: serverTimestamp()
+                });
+
+                window.showToast("Robot successfully purchased!", "success");
+                window.switchTab('my-robots');
+            } catch(e) {
+                window.showToast("Purchase failed: " + e.message, "error");
+            }
+        };
+
+        // Modal Handlers
+        window.closeModals = () => {
+            const modals = ['modal-deposit', 'modal-withdraw', 'modal-spin'];
+            modals.forEach(id => {
+                const m = el(id);
+                m.classList.add('opacity-0');
+                const content = m.children[0];
+                if(id==='modal-spin') content.classList.replace('scale-100', 'scale-95');
+                else content.classList.replace('translate-y-0', 'translate-y-full');
+                setTimeout(() => hide(id), 300);
+            });
+        };
+
+        window.openDepositModal = () => {
+            const m = el('modal-deposit');
+            show('modal-deposit');
+            setTimeout(() => {
+                m.classList.remove('opacity-0');
+                m.children[0].classList.replace('translate-y-full', 'translate-y-0');
+            }, 10);
+        };
+
+        window.openWithdrawModal = () => {
+            const m = el('modal-withdraw');
+            show('modal-withdraw');
+            setTimeout(() => {
+                m.classList.remove('opacity-0');
+                m.children[0].classList.replace('translate-y-full', 'translate-y-0');
+            }, 10);
+        };
+
+        window.openSpinModal = () => {
+            const m = el('modal-spin');
+            show('modal-spin');
+            renderWheel();
+            setTimeout(() => {
+                m.classList.remove('opacity-0');
+                m.children[0].classList.replace('scale-95', 'scale-100');
+            }, 10);
+        };
+
+        // Deposit / Withdraw Submit
+        window.submitDeposit = async () => {
+            const method = el('dep-method').value;
+            const amount = parseFloat(el('dep-amount').value);
+            const refId = el('dep-ref').value;
+            
+            const btn = el('btn-submit-dep'); btn.innerText = 'Processing...';
+            
+            try {
+                await push(ref(db, `depositRequests/${currentUser.uid}`), {
+                    paymentMethod: method,
+                    amount: amount,
+                    paymentReference: refId,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                
+                // Add pending ledger entry for UI transparency
+                await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                    type: 'deposit', amount: amount, status: 'pending', createdAt: serverTimestamp()
+                });
+
+                window.showToast("Deposit request submitted to Admin.", "success");
+                el('form-deposit').reset();
+                window.closeModals();
+            } catch(e) { window.showToast(e.message, "error"); }
+            finally { btn.innerText = 'Submit Request'; }
+        };
+
+        window.submitWithdraw = async () => {
+            const method = el('wit-method').value;
+            const dest = el('wit-dest').value;
+            const amount = parseFloat(el('wit-amount').value);
+            
+            if(amount > userWallet.cachedBalance) {
+                return window.showToast("Insufficient available balance.", "error");
+            }
+            
+            const btn = el('btn-submit-wit'); btn.innerText = 'Processing...';
+            
+            try {
+                // Reserve balance locally (Simulated backend atomic transaction)
+                await update(ref(db, `wallets/${currentUser.uid}`), {
+                    cachedBalance: userWallet.cachedBalance - amount,
+                    updatedAt: serverTimestamp()
+                });
+
+                await push(ref(db, `withdrawalRequests/${currentUser.uid}`), {
+                    paymentMethod: method,
+                    amount: amount,
+                    destinationDetails: dest,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+
+                await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                    type: 'withdrawal', amount: amount, status: 'pending', createdAt: serverTimestamp()
+                });
+
+                window.showToast("Withdrawal requested.", "success");
+                el('form-withdraw').reset();
+                window.closeModals();
+            } catch(e) { window.showToast(e.message, "error"); }
+            finally { btn.innerText = 'Confirm Withdrawal'; }
+        };
+
+        // Daily Checkin
+        window.claimDailyCheckIn = async () => {
+            // Simplistic checkin logic. A real app uses cloud functions to verify last claim time.
+            try {
+                const reward = 5; // Configurable fixed reward
+                const newBalance = userWallet.cachedBalance + reward;
+                
+                await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: newBalance, updatedAt: serverTimestamp() });
+                await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                    type: 'daily_checkin', amount: reward, status: 'successful', createdAt: serverTimestamp()
+                });
+                window.showToast(`Claimed daily reward: ৳${reward}`, "success");
+            } catch(e) { window.showToast("Failed to claim reward", "error"); }
+        };
+
+        // Spin Wheel Logic
+        const spinRewards = [1, 2, 3, 5, 1, 10, 2, 4]; // 8 segments
+        const colors = ['#00f0ff', '#8b5cf6', '#00ff87', '#ff3366', '#00f0ff', '#8b5cf6', '#00ff87', '#ff3366'];
+        
+        function renderWheel() {
+            const container = el('wheel');
+            container.innerHTML = '<div class="wheel-pointer"></div>';
+            const angle = 360 / spinRewards.length;
+            
+            spinRewards.forEach((r, i) => {
+                const seg = document.createElement('div');
+                seg.className = 'wheel-segment';
+                seg.style.transform = `rotate(${i * angle}deg)`;
+                seg.style.backgroundColor = colors[i] + '40'; // Transparent
+                seg.style.borderLeft = `1px solid ${colors[i]}`;
+                seg.style.color = colors[i];
+                // Text positioning logic to center in segment
+                seg.innerHTML = `<span style="transform: rotate(${angle/2}deg) translate(50px, 0px);">৳${r}</span>`;
+                container.appendChild(seg);
+            });
+            container.style.transform = `rotate(0deg)`;
+        }
+
+        let isSpinning = false;
+        window.executeSpin = async () => {
+            if(isSpinning) return;
+            isSpinning = true;
+            
+            const container = el('wheel');
+            // Weighted random selection (Simplified for frontend)
+            const resultIdx = Math.floor(Math.random() * spinRewards.length);
+            const reward = spinRewards[resultIdx];
+            
+            // Calculate rotation (Spin 5 times minimum + land on segment)
+            const segmentAngle = 360 / spinRewards.length;
+            // Target angle points to the center of the selected segment
+            const targetRotation = (5 * 360) + (360 - (resultIdx * segmentAngle)) - (segmentAngle/2);
+            
+            container.style.transform = `rotate(${targetRotation}deg)`;
+            
+            setTimeout(async () => {
+                isSpinning = false;
+                window.showToast(`You won ৳${reward}!`, "success");
+                window.closeModals();
+                
+                // Credit reward
+                try {
+                    await update(ref(db, `wallets/${currentUser.uid}`), { 
+                        cachedBalance: userWallet.cachedBalance + reward, updatedAt: serverTimestamp() 
+                    });
+                    await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                        type: 'spin_reward', amount: reward, status: 'successful', createdAt: serverTimestamp()
+                    });
+                } catch(e) { console.error("Reward failed", e); }
+                
+            }, 4000); // matches CSS transition time
+        };
+
+    </script>
+</body>
+</html>
