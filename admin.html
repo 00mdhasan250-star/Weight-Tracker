@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEXORA MINING - Admin Secure Terminal</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#040b16',
+                        midnight: '#0a1122',
+                        card: '#11192b',
+                        electric: '#00f0ff',
+                        violet: '#8b5cf6',
+                        emerald: '#00ff87',
+                        danger: '#ff3366',
+                        textMuted: '#94a3b8',
+                        gold: '#fbbf24'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { background-color: #040b16; color: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .hide { display: none !important; }
+        
+        .glass-panel { background: rgba(17, 25, 43, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .admin-card { background: #11192b; border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        
+        .sidebar-item { transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .sidebar-item:hover { background: rgba(255, 255, 255, 0.03); color: #fff; }
+        .sidebar-item.active { background: linear-gradient(90deg, rgba(0, 240, 255, 0.1) 0%, rgba(0,0,0,0) 100%); color: #00f0ff; border-left: 3px solid #00f0ff; }
+
+        table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        th { text-align: left; padding: 1rem; color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); }
+        td { padding: 1rem; font-size: 0.875rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .input-dark { background: #0a1122; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 0.5rem; padding: 0.75rem 1rem; width: 100%; transition: all 0.3s; }
+        .input-dark:focus { outline: none; border-color: #00f0ff; box-shadow: 0 0 10px rgba(0, 240, 255, 0.1); }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        
+        .glow-btn { box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); transition: all 0.3s ease; }
+        .glow-btn:hover { box-shadow: 0 0 25px rgba(0, 240, 255, 0.4); transform: translateY(-1px); }
+        .glow-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="flex h-screen w-full">
+
+    <div id="toast" class="fixed top-6 right-6 z-[300] bg-card border border-gray-700 text-white px-6 py-4 rounded-xl shadow-xl transition-all duration-300 transform translate-y-[-20px] opacity-0 flex items-center gap-3">
+        <i data-lucide="info" class="w-5 h-5 text-electric" id="toast-icon"></i>
+        <span id="toast-msg" class="font-medium text-sm">Notice</span>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="view-login" class="absolute inset-0 z-50 flex items-center justify-center bg-navy w-full h-full">
+        <div class="absolute inset-0 bg-electric/5 blur-[150px] rounded-full pointer-events-none w-[50%] h-[50%] top-1/4 left-1/4"></div>
+        <div class="glass-panel p-10 w-full max-w-md rounded-2xl relative z-10 mx-4 border border-electric/20 shadow-[0_0_40px_rgba(0,240,255,0.1)]">
+            <div class="flex justify-center mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-card border border-electric/40 flex items-center justify-center">
+                    <i data-lucide="shield" class="w-8 h-8 text-electric"></i>
+                </div>
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight text-center text-white mb-2">ADMIN TERMINAL</h1>
+            <p class="text-center text-textMuted text-xs mb-8">NEXORA MINING NETWORK</p>
+            
+            <input type="email" id="admin-email" value="00mdhasan321@gmail.com" class="input-dark mb-4 font-medium" readonly>
+            <input type="password" id="admin-password" placeholder="Admin Password" class="input-dark mb-6">
+            <button id="btn-login" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl glow-btn">Authorize Access</button>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="main-admin" class="hide flex w-full h-full relative">
+        
+        <!-- Mobile Sidebar Overlay -->
+        <div id="mobile-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden hide" onclick="document.getElementById('sidebar').classList.add('-translate-x-full'); this.classList.add('hide');"></div>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 glass-panel border-r border-gray-800 flex flex-col h-full shrink-0 z-50 absolute md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+            <div class="h-20 border-b border-gray-800 flex items-center justify-between px-6 shrink-0 bg-midnight/50">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="cpu" class="w-6 h-6 text-electric"></i>
+                    <span class="font-extrabold text-lg text-white tracking-wider">NEXORA</span>
+                </div>
+                <button class="md:hidden text-gray-400 p-1 hover:text-white rounded" onclick="document.getElementById('sidebar').classList.add('-translate-x-full'); document.getElementById('mobile-overlay').classList.add('hide');"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto py-6 flex flex-col gap-1 px-3">
+                <div class="text-[10px] text-textMuted uppercase font-bold tracking-widest px-4 mb-2 mt-2">Dashboard</div>
+                <button class="nav-btn sidebar-item active flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-overview">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> <span class="font-medium">Overview</span>
+                </button>
+                
+                <div class="text-[10px] text-textMuted uppercase font-bold tracking-widest px-4 mb-2 mt-4">Management</div>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-users">
+                    <i data-lucide="users" class="w-4 h-4"></i> <span class="font-medium">User Accounts</span>
+                </button>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-catalog">
+                    <i data-lucide="bot" class="w-4 h-4"></i> <span class="font-medium">Robot Catalog</span>
+                </button>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-tasks">
+                    <i data-lucide="list-todo" class="w-4 h-4"></i> <span class="font-medium">Task Management</span>
+                </button>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-payments">
+                    <i data-lucide="credit-card" class="w-4 h-4"></i> <span class="font-medium">Payment Methods</span>
+                </button>
+
+                <div class="text-[10px] text-textMuted uppercase font-bold tracking-widest px-4 mb-2 mt-4">Financials</div>
+                <button class="nav-btn sidebar-item flex items-center justify-between px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-deposits">
+                    <div class="flex items-center gap-3"><i data-lucide="arrow-down-circle" class="w-4 h-4"></i> <span class="font-medium">Deposits</span></div>
+                    <span class="bg-emerald/20 text-emerald text-[10px] px-2 py-0.5 rounded font-bold" id="badge-dep">0</span>
+                </button>
+                <button class="nav-btn sidebar-item flex items-center justify-between px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-withdrawals">
+                    <div class="flex items-center gap-3"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> <span class="font-medium">Withdrawals</span></div>
+                    <span class="bg-danger/20 text-danger text-[10px] px-2 py-0.5 rounded font-bold" id="badge-wit">0</span>
+                </button>
+                
+                <div class="text-[10px] text-textMuted uppercase font-bold tracking-widest px-4 mb-2 mt-4">System</div>
+                <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-settings">
+                    <i data-lucide="settings" class="w-4 h-4"></i> <span class="font-medium">App Settings</span>
+                </button>
+            </nav>
+            <div class="p-4 border-t border-gray-800 bg-midnight/30">
+                <button id="btn-logout" class="w-full py-2.5 text-danger bg-danger/5 hover:bg-danger/10 border border-danger/20 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition"><i data-lucide="log-out" class="w-4 h-4"></i> Secure Logout</button>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full bg-midnight overflow-hidden relative">
+            <div class="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-violet/10 blur-[120px] pointer-events-none rounded-full"></div>
+            
+            <header class="h-20 border-b border-white/5 flex items-center px-4 md:px-8 shrink-0 bg-midnight/80 backdrop-blur-xl relative z-10">
+                <button class="md:hidden text-white mr-4 p-2 bg-white/5 rounded-lg" onclick="document.getElementById('sidebar').classList.remove('-translate-x-full'); document.getElementById('mobile-overlay').classList.remove('hide');">
+                    <i data-lucide="menu"></i>
+                </button>
+                <h2 id="page-title" class="text-xl font-bold text-white tracking-tight">Overview</h2>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-4 md:p-8 relative z-10 pb-20">
+                
+                <!-- OVERVIEW -->
+                <div id="v-overview" class="admin-view flex flex-col gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="admin-card p-6 relative overflow-hidden group">
+                            <div class="absolute right-[-10%] top-[-10%] opacity-10 group-hover:opacity-20 transition duration-500"><i data-lucide="users" class="w-32 h-32 text-electric"></i></div>
+                            <div class="text-textMuted mb-2 text-sm font-semibold uppercase tracking-wider relative z-10">Total Users</div>
+                            <h3 class="text-4xl font-extrabold text-white relative z-10" id="stat-users">0</h3>
+                        </div>
+                        <div class="admin-card p-6 border-l-4 border-l-emerald relative overflow-hidden">
+                            <div class="text-textMuted mb-2 text-sm font-semibold uppercase tracking-wider">Pending Deposits</div>
+                            <h3 class="text-4xl font-extrabold text-emerald" id="stat-deposits">0</h3>
+                        </div>
+                        <div class="admin-card p-6 border-l-4 border-l-danger relative overflow-hidden">
+                            <div class="text-textMuted mb-2 text-sm font-semibold uppercase tracking-wider">Pending Withdrawals</div>
+                            <h3 class="text-4xl font-extrabold text-danger" id="stat-withdrawals">0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- USERS MANAGEMENT -->
+                <div id="v-users" class="admin-view hide flex flex-col gap-6">
+                    <div>
+                        <h3 class="font-bold text-white text-lg">User Accounts</h3>
+                        <p class="text-xs text-textMuted">View and manage registered user accounts and balances.</p>
+                    </div>
+                    <div class="admin-card overflow-x-auto">
+                        <table class="whitespace-nowrap">
+                            <thead><tr><th>User ID</th><th>Name / Email</th><th>Available Balance (৳)</th><th>Actions</th></tr></thead>
+                            <tbody id="tb-users"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ROBOT CATALOG -->
+                <div id="v-catalog" class="admin-view hide flex flex-col gap-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h3 class="font-bold text-white text-lg">Robot Catalog</h3>
+                            <p class="text-xs text-textMuted">Manage mining robots shown on the Buy page.</p>
+                        </div>
+                        <button onclick="window.openModal('modal-robot')" class="bg-electric text-navy px-5 py-2.5 rounded-xl font-bold text-sm glow-btn flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Robot</button>
+                    </div>
+                    <div class="admin-card overflow-x-auto">
+                        <table class="whitespace-nowrap">
+                            <thead><tr><th>Robot Name</th><th>Price (৳)</th><th>Duration</th><th>Reward Rate</th><th>Actions</th></tr></thead>
+                            <tbody id="tb-catalog"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TASK MANAGEMENT -->
+                <div id="v-tasks" class="admin-view hide flex flex-col gap-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h3 class="font-bold text-white text-lg">Task Management</h3>
+                            <p class="text-xs text-textMuted">Create social media, download, and browsing tasks for users.</p>
+                        </div>
+                        <button onclick="window.openModal('modal-task')" class="bg-blue-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Task</button>
+                    </div>
+                    <div class="admin-card overflow-x-auto">
+                        <table class="whitespace-nowrap w-full">
+                            <thead><tr><th>Task Details</th><th>Category</th><th>Reward (৳)</th><th>Actions</th></tr></thead>
+                            <tbody id="tb-tasks"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DEPOSITS -->
+                <div id="v-deposits" class="admin-view hide flex flex-col gap-6">
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Deposit Requests</h3>
+                        <p class="text-xs text-textMuted">Approve deposits to add funds to user wallets.</p>
+                    </div>
+                    <div class="admin-card overflow-x-auto">
+                        <table class="whitespace-nowrap">
+                            <thead><tr><th>User Details</th><th>Method</th><th>TrxID / Ref</th><th>Amount (৳)</th><th>Status</th><th>Actions</th></tr></thead>
+                            <tbody id="tb-deposits"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- WITHDRAWALS -->
+                <div id="v-withdrawals" class="admin-view hide flex flex-col gap-6">
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Withdrawal Requests</h3>
+                        <p class="text-xs text-textMuted">Review payouts. Rejecting will refund the wallet automatically.</p>
+                    </div>
+                    <div class="admin-card overflow-x-auto">
+                        <table class="whitespace-nowrap">
+                            <thead><tr><th>User Details</th><th>Method</th><th>Destination Acc</th><th>Amount (৳)</th><th>Status</th><th>Actions</th></tr></thead>
+                            <tbody id="tb-withdrawals"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PAYMENT METHODS -->
+                <div id="v-payments" class="admin-view hide flex flex-col gap-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h3 class="font-bold text-white text-lg">Payment Methods</h3>
+                            <p class="text-xs text-textMuted">Methods shown to users for Deposit/Withdrawal.</p>
+                        </div>
+                        <button onclick="window.openModal('modal-payment')" class="bg-violet text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] transition flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Method</button>
+                    </div>
+                    <div class="admin-card overflow-x-auto">
+                        <table class="whitespace-nowrap">
+                            <thead><tr><th>Method Name</th><th>Type</th><th>Number / Details (QR)</th><th>Actions</th></tr></thead>
+                            <tbody id="tb-payments"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SETTINGS -->
+                <div id="v-settings" class="admin-view hide flex flex-col gap-6">
+                    <div class="admin-card p-6 max-w-2xl border border-white/5">
+                        <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4">
+                            <div class="w-10 h-10 rounded-lg bg-electric/10 flex items-center justify-center"><i data-lucide="sliders" class="w-5 h-5 text-electric"></i></div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Financial Limits & Rewards</h3>
+                                <p class="text-xs text-textMuted">Updates reflect on the User Panel instantly.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div><label class="block text-xs text-textMuted uppercase font-bold mb-1.5">Min Deposit (৳ BDT)</label><input type="number" id="set-min-dep" class="input-dark font-medium"></div>
+                                <div><label class="block text-xs text-textMuted uppercase font-bold mb-1.5">Min Withdrawal (৳ BDT)</label><input type="number" id="set-min-wit" class="input-dark font-medium"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-white/5">
+                                <div><label class="block text-xs text-gold uppercase font-bold mb-1.5">Daily Check-in Reward (৳)</label><input type="number" id="set-daily-reward" class="input-dark font-medium border-gold/30 focus:border-gold"></div>
+                                <div><label class="block text-xs text-gold uppercase font-bold mb-1.5">7th Day Gift Box Reward (৳)</label><input type="number" id="set-day7-reward" class="input-dark font-medium border-gold/30 focus:border-gold"></div>
+                            </div>
+                            <button onclick="window.saveSettings()" class="bg-electric text-navy font-bold px-6 py-4 rounded-xl w-full mt-6 glow-btn text-sm">Save Global Configuration</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    
+    <!-- Robot Modal (Add/Edit) -->
+    <div id="modal-robot" class="hide fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-[90%] max-w-md p-6 rounded-2xl transform scale-95 transition-transform duration-300 relative">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 class="text-xl font-bold text-white mb-5 flex items-center gap-2" id="robot-modal-title"><i data-lucide="bot" class="text-electric"></i> Add New Robot</h3>
+            <input type="hidden" id="rob-edit-id">
+            <div class="space-y-4">
+                <div><label class="block text-xs text-textMuted mb-1">Robot Name</label><input type="text" id="rob-name" placeholder="e.g. Micro Bot" class="input-dark"></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-xs text-textMuted mb-1">Price (৳)</label><input type="number" id="rob-price" placeholder="200" class="input-dark"></div>
+                    <div><label class="block text-xs text-textMuted mb-1">Duration (Days)</label><input type="number" id="rob-dur" placeholder="15" class="input-dark"></div>
+                </div>
+                <div><label class="block text-xs text-textMuted mb-1">Reward Rate (৳ per Hour)</label><input type="number" id="rob-rate" step="0.01" placeholder="e.g. 1.50" class="input-dark"></div>
+                <button onclick="window.submitRobot()" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl mt-2 glow-btn" id="btn-submit-robot">Publish Robot</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Modal (Add/Edit) -->
+    <div id="modal-task" class="hide fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-[90%] max-w-md p-6 rounded-2xl transform scale-95 transition-transform duration-300 relative">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 class="text-xl font-bold text-white mb-5 flex items-center gap-2" id="task-modal-title"><i data-lucide="list-todo" class="text-blue-400"></i> Add New Task</h3>
+            <input type="hidden" id="task-edit-id">
+            <div class="space-y-4">
+                <div><label class="block text-xs text-textMuted mb-1">Task Title</label><input type="text" id="task-title" placeholder="e.g. Join our Telegram Group" class="input-dark"></div>
+                <div><label class="block text-xs text-textMuted mb-1">Task Link (URL)</label><input type="url" id="task-link" placeholder="https://t.me/yourchannel" class="input-dark"></div>
+                <div><label class="block text-xs text-textMuted mb-1">Description / Instructions</label><input type="text" id="task-desc" placeholder="Click to join and claim your reward" class="input-dark"></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-textMuted mb-1">Task Platform</label>
+                        <select id="task-cat" class="input-dark appearance-none">
+                            <option value="telegram">✈️ Telegram</option>
+                            <option value="youtube">▶️ YouTube</option>
+                            <option value="facebook">📘 Facebook</option>
+                            <option value="twitter">🐦 Twitter/X</option>
+                            <option value="browsing">🌐 Browsing</option>
+                            <option value="download">⬇️ App Download</option>
+                            <option value="other">✅ Other</option>
+                        </select>
+                    </div>
+                    <div><label class="block text-xs text-textMuted mb-1">Reward Amount (৳)</label><input type="number" id="task-reward" placeholder="e.g. 10" class="input-dark"></div>
+                </div>
+                <button onclick="window.submitTask()" class="w-full bg-blue-500 text-white font-bold py-3.5 rounded-xl mt-2 shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:opacity-90" id="btn-submit-task">Publish Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Method Modal (Add/Edit) -->
+    <div id="modal-payment" class="hide fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-[90%] max-w-md p-6 rounded-2xl transform scale-95 transition-transform duration-300 relative">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 class="text-xl font-bold text-white mb-5 flex items-center gap-2" id="pay-modal-title"><i data-lucide="credit-card" class="text-violet"></i> Add Payment Method</h3>
+            <input type="hidden" id="pay-edit-id">
+            <div class="space-y-4">
+                <div><label class="block text-xs text-textMuted mb-1">Method Name</label><input type="text" id="pay-name" placeholder="e.g. bKash / Binance" class="input-dark"></div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Transaction Type</label>
+                    <select id="pay-type" class="input-dark appearance-none">
+                        <option value="both">Both (Deposit & Withdraw)</option>
+                        <option value="deposit">Deposit Only</option>
+                        <option value="withdraw">Withdraw Only</option>
+                    </select>
+                </div>
+                <div><label class="block text-xs text-textMuted mb-1">Receive Number / Address</label><input type="text" id="pay-num" placeholder="01XXXXXXXXX" class="input-dark"></div>
+                <button onclick="window.submitPayment()" class="w-full bg-violet text-white font-bold py-3.5 rounded-xl mt-2 shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:opacity-90" id="btn-submit-payment">Save Method</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getDatabase, ref, get, set, push, onValue, update, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDEz88Sx7BdGOQ2ZHG_z_XBKntOhS3XJK8",
+            authDomain: "rewardsapp-395d0.firebaseapp.com",
+            databaseURL: "https://rewardsapp-395d0-default-rtdb.firebaseio.com",
+            projectId: "rewardsapp-395d0",
+            storageBucket: "rewardsapp-395d0.firebasestorage.app",
+            messagingSenderId: "709199854223",
+            appId: "1:709199854223:web:dbed4018e3cd7218530efa"
+        };
+        const SUPER_ADMIN_UID = "5e5kn6NcJZOwqBwHaQB1fDNgPDz1";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        lucide.createIcons();
+        const el = (id) => document.getElementById(id);
+        const show = (id) => el(id).classList.remove('hide');
+        const hide = (id) => el(id).classList.add('hide');
+
+        let cachedRobots = {}; let cachedTasks = {}; let cachedPayments = {}; let cachedUsers = {}; let cachedWallets = {};
+        let cachedDepositsData = null; let cachedWithdrawalsData = null;
+
+        window.showToast = (msg, type = 'success') => {
+            const t = el('toast'); el('toast-msg').innerText = msg;
+            const icon = el('toast-icon');
+            if(type === 'error') {
+                t.className = 'fixed top-6 right-6 z-[300] bg-danger/10 border border-danger text-danger px-6 py-4 rounded-xl shadow-xl transition-all duration-300 flex items-center gap-3';
+                icon.setAttribute('data-lucide', 'x-circle');
+            } else {
+                t.className = 'fixed top-6 right-6 z-[300] bg-card border border-gray-700 text-white px-6 py-4 rounded-xl shadow-xl transition-all duration-300 flex items-center gap-3';
+                icon.setAttribute('data-lucide', 'check-circle');
+                icon.classList.add('text-emerald');
+            }
+            lucide.createIcons();
+            t.classList.remove('opacity-0', 'translate-y-[-20px]');
+            setTimeout(() => t.classList.add('opacity-0', 'translate-y-[-20px]'), 3000);
+        }
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                const t = e.currentTarget; t.classList.add('active');
+                document.querySelectorAll('.admin-view').forEach(v => hide(v.id));
+                show(t.dataset.target);
+                el('page-title').innerText = t.querySelector('span').innerText;
+                el('sidebar').classList.add('-translate-x-full');
+                el('mobile-overlay').classList.add('hide');
+            });
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.uid === SUPER_ADMIN_UID) {
+                hide('view-login'); show('main-admin');
+                initData();
+            } else if (user) {
+                signOut(auth); window.showToast("Unauthorized Access Denied.", "error");
+            } else {
+                show('view-login'); hide('main-admin');
+            }
+        });
+
+        el('btn-login').onclick = async () => {
+            const btn = el('btn-login'); btn.innerText = "Verifying...";
+            try { 
+                await signInWithEmailAndPassword(auth, el('admin-email').value, el('admin-password').value); 
+                window.showToast("Access Granted");
+            } catch(e) { window.showToast(e.message, "error"); }
+            finally { btn.innerText = "Authorize Access"; }
+        };
+        
+        el('btn-logout').onclick = () => { if(confirm("Logout?")) signOut(auth); };
+
+        window.openModal = (id) => {
+            const m = el(id); show(id);
+            if(id === 'modal-robot' && !el('rob-edit-id').value) {
+                el('robot-modal-title').innerHTML = `<i data-lucide="bot" class="text-electric"></i> Add New Robot`;
+                el('btn-submit-robot').innerText = "Publish Robot";
+            }
+            if(id === 'modal-task' && !el('task-edit-id').value) {
+                el('task-modal-title').innerHTML = `<i data-lucide="list-todo" class="text-blue-400"></i> Add New Task`;
+                el('btn-submit-task').innerText = "Publish Task";
+            }
+            if(id === 'modal-payment' && !el('pay-edit-id').value) {
+                el('pay-modal-title').innerHTML = `<i data-lucide="credit-card" class="text-violet"></i> Add Payment Method`;
+                el('btn-submit-payment').innerText = "Save Method";
+            }
+            lucide.createIcons();
+            setTimeout(() => { m.classList.remove('opacity-0'); m.children[0].classList.replace('scale-95', 'scale-100'); }, 10);
+        };
+        
+        window.closeModals = () => {
+            ['modal-robot', 'modal-task', 'modal-payment'].forEach(id => {
+                const m = el(id); m.classList.add('opacity-0'); m.children[0].classList.replace('scale-100', 'scale-95');
+                setTimeout(() => { hide(id); m.querySelectorAll('input').forEach(i=>i.value=''); }, 300);
+            });
+        };
+
+        const getTaskIconData = (cat) => {
+            const map = {
+                'telegram': { icon: 'send', color: 'text-blue-400', bg: 'bg-blue-500/10', label: 'Telegram' },
+                'youtube': { icon: 'youtube', color: 'text-red-500', bg: 'bg-red-500/10', label: 'YouTube' },
+                'facebook': { icon: 'facebook', color: 'text-blue-600', bg: 'bg-blue-600/10', label: 'Facebook' },
+                'twitter': { icon: 'twitter', color: 'text-blue-400', bg: 'bg-blue-400/10', label: 'Twitter/X' },
+                'browsing': { icon: 'globe', color: 'text-emerald', bg: 'bg-emerald/10', label: 'Browsing' },
+                'download': { icon: 'download', color: 'text-violet', bg: 'bg-violet/10', label: 'Download' }
+            };
+            return map[cat] || { icon: 'check-square', color: 'text-gray-400', bg: 'bg-gray-500/10', label: 'Other' };
+        };
+
+        function initData() {
+            // Read Users List
+            onValue(ref(db, 'users'), s => {
+                if(s.exists()) cachedUsers = s.val();
+                el('stat-users').innerText = s.exists() ? Object.keys(cachedUsers).length : 0;
+                renderUsersTable();
+                if(cachedDepositsData) renderDeposits(); 
+                if(cachedWithdrawalsData) renderWithdrawals();
+            }, e => window.showToast("Rules Error: Needs root .read on /users", "error"));
+
+            // Read Wallets
+            onValue(ref(db, 'wallets'), s => {
+                if(s.exists()) cachedWallets = s.val();
+                renderUsersTable();
+            });
+            
+            // App Config
+            onValue(ref(db, 'appConfig/walletSettings'), s => {
+                if(s.exists()){ el('set-min-dep').value = s.val().minDeposit || 100; el('set-min-wit').value = s.val().minWithdraw || 100; }
+            });
+            onValue(ref(db, 'appConfig/rewardSettings'), s => {
+                if(s.exists()){ el('set-day7-reward').value = s.val().day7Reward || 10; el('set-daily-reward').value = s.val().checkinReward || 2; }
+            });
+
+            onValue(ref(db, 'appConfig/paymentMethods'), s => {
+                let html = ''; cachedPayments = {};
+                if(s.exists()) {
+                    s.forEach(c => {
+                        let m = c.val(); cachedPayments[c.key] = m;
+                        html += `<tr>
+                            <td class="font-bold text-white">${m.name}</td>
+                            <td class="uppercase text-[10px]"><span class="bg-violet/20 text-violet px-2 py-1 rounded">${m.type}</span></td>
+                            <td class="font-mono text-xs text-textMuted">${m.number || 'N/A'}</td>
+                            <td>
+                                <button onclick="window.editPayment('${c.key}')" class="text-electric bg-electric/10 px-3 py-1.5 rounded mr-2">Edit</button>
+                                <button onclick="window.delRecord('appConfig/paymentMethods/${c.key}')" class="text-danger bg-danger/10 px-3 py-1.5 rounded">Remove</button>
+                            </td>
+                        </tr>`;
+                    });
+                }
+                el('tb-payments').innerHTML = html || '<tr><td colspan="4" class="text-center text-textMuted py-4">No methods configured.</td></tr>';
+            });
+
+            // Deposits & Withdrawals
+            onValue(ref(db, 'depositRequests'), snap => { cachedDepositsData = snap; renderDeposits(); }, e => window.showToast("Needs root .read on /depositRequests", "error"));
+            onValue(ref(db, 'withdrawalRequests'), snap => { cachedWithdrawalsData = snap; renderWithdrawals(); }, e => window.showToast("Needs root .read on /withdrawalRequests", "error"));
+
+            // Robots Catalog
+            onValue(ref(db, 'robotCatalog'), snap => {
+                let html = ''; cachedRobots = {};
+                if(snap.exists()) snap.forEach(r => {
+                    let v = r.val(); cachedRobots[r.key] = v;
+                    html += `<tr>
+                        <td class="font-bold text-white flex items-center gap-2"><div class="w-6 h-6 rounded bg-electric/10 flex items-center justify-center"><i data-lucide="bot" class="w-4 h-4 text-electric"></i></div> ${v.name}</td>
+                        <td class="font-bold text-emerald">৳${v.price}</td>
+                        <td class="text-xs">${v.duration} Days</td>
+                        <td class="text-xs text-electric">৳${v.rewardRate} / hr</td>
+                        <td>
+                            <button onclick="window.editRobot('${r.key}')" class="text-electric bg-electric/10 px-3 py-1.5 rounded mr-2">Edit</button>
+                            <button onclick="window.delRecord('robotCatalog/${r.key}')" class="text-danger bg-danger/10 px-3 py-1.5 rounded">Delete</button>
+                        </td>
+                    </tr>`;
+                });
+                el('tb-catalog').innerHTML = html || '<tr><td colspan="5" class="text-center text-textMuted py-4">No robots available.</td></tr>';
+                lucide.createIcons();
+            });
+
+            // Tasks Management
+            onValue(ref(db, 'tasks'), snap => {
+                let html = ''; cachedTasks = {};
+                if(snap.exists()) snap.forEach(t => {
+                    let v = t.val(); cachedTasks[t.key] = v;
+                    const catStyle = getTaskIconData(v.category);
+                    
+                    html += `<tr>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg ${catStyle.bg} flex items-center justify-center shrink-0">
+                                    <i data-lucide="${catStyle.icon}" class="w-4 h-4 ${catStyle.color}"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-white text-sm">${v.title}</div>
+                                    <div class="text-[10px] text-textMuted max-w-[180px] truncate"><a href="${v.link}" target="_blank" class="hover:text-electric transition">${v.link || 'No link'}</a></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="text-[10px] px-2 py-1 rounded border font-bold uppercase tracking-wider border-white/10 ${catStyle.color}">${catStyle.label}</span></td>
+                        <td class="font-bold text-gold">৳${v.reward}</td>
+                        <td>
+                            <button onclick="window.editTask('${t.key}')" class="text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded mr-2">Edit</button>
+                            <button onclick="window.delRecord('tasks/${t.key}')" class="text-danger bg-danger/10 px-3 py-1.5 rounded">Delete</button>
+                        </td>
+                    </tr>`;
+                });
+                el('tb-tasks').innerHTML = html || '<tr><td colspan="4" class="text-center text-textMuted py-4">No tasks available.</td></tr>';
+                lucide.createIcons();
+            }, e => console.warn("Make sure tasks has .read and .write rules"));
+        }
+
+        window.renderDeposits = () => {
+            if(!cachedDepositsData) return; let p = 0; let html = '';
+            if(cachedDepositsData.exists()) {
+                cachedDepositsData.forEach(user => {
+                    const uid = user.key; const uName = cachedUsers[uid]?.profile?.name || 'Unknown User'; const uEmail = cachedUsers[uid]?.profile?.email || uid.substring(0,8);
+                    user.forEach(req => {
+                        let r = req.val(); if(r.status === 'pending') p++;
+                        let actionHtml = r.status === 'pending' 
+                            ? `<button onclick="window.processFin('deposit','${uid}','${req.key}',${r.amount},'approved')" class="text-emerald bg-emerald/10 px-3 py-1 rounded text-xs mr-2">Approve</button>
+                               <button onclick="window.processFin('deposit','${uid}','${req.key}',${r.amount},'rejected')" class="text-danger bg-danger/10 px-3 py-1 rounded text-xs">Reject</button>`
+                            : `<span class="text-xs text-textMuted uppercase">${r.status}</span>`;
+
+                        html += `<tr>
+                            <td><div class="font-bold text-sm text-white">${uName}</div><div class="text-[10px] text-electric">${uEmail}</div></td>
+                            <td class="uppercase text-xs font-bold">${r.paymentMethod}</td><td class="font-mono text-xs">${r.paymentReference}</td>
+                            <td class="font-extrabold text-emerald">৳${r.amount.toFixed(2)}</td>
+                            <td><span class="text-[10px] px-2 py-1 rounded uppercase font-bold ${r.status==='pending'?'bg-gold/20 text-gold':(r.status==='approved'?'bg-emerald/20 text-emerald':'bg-danger/20 text-danger')}">${r.status}</span></td>
+                            <td>${actionHtml}</td>
+                        </tr>`;
+                    });
+                });
+            }
+            el('stat-deposits').innerText = p; el('badge-dep').innerText = p;
+            el('tb-deposits').innerHTML = html || '<tr><td colspan="6" class="text-center text-textMuted py-4">No deposit requests.</td></tr>';
+        };
+
+        window.renderWithdrawals = () => {
+            if(!cachedWithdrawalsData) return; let p = 0; let html = '';
+            if(cachedWithdrawalsData.exists()) {
+                cachedWithdrawalsData.forEach(user => {
+                    const uid = user.key; const uName = cachedUsers[uid]?.profile?.name || 'Unknown User'; const uEmail = cachedUsers[uid]?.profile?.email || uid.substring(0,8);
+                    user.forEach(req => {
+                        let r = req.val(); if(r.status === 'pending') p++;
+                        let actionHtml = r.status === 'pending' 
+                            ? `<button onclick="window.processFin('withdrawal','${uid}','${req.key}',${r.amount},'approved')" class="text-emerald bg-emerald/10 px-3 py-1 rounded text-xs mr-2">Mark Paid</button>
+                               <button onclick="window.processFin('withdrawal','${uid}','${req.key}',${r.amount},'rejected')" class="text-danger bg-danger/10 px-3 py-1 rounded text-xs">Reject (Refund)</button>`
+                            : `<span class="text-xs text-textMuted uppercase">${r.status}</span>`;
+
+                        html += `<tr>
+                            <td><div class="font-bold text-sm text-white">${uName}</div><div class="text-[10px] text-electric">${uEmail}</div></td>
+                            <td class="uppercase text-xs font-bold">${r.paymentMethod}</td><td class="font-mono text-xs">${r.destinationDetails}</td>
+                            <td class="font-extrabold text-danger">৳${r.amount.toFixed(2)}</td>
+                            <td><span class="text-[10px] px-2 py-1 rounded uppercase font-bold ${r.status==='pending'?'bg-gold/20 text-gold':(r.status==='approved'?'bg-emerald/20 text-emerald':'bg-danger/20 text-danger')}">${r.status}</span></td>
+                            <td>${actionHtml}</td>
+                        </tr>`;
+                    });
+                });
+            }
+            el('stat-withdrawals').innerText = p; el('badge-wit').innerText = p;
+            el('tb-withdrawals').innerHTML = html || '<tr><td colspan="6" class="text-center text-textMuted py-4">No withdrawal requests.</td></tr>';
+        };
+
+        function renderUsersTable() {
+            let html = '';
+            Object.keys(cachedUsers).forEach(uid => {
+                const u = cachedUsers[uid].profile || {};
+                const w = cachedWallets[uid] || { cachedBalance: 0 };
+                html += `<tr>
+                    <td class="text-[10px] text-electric font-mono">${uid.substring(0,8)}...</td>
+                    <td><div class="font-bold text-sm text-white">${u.name || 'User'}</div><div class="text-[10px] text-textMuted">${u.email || 'N/A'}</div></td>
+                    <td class="font-bold text-emerald">৳${(w.cachedBalance || 0).toFixed(2)}</td>
+                    <td><button onclick="window.deleteUser('${uid}')" class="text-danger bg-danger/10 px-3 py-1.5 rounded text-xs">Delete User</button></td>
+                </tr>`;
+            });
+            el('tb-users').innerHTML = html || '<tr><td colspan="4" class="text-center text-textMuted py-4">No users found.</td></tr>';
+        }
+
+        window.saveSettings = async () => {
+            try {
+                await update(ref(db, 'appConfig/walletSettings'), { minDeposit: parseInt(el('set-min-dep').value)||100, minWithdraw: parseInt(el('set-min-wit').value)||100 });
+                await update(ref(db, 'appConfig/rewardSettings'), { day7Reward: parseInt(el('set-day7-reward').value)||10, checkinReward: parseInt(el('set-daily-reward').value)||2 });
+                window.showToast("Settings Updated");
+            } catch(e) { window.showToast("Update Failed", "error"); }
+        };
+
+        window.editRobot = (id) => {
+            const r = cachedRobots[id]; if(!r) return;
+            el('rob-edit-id').value = id; el('rob-name').value = r.name; el('rob-price').value = r.price; el('rob-dur').value = r.duration; el('rob-rate').value = r.rewardRate;
+            el('robot-modal-title').innerHTML = `<i data-lucide="edit" class="text-electric"></i> Edit Robot`; el('btn-submit-robot').innerText = "Update Robot";
+            window.openModal('modal-robot');
+        };
+
+        window.editTask = (id) => {
+            const t = cachedTasks[id]; if(!t) return;
+            el('task-edit-id').value = id; 
+            el('task-title').value = t.title; 
+            el('task-link').value = t.link || ''; 
+            el('task-desc').value = t.description; 
+            el('task-cat').value = t.category || 'other'; 
+            el('task-reward').value = t.reward;
+            el('task-modal-title').innerHTML = `<i data-lucide="edit" class="text-blue-400"></i> Edit Task`; el('btn-submit-task').innerText = "Update Task";
+            window.openModal('modal-task');
+        };
+
+        window.editPayment = (id) => {
+            const p = cachedPayments[id]; if(!p) return;
+            el('pay-edit-id').value = id; el('pay-name').value = p.name; el('pay-type').value = p.type; el('pay-num').value = p.number || '';
+            el('pay-modal-title').innerHTML = `<i data-lucide="edit" class="text-violet"></i> Edit Payment Method`; el('btn-submit-payment').innerText = "Update Method";
+            window.openModal('modal-payment');
+        };
+
+        window.submitRobot = async () => {
+            const id = el('rob-edit-id').value; const name = el('rob-name').value;
+            const price = parseFloat(el('rob-price').value); const dur = parseInt(el('rob-dur').value); const rate = parseFloat(el('rob-rate').value);
+            if(!name || isNaN(price)) return window.showToast("Fill valid fields.", "error");
+
+            try {
+                if(id) await update(ref(db, `robotCatalog/${id}`), { name, price, duration: dur, rewardRate: rate });
+                else await push(ref(db, 'robotCatalog'), { name, price, duration: dur, rewardRate: rate, enabled: true });
+                window.showToast("Robot saved."); window.closeModals();
+            } catch(e) { window.showToast("Error saving.", "error"); }
+        };
+
+        window.submitTask = async () => {
+            const id = el('task-edit-id').value; 
+            const title = el('task-title').value; 
+            const link = el('task-link').value; 
+            const description = el('task-desc').value;
+            const category = el('task-cat').value; 
+            const reward = parseFloat(el('task-reward').value);
+            
+            if(!title || isNaN(reward)) return window.showToast("Task title & reward are required.", "error");
+
+            const payload = { title, link, description, category, reward, status: 'active', createdAt: serverTimestamp() };
+            try {
+                if(id) await update(ref(db, `tasks/${id}`), payload);
+                else await push(ref(db, 'tasks'), payload);
+                window.showToast("Task published successfully."); window.closeModals();
+            } catch(e) { window.showToast("Error saving task.", "error"); }
+        };
+
+        window.submitPayment = async () => {
+            const id = el('pay-edit-id').value; const name = el('pay-name').value; const type = el('pay-type').value; const num = el('pay-num').value;
+            if(!name) return window.showToast("Method Name is required.", "error");
+
+            try {
+                if(id) await update(ref(db, `appConfig/paymentMethods/${id}`), { name, type, number: num });
+                else await push(ref(db, 'appConfig/paymentMethods'), { name, type, number: num });
+                window.showToast("Payment Method Saved."); window.closeModals();
+            } catch(e) { window.showToast("Error saving method.", "error"); }
+        };
+
+        window.delRecord = async (path) => {
+            if(confirm("Delete this record permanently?")) {
+                try { await remove(ref(db, path)); window.showToast("Record Deleted"); } catch(e) { window.showToast("Deletion failed.", "error"); }
+            }
+        };
+
+        window.deleteUser = async (uid) => {
+            if(confirm("WARNING: Delete this user and their wallet forever?")) {
+                try { 
+                    await remove(ref(db, `users/${uid}`)); await remove(ref(db, `wallets/${uid}`)); await remove(ref(db, `userRobots/${uid}`));
+                    window.showToast("User removed."); 
+                } catch(e) { window.showToast("Failed to delete user.", "error"); }
+            }
+        };
+
+        window.processFin = async (type, uid, reqId, amount, status) => {
+            const actionText = status === 'approved' ? 'Approve' : (type === 'withdrawal' ? 'Reject & Refund' : 'Reject');
+            if(!confirm(`Are you sure you want to ${actionText} this request?`)) return;
+            
+            const reqPath = type === 'deposit' ? `depositRequests/${uid}/${reqId}` : `withdrawalRequests/${uid}/${reqId}`;
+            
+            try {
+                await update(ref(db, reqPath), { status });
+                const wRef = ref(db, `wallets/${uid}`);
+                const snap = await get(wRef);
+                let bal = snap.exists() ? (snap.val().cachedBalance || 0) : 0;
+                
+                if(type === 'deposit' && status === 'approved') {
+                    bal += amount; await update(wRef, { cachedBalance: bal });
+                    await push(ref(db, `walletTransactions/${uid}`), { type: 'deposit', amount, status: 'successful', createdAt: serverTimestamp() });
+                } 
+                else if(type === 'withdrawal' && status === 'rejected') {
+                    bal += amount; await update(wRef, { cachedBalance: bal });
+                    await push(ref(db, `walletTransactions/${uid}`), { type: 'refund', amount, status: 'successful', createdAt: serverTimestamp() });
+                }
+                else if (type === 'withdrawal' && status === 'approved') {
+                    await push(ref(db, `walletTransactions/${uid}`), { type: 'withdrawal', amount, status: 'successful', createdAt: serverTimestamp() });
+                }
+
+                window.showToast(`Request successfully ${status}.`);
+            } catch(e) { window.showToast("Operation failed: " + e.message, "error"); }
+        };
+
+    </script>
+</body>
+</html>
