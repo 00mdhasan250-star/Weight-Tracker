@@ -174,13 +174,13 @@
                 <!-- DEPOSITS -->
                 <div id="v-deposits" class="admin-view hide flex flex-col gap-6">
                     <div><h3 class="font-bold text-white text-lg">Deposit Requests</h3><p class="text-xs text-textMuted">Approve deposits to add funds to user wallets.</p></div>
-                    <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>User Details</th><th>Method</th><th>TrxID / Ref</th><th>Amount (৳)</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb-deposits"></tbody></table></div>
+                    <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>User Details</th><th>Method</th><th>TrxID / Proof</th><th>Amount (৳)</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb-deposits"></tbody></table></div>
                 </div>
 
                 <!-- WITHDRAWALS -->
                 <div id="v-withdrawals" class="admin-view hide flex flex-col gap-6">
-                    <div><h3 class="font-bold text-white text-lg">Withdrawal Requests</h3><p class="text-xs text-textMuted">Review payouts. Rejecting will refund the wallet automatically.</p></div>
-                    <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>User Details</th><th>Method</th><th>Destination Acc</th><th>Amount (৳)</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb-withdrawals"></tbody></table></div>
+                    <div><h3 class="font-bold text-white text-lg">Withdrawal Requests</h3><p class="text-xs text-textMuted">Review payouts. Rejecting refunds the wallet automatically.</p></div>
+                    <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>User Details</th><th>Method</th><th>Destination</th><th>Amount (৳)</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb-withdrawals"></tbody></table></div>
                 </div>
 
                 <!-- SUPPORT INBOX -->
@@ -198,7 +198,7 @@
                     <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>Method Name</th><th>Type</th><th>Number / Details</th><th>Actions</th></tr></thead><tbody id="tb-payments"></tbody></table></div>
                 </div>
 
-                <!-- SETTINGS (With Referral Bonus & Hourly Commission %) -->
+                <!-- SETTINGS -->
                 <div id="v-settings" class="admin-view hide flex flex-col gap-6">
                     <div class="admin-card p-6 max-w-2xl border border-white/5">
                         <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4"><div class="w-10 h-10 rounded-lg bg-electric/10 flex items-center justify-center"><i data-lucide="sliders" class="w-5 h-5 text-electric"></i></div><div><h3 class="text-lg font-bold text-white">Financial Limits, Check-In & Referral Rewards</h3><p class="text-xs text-textMuted">Updates reflect on the User Panel instantly.</p></div></div>
@@ -298,6 +298,15 @@
         </div>
     </div>
 
+    <!-- Proof Screenshot Viewer Modal -->
+    <div id="modal-proof-view" class="hide fixed inset-0 z-[250] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div class="glass-panel max-w-md w-full p-5 rounded-2xl relative flex flex-col items-center">
+            <button onclick="document.getElementById('modal-proof-view').classList.add('hide')" class="absolute top-3 right-3 text-white bg-white/10 p-1.5 rounded-full hover:bg-white/20"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h4 class="text-sm font-bold text-white mb-3">Submitted Deposit Screenshot Proof</h4>
+            <img id="proof-full-img" src="" class="max-h-[70vh] w-auto rounded-xl border border-white/15 shadow-2xl object-contain" alt="Screenshot Proof">
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -325,6 +334,15 @@
 
         let cachedRobots = {}; let cachedTasks = {}; let cachedPayments = {}; let cachedUsers = {}; let cachedWallets = {};
         let cachedDepositsData = null; let cachedWithdrawalsData = null;
+        let proofImagesMap = {};
+
+        window.viewProofModal = (reqKey) => {
+            const imgData = proofImagesMap[reqKey];
+            if(!imgData) return window.showToast("No screenshot uploaded for this request.", "error");
+            el('proof-full-img').src = imgData;
+            show('modal-proof-view');
+            lucide.createIcons();
+        };
 
         const socialPlatforms = [
             { id: 'facebook', name: 'Facebook', icon: 'fa-brands fa-facebook-f', color: '#1877F2' },
@@ -533,8 +551,10 @@
                     const uid = user.key; const uName = cachedUsers[uid]?.profile?.name || 'Unknown User'; const uEmail = cachedUsers[uid]?.profile?.email || uid.substring(0,8);
                     user.forEach(req => {
                         let r = req.val(); if(r.status === 'pending') p++;
+                        if(r.proofObbData) proofImagesMap[req.key] = r.proofObbData;
+                        const proofBtn = r.proofObbData ? `<button onclick="window.viewProofModal('${req.key}')" class="ml-2 text-[10px] bg-electric/15 text-electric px-2 py-0.5 rounded border border-electric/30 hover:bg-electric/25">View Proof</button>` : '';
                         let actionHtml = r.status === 'pending' ? `<button onclick="window.processFin('deposit','${uid}','${req.key}',${r.amount},'approved')" class="text-emerald bg-emerald/10 px-3 py-1 rounded text-xs mr-2">Approve</button><button onclick="window.processFin('deposit','${uid}','${req.key}',${r.amount},'rejected')" class="text-danger bg-danger/10 px-3 py-1 rounded text-xs">Reject</button>` : `<span class="text-xs text-textMuted uppercase">${r.status}</span>`;
-                        html += `<tr><td><div class="font-bold text-sm text-white">${uName}</div><div class="text-[10px] text-electric">${uEmail}</div></td><td class="uppercase text-xs font-bold">${r.paymentMethod}</td><td class="font-mono text-xs">${r.paymentReference}</td><td class="font-extrabold text-emerald">৳${r.amount.toFixed(2)}</td><td><span class="text-[10px] px-2 py-1 rounded uppercase font-bold ${r.status==='pending'?'bg-gold/20 text-gold':(r.status==='approved'?'bg-emerald/20 text-emerald':'bg-danger/20 text-danger')}">${r.status}</span></td><td>${actionHtml}</td></tr>`;
+                        html += `<tr><td><div class="font-bold text-sm text-white">${uName}</div><div class="text-[10px] text-electric">${uEmail}</div></td><td class="uppercase text-xs font-bold">${r.paymentMethod}</td><td class="font-mono text-xs">${r.paymentReference} ${proofBtn}</td><td class="font-extrabold text-emerald">৳${Number(r.amount || 0).toFixed(2)}</td><td><span class="text-[10px] px-2 py-1 rounded uppercase font-bold ${r.status==='pending'?'bg-gold/20 text-gold':(r.status==='approved'?'bg-emerald/20 text-emerald':'bg-danger/20 text-danger')}">${r.status}</span></td><td>${actionHtml}</td></tr>`;
                     });
                 });
             }
@@ -549,7 +569,7 @@
                     user.forEach(req => {
                         let r = req.val(); if(r.status === 'pending') p++;
                         let actionHtml = r.status === 'pending' ? `<button onclick="window.processFin('withdrawal','${uid}','${req.key}',${r.amount},'approved')" class="text-emerald bg-emerald/10 px-3 py-1 rounded text-xs mr-2">Mark Paid</button><button onclick="window.processFin('withdrawal','${uid}','${req.key}',${r.amount},'rejected')" class="text-danger bg-danger/10 px-3 py-1 rounded text-xs">Reject (Refund)</button>` : `<span class="text-xs text-textMuted uppercase">${r.status}</span>`;
-                        html += `<tr><td><div class="font-bold text-sm text-white">${uName}</div><div class="text-[10px] text-electric">${uEmail}</div></td><td class="uppercase text-xs font-bold">${r.paymentMethod}</td><td class="font-mono text-xs">${r.destinationDetails}</td><td class="font-extrabold text-danger">৳${r.amount.toFixed(2)}</td><td><span class="text-[10px] px-2 py-1 rounded uppercase font-bold ${r.status==='pending'?'bg-gold/20 text-gold':(r.status==='approved'?'bg-emerald/20 text-emerald':'bg-danger/20 text-danger')}">${r.status}</span></td><td>${actionHtml}</td></tr>`;
+                        html += `<tr><td><div class="font-bold text-sm text-white">${uName}</div><div class="text-[10px] text-electric">${uEmail}</div></td><td class="uppercase text-xs font-bold">${r.paymentMethod}</td><td class="font-mono text-xs">${r.destinationDetails}</td><td class="font-extrabold text-danger">৳${Number(r.amount || 0).toFixed(2)}</td><td><span class="text-[10px] px-2 py-1 rounded uppercase font-bold ${r.status==='pending'?'bg-gold/20 text-gold':(r.status==='approved'?'bg-emerald/20 text-emerald':'bg-danger/20 text-danger')}">${r.status}</span></td><td>${actionHtml}</td></tr>`;
                     });
                 });
             }
