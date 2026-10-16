@@ -88,8 +88,58 @@
         .checkin-day.today { background: rgba(0, 240, 255, 0.1); border-color: #00f0ff; color: #00f0ff; box-shadow: 0 0 10px rgba(0,240,255,0.3); cursor: pointer; }
         .checkin-day-7 { grid-column: span 2; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(251, 191, 36, 0.2)); border-color: #fbbf24; color: #fbbf24; }
 
-        .robot-marketplace-card { background: linear-gradient(145deg, rgba(17, 25, 43, 0.9), rgba(10, 17, 34, 0.95)); border: 1px solid rgba(0, 240, 255, 0.18); border-radius: 1.25rem; position: relative; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,0.6); display: flex; flex-direction: column; transition: all 0.3s ease; }
-        .robot-marketplace-card:hover { border-color: rgba(0, 240, 255, 0.4); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0, 240, 255, 0.12); }
+        /* Classic Premium Robot Card Styling (Restored & Perfected for Mobile) */
+        .robot-card-bg {
+            background: linear-gradient(155deg, rgba(17, 25, 43, 0.96) 0%, rgba(10, 17, 34, 0.98) 55%, rgba(0, 240, 255, 0.08) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 1.15rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .robot-card-bg::after {
+            content: '';
+            position: absolute;
+            top: -35px;
+            right: -35px;
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.22) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .robot-card-bg.free-card-bg {
+            background: linear-gradient(155deg, rgba(17, 25, 43, 0.96) 0%, rgba(10, 17, 34, 0.98) 55%, rgba(251, 191, 36, 0.1) 100%);
+            border-color: rgba(251, 191, 36, 0.35);
+        }
+        .robot-card-bg.free-card-bg::after {
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, transparent 70%);
+        }
+        .robot-card-bg:hover {
+            border-color: rgba(0, 240, 255, 0.55);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0, 240, 255, 0.16);
+        }
+        .robot-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(139, 92, 246, 0.18));
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.65rem auto;
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.22), inset 0 0 10px rgba(0, 240, 255, 0.12);
+        }
+        .robot-icon-box.free-icon-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.22), rgba(0, 255, 135, 0.14));
+            border-color: rgba(251, 191, 36, 0.45);
+            box-shadow: 0 0 18px rgba(251, 191, 36, 0.25), inset 0 0 10px rgba(251, 191, 36, 0.12);
+        }
         
         #toast { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); }
         #toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
@@ -229,13 +279,18 @@
                     </div>
                 </div>
 
-                <!-- BUY ROBOTS (Dynamic Grid + Free Robot 10-Ad Unlock) -->
-                <div id="tab-buy" class="view-section hide px-5 py-4 space-y-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="market">Marketplace</h2>
-                        <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-electric/10 text-electric border border-electric/20">AI Miners</span>
+                <!-- BUY ROBOTS (Responsive 2-Column Aligned Grid) -->
+                <div id="tab-buy" class="view-section hide px-4 py-4 space-y-4">
+                    <div class="flex items-center justify-between px-1">
+                        <div>
+                            <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="market">Marketplace</h2>
+                            <p class="text-[11px] text-textMuted" data-i18n="future_ai">The future of AI automated mining.</p>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-electric/10 text-electric border border-electric/30 flex items-center gap-1">
+                            <i data-lucide="bot" class="w-3.5 h-3.5"></i> AI Bots
+                        </span>
                     </div>
-                    <div id="marketplace-container" class="grid grid-cols-2 gap-3.5">
+                    <div id="marketplace-container" class="grid grid-cols-2 gap-3 items-stretch">
                         <div class="col-span-2 p-10 text-center text-sm text-textMuted glass-card" data-i18n="loading">Loading live catalog...</div>
                     </div>
                 </div>
@@ -633,7 +688,7 @@
         let ownedRobotIds = [];
         let allRobotsMap = {};
         let allTasksMap = {};
-        let freeRobotAdProgress = {}; // Tracks 0/10 to 10/10 ad progress per free robot
+        let freeRobotAdProgress = {};
         let appSettings = { minDeposit: 100, minWithdraw: 100, day7Reward: 10, checkinReward: 2, signupBonus: 50, refCommission: 5 };
         let paymentMethodsData = [];
         let activeInterval = null;
@@ -667,7 +722,6 @@
             }
         }
 
-        // Trigger Monetag Rewarded Interstitial or Rewarded Popup before granting reward
         async function triggerMonetagAd(format = 'interstitial') {
             if (isAdPlaying) return false;
             isAdPlaying = true;
@@ -679,7 +733,6 @@
                         try {
                             await window.show_10605119();
                         } catch (interstitialErr) {
-                            // Fallback to Rewarded Popup if interstitial fails to fill
                             await window.show_10605119('pop');
                         }
                     }
@@ -730,7 +783,7 @@
         window.currentLangIndex = 0; 
         window.currentLang = window.languages[window.currentLangIndex];
         window.currentCurrency = 'BDT'; 
-        const RATES = { BDT: 1, INR: 0.7, USDT: 1/120 }; // Base logic is BDT
+        const RATES = { BDT: 1, INR: 0.7, USDT: 1/120 };
 
         const translations = {
             en: {
@@ -742,7 +795,7 @@
                 wallet: "Wallet", avail_bal: "Available Balance", recent_tx: "Recent Transactions", rob_own: "Robots Owned",
                 avail_spin: "Available Spins", sec_rules: "Security & Platform Rules", help_sup: "Help & Support Inbox", logout: "Secure Logout",
                 nav_home: "Home", nav_buy: "Buy", nav_min: "Miners", nav_task: "Tasks", nav_wal: "Wallet",
-                dur: "Duration", days: "Days", rate: "Hourly Rate", hr: "hr", buy_btn: "BUY NOW", mining: "MINING",
+                dur: "Duration:", days: "Days", rate: "Hourly Rate", hr: "hr", buy_btn: "BUY NOW", mining: "MINING",
                 stopped: "STOPPED", act_btn: "Start Mining (3H)", collect: "Claim", no_rob: "You don't own any robots yet.",
                 no_market: "No robots available.", no_task: "No tasks right now.", no_tx: "No transactions yet.",
                 dep_inst: "Deposit Instructions", wit_funds: "Withdraw Funds", sec_title: "Security & Platform Guide",
@@ -776,7 +829,7 @@
                 sec_verified_tag: "100% Automated AI Cloud Mining Ecosystem",
                 sec_intro_desc: "NEXORA MINING is an advanced cloud-based AI robot mining platform. Our system allows users to rent automated mining robots that generate hourly rewards in BDT/USDT/INR, complete social media tasks, spin the lucky wheel, and build a passive income network through referrals.",
                 new_support_msg: "New Message to Admin", my_support_inbox: "My Support Inbox History", no_msg_yet: "No support messages sent yet.",
-                free_lbl: "FREE", watch_ad_btn: "Watch Ad", ad_progress_lbl: "Ad Unlock Progress",
+                free_lbl: "FREE", watch_ad_btn: "Watch Ad", ad_progress_lbl: "Ad Unlock",
                 ad_skip_err: "Please watch the full ad to complete this action!", ad_block_err: "Ad failed to load. Please disable AdBlocker and try again."
             },
             bn: {
@@ -865,11 +918,11 @@
                 ref_step_1: "ऊपर दिया गया अपना यूनिक रेफरल कोड कॉपी करें और दोस्तों के साथ शेयर करें।",
                 ref_step_2: "जब आपका दोस्त आपके वैध कोड से रजिस्टर करता है, तो उसे तुरंत वॉलेट में साइनअप बोनस मिलता है।",
                 ref_step_3: "जब भी आपका रेफर किया गया दोस्त रोबोट खरीदता है और माइनिंग कलेक्ट करता है, तो आपको स्वचालित रूप से कमीशन मिलता है!",
-                sec_verified_tag: "100% स्वचालित एआई क्लाউड माइनिंग",
+                sec_verified_tag: "100% स्वचालित एआई क्लाउड माइनिंग",
                 sec_intro_desc: "नेक्सोरा माइनिंग एक उन्नत एआई रोबोट माइनिंग प्लेटफॉर्म है जहां आप रोबोट किराए पर लेकर, टास्क पूरे करके और रेफरल के जरिए कमाई कर सकते हैं।",
                 new_support_msg: "एडमिन को नया संदेश", my_support_inbox: "मेरे भेजे गए संदेश", no_msg_yet: "अभी तक कोई संदेश नहीं भेजा गया।",
                 free_lbl: "फ्री", watch_ad_btn: "विज्ञापन देखें", ad_progress_lbl: "विज्ञापन प्रगति",
-                ad_skip_err: "इनाम पाने के लिए कृपया पूरा विज्ञापन देखें!", ad_block_err: "विज्ञापन लोड नहीं हुआ। कृपया एडब्लॉकर बंद करें।"
+                ad_skip_err: "इनाम पाने के लिए कृपया पूरा विज्ञापन देखें!", ad_block_err: "विज्ञापन लोড नहीं हुआ। कृपया एडब्लॉकर बंद करें।"
             }
         };
         const t = (key) => translations[window.currentLang][key] || key;
@@ -966,7 +1019,7 @@
                 const lastTab = localStorage.getItem('nexora_active_tab') || 'home';
                 window.switchTab(lastTab); 
                 initLiveListeners(user.uid);
-                initMonetagInApp(); // Start Monetag In-App Interstitial session
+                initMonetagInApp();
             } else {
                 currentUser = null; show('screen-auth'); hide('screen-main'); if(activeInterval) clearInterval(activeInterval);
             }
@@ -1125,11 +1178,10 @@
                         if(rawCatalog[key]) tempMap[key] = rawCatalog[key];
                     }
                 }
-                // Ensure a Default Free Starter Bot is always available if no free bot exists in catalog
                 const hasFreeBot = Object.values(tempMap).some(bot => Number(bot.price || 0) === 0);
                 if(!hasFreeBot) {
                     tempMap['starter_free_bot'] = {
-                        name: 'Starter Bot (Free)',
+                        name: 'Starter Bot',
                         price: 0,
                         duration: 3,
                         rewardRate: 5,
@@ -1280,11 +1332,10 @@
             el('home-total-earned').innerText = formatMoney(userWallet.totalEarned);
         }
 
-        // Dynamic Marketplace Render (Supports 10-Ad Free Robot Unlock + Paid Robots)
+        // Restored & Mobile-Responsive Premium Marketplace Card Design
         function renderMarketplace() {
             let html = ''; const sym = getSym();
             const keys = Object.keys(allRobotsMap);
-            // Put free robot at the very beginning
             keys.sort((a, b) => Number(allRobotsMap[a]?.price || 0) - Number(allRobotsMap[b]?.price || 0));
 
             keys.forEach(key => {
@@ -1297,67 +1348,71 @@
 
                     let btnHtml = '';
                     let extraAdBarHtml = '';
-                    let priceDisplayHtml = '';
+                    let priceBadgeHtml = '';
 
                     if (isFreeBot) {
                         const adsWatched = Number(freeRobotAdProgress[key] || 0);
                         const pct = Math.min(100, (adsWatched / 10) * 100);
-                        priceDisplayHtml = `<span class="text-emerald font-extrabold text-xs uppercase px-2 py-0.5 rounded bg-emerald/15 border border-emerald/30">${t('free_lbl')} (10 Ads)</span>`;
+                        priceBadgeHtml = `<div class="font-extrabold text-gold text-sm tracking-tight drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">${t('free_lbl')}</div>`;
                         
                         if (!isOwned) {
                             extraAdBarHtml = `
-                            <div class="mb-2.5">
-                                <div class="flex justify-between text-[9px] text-textMuted font-bold mb-1">
-                                    <span>${t('ad_progress_lbl')}</span>
+                            <div class="w-full mb-2.5 bg-navy/90 p-2 rounded-lg border border-gold/25">
+                                <div class="flex justify-between items-center text-[9px] font-bold mb-1">
+                                    <span class="text-textMuted uppercase">${t('ad_progress_lbl')}</span>
                                     <span class="text-gold">${adsWatched}/10 Ads</span>
                                 </div>
-                                <div class="w-full bg-navy h-1.5 rounded-full overflow-hidden border border-white/10">
+                                <div class="w-full bg-black/60 h-1.5 rounded-full overflow-hidden">
                                     <div class="bg-gradient-to-r from-gold to-emerald h-full transition-all duration-300" style="width:${pct}%"></div>
                                 </div>
                             </div>`;
                         }
 
                         btnHtml = isOwned
-                            ? `<button disabled class="w-full bg-white/5 border border-white/10 text-textMuted text-xs font-bold py-2.5 rounded-xl cursor-not-allowed shadow-inner uppercase tracking-wider">${t('owned_btn')}</button>`
-                            : `<button onclick="window.watchAdForFreeRobot('${key}', '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-gradient-to-r from-gold to-emerald text-navy text-xs font-extrabold py-2.5 rounded-xl hover:opacity-95 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1.5"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> ${t('watch_ad_btn')} (${adsWatched}/10)</button>`;
+                            ? `<button disabled class="w-full bg-gray-800/80 border border-white/10 text-textMuted text-[11px] font-extrabold py-2.5 rounded-lg cursor-not-allowed uppercase tracking-wider">${t('owned_btn')}</button>`
+                            : `<button onclick="window.watchAdForFreeRobot('${key}', '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-gradient-to-r from-gold to-emerald text-navy text-[11px] font-extrabold py-2.5 rounded-lg hover:opacity-95 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> ${t('watch_ad_btn')} (${adsWatched}/10)</button>`;
                     } else {
-                        priceDisplayHtml = `
-                        <div class="inline-flex items-baseline gap-0.5 font-extrabold text-white text-sm tracking-tight">
-                            <span class="text-electric text-xs font-bold">${sym}</span><span>${formatMoney(priceNum)}</span>
-                        </div>`;
+                        priceBadgeHtml = `<div class="font-extrabold text-white text-sm tracking-tight drop-shadow-[0_0_8px_rgba(0,240,255,0.4)]"><span class="text-electric text-xs mr-0.5">${sym}</span>${formatMoney(priceNum)}</div>`;
 
                         btnHtml = isOwned 
-                            ? `<button disabled class="w-full bg-white/5 border border-white/10 text-textMuted text-xs font-bold py-2.5 rounded-xl cursor-not-allowed shadow-inner uppercase tracking-wider">${t('owned_btn')}</button>`
-                            : `<button onclick="window.purchaseRobot('${key}', ${priceNum}, '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-electric text-navy text-xs font-extrabold py-2.5 rounded-xl hover:bg-cyan-300 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1.5"><i data-lucide="zap" class="w-3.5 h-3.5"></i> ${t('buy_btn')}</button>`;
+                            ? `<button disabled class="w-full bg-gray-800/80 border border-white/10 text-textMuted text-[11px] font-extrabold py-2.5 rounded-lg cursor-not-allowed uppercase tracking-wider">${t('owned_btn')}</button>`
+                            : `<button onclick="window.purchaseRobot('${key}', ${priceNum}, '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-electric text-navy text-[11px] font-extrabold py-2.5 rounded-lg hover:bg-cyan-300 transition glow-btn uppercase tracking-wider">${t('buy_btn')}</button>`;
                     }
 
                     html += `
-                    <div class="robot-marketplace-card p-3.5 flex flex-col justify-between h-full group ${isFreeBot ? 'border-gold/40' : ''}">
-                        <div>
-                            <div class="flex items-center gap-2.5 mb-3 relative z-10">
-                                <div class="w-10 h-10 rounded-xl ${isFreeBot ? 'bg-gold/15 border-gold/40' : 'bg-electric/10 border-electric/25'} flex items-center justify-center border shadow-[0_0_15px_rgba(0,240,255,0.2)] shrink-0 group-hover:scale-105 transition">
-                                    <i data-lucide="bot" class="w-5 h-5 ${isFreeBot ? 'text-gold' : 'text-electric'}"></i>
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <h3 class="font-bold text-white text-xs truncate">${r.name || 'Robot'}</h3>
-                                    <div class="text-[10px] text-textMuted font-medium">${r.duration || 30} ${t('days')}</div>
-                                </div>
+                    <div class="robot-card-bg ${isFreeBot ? 'free-card-bg' : ''} p-3.5 h-full group">
+                        <div class="relative z-10 flex flex-col items-center text-center w-full">
+                            <!-- Top Status & Duration Row -->
+                            <div class="w-full flex justify-between items-center mb-2">
+                                <span class="text-[9px] font-bold text-textMuted bg-navy/80 px-2 py-0.5 rounded-md border border-white/10">
+                                    ${r.duration || 30} ${t('days')}
+                                </span>
+                                <span class="w-2 h-2 rounded-full ${isFreeBot ? 'bg-gold shadow-[0_0_8px_#fbbf24]' : 'bg-electric shadow-[0_0_8px_#00f0ff]'}"></span>
                             </div>
 
-                            <div class="bg-navy/80 border border-white/5 rounded-xl p-2.5 mb-2.5 space-y-1.5 relative z-10">
-                                <div class="flex justify-between items-center text-[10px]">
-                                    <span class="text-textMuted">${t('rate')}</span>
-                                    <span class="font-bold text-emerald">${sym}${formatMoney(r.rewardRate)}/${t('hr')}</span>
-                                </div>
-                                <div class="flex justify-between items-center pt-1.5 border-t border-white/5">
-                                    <span class="text-[10px] text-textMuted uppercase font-semibold">${t('price_lbl')}</span>
-                                    ${priceDisplayHtml}
-                                </div>
+                            <!-- Centered Robot Icon -->
+                            <div class="robot-icon-box ${isFreeBot ? 'free-icon-box' : ''} group-hover:scale-105 transition-transform">
+                                <i data-lucide="bot" class="w-6 h-6 ${isFreeBot ? 'text-gold' : 'text-electric'}"></i>
                             </div>
+
+                            <!-- Robot Name -->
+                            <h3 class="font-extrabold text-white text-sm leading-tight line-clamp-1 mb-2 w-full">${r.name || 'Robot'}</h3>
+
+                            <!-- Hourly Rate Pill -->
+                            <div class="w-full bg-navy/85 py-1.5 px-2 rounded-lg border border-white/5 mb-2.5 shadow-inner">
+                                <div class="text-[9px] text-textMuted uppercase tracking-wider">${t('rate')}</div>
+                                <div class="text-xs font-extrabold text-emerald mt-0.5">${sym}${formatMoney(r.rewardRate)}/${t('hr')}</div>
+                            </div>
+
                             ${extraAdBarHtml}
                         </div>
 
-                        <div class="mt-auto relative z-10">
+                        <!-- Aligned Bottom Footer: Price + Action Button -->
+                        <div class="pt-2.5 border-t border-white/10 flex flex-col gap-2 relative z-10 w-full mt-auto">
+                            <div class="flex justify-between items-center px-1">
+                                <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider">${t('price_lbl')}</span>
+                                ${priceBadgeHtml}
+                            </div>
                             ${btnHtml}
                         </div>
                     </div>`;
@@ -1608,7 +1663,6 @@
         };
 
         window.activateRobot = async (userRobotId) => {
-            // Show Rewarded Popup Ad when re-activating 3-Hour mining cycle
             const adWatched = await triggerMonetagAd('pop');
             if(!adWatched) return;
 
@@ -1623,7 +1677,6 @@
             } catch(e) { window.showToast("Activation failed", "error"); }
         };
 
-        // Collect Robot Mining Earnings (Shows Monetag Ad before crediting wallet)
         window.collectRobot = async (userRobotId, reward) => {
             const adWatched = await triggerMonetagAd('interstitial');
             if(!adWatched) return;
@@ -1631,7 +1684,6 @@
             const rewardNum = Number(reward || 0);
             const nowMs = Date.now();
             try {
-                // Hourly / Cycle Referral Commission distribution to Referrer
                 const pSnap = await get(ref(db, `users/${currentUser.uid}/profile`));
                 if (pSnap.exists()) {
                     const pData = pSnap.val();
@@ -1707,7 +1759,6 @@
             }, 1000);
         };
 
-        // Claim Task Reward (Shows Monetag Ad before crediting wallet)
         window.claimTaskReward = async (taskId, reward) => {
             if(completedTaskIds.includes(taskId)) return;
 
@@ -1875,7 +1926,6 @@
             safeCreateIcons(); openModal('modal-checkin', 'scale');
         };
 
-        // Daily Check-in Claim triggers Monetag Ad first
         window.executeCheckin = async () => {
             const adWatched = await triggerMonetagAd('interstitial');
             if(!adWatched) return;
@@ -1918,7 +1968,6 @@
             } catch(e) { window.showToast("Claim failed", "error"); }
         };
 
-        // ACCURATE PHYSICS SPIN WHEEL (Triggers Monetag Ad on Spin)
         const spinRewards = [2, 5, 0, 3, 1, 10, 2, 0];
         const weights = [40, 5, 10, 10, 10, 5, 10, 10]; 
         const colors = ['#00f0ff', '#8b5cf6', '#11192b', '#00ff87', '#00f0ff', '#fbbf24', '#8b5cf6', '#11192b'];
@@ -1947,7 +1996,6 @@
             const availSpins = Number(checkInStatus.spins || 0);
             if(availSpins <= 0) return window.showToast("0 Spins Left!", "error");
 
-            // Show Monetag Ad before spinning the wheel
             const adWatched = await triggerMonetagAd('interstitial');
             if(!adWatched) return;
 
