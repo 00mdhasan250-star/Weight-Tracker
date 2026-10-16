@@ -20,7 +20,6 @@
         }
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- FontAwesome for Official Social Media Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -51,10 +50,9 @@
         .glow-btn:hover { box-shadow: 0 0 25px rgba(0, 240, 255, 0.4); transform: translateY(-1px); }
         .glow-btn:active { transform: scale(0.98); }
 
-        /* Custom Dropdown Styles */
         .custom-select-wrapper { position: relative; user-select: none; }
-        .custom-select-trigger { background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.75rem 1rem; color: #fff; cursor: pointer; display: flex; justify-content: space-between; items-center; font-weight: 500;}
-        .custom-options { position: absolute; display: none; top: 100%; left: 0; right: 0; background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; mt-1; z-index: 50; max-height: 200px; overflow-y: auto; }
+        .custom-select-trigger { background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.75rem 1rem; color: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500;}
+        .custom-options { position: absolute; display: none; top: 100%; left: 0; right: 0; background: #0a1122; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; margin-top: 4px; z-index: 50; max-height: 200px; overflow-y: auto; }
         .custom-options.open { display: block; }
         .custom-option { padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.75rem; cursor: pointer; transition: background 0.2s; }
         .custom-option:hover { background: rgba(255,255,255,0.05); }
@@ -108,9 +106,10 @@
                 <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-tasks"><i data-lucide="list-todo" class="w-4 h-4"></i> <span class="font-medium">Task Management</span></button>
                 <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-payments"><i data-lucide="credit-card" class="w-4 h-4"></i> <span class="font-medium">Payment Methods</span></button>
 
-                <div class="text-[10px] text-textMuted uppercase font-bold tracking-widest px-4 mb-2 mt-4">Financials</div>
+                <div class="text-[10px] text-textMuted uppercase font-bold tracking-widest px-4 mb-2 mt-4">Financials & Support</div>
                 <button class="nav-btn sidebar-item flex items-center justify-between px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-deposits"><div class="flex items-center gap-3"><i data-lucide="arrow-down-circle" class="w-4 h-4"></i> <span class="font-medium">Deposits</span></div><span class="bg-emerald/20 text-emerald text-[10px] px-2 py-0.5 rounded font-bold" id="badge-dep">0</span></button>
                 <button class="nav-btn sidebar-item flex items-center justify-between px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-withdrawals"><div class="flex items-center gap-3"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> <span class="font-medium">Withdrawals</span></div><span class="bg-danger/20 text-danger text-[10px] px-2 py-0.5 rounded font-bold" id="badge-wit">0</span></button>
+                <button class="nav-btn sidebar-item flex items-center justify-between px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-support"><div class="flex items-center gap-3"><i data-lucide="mail" class="w-4 h-4"></i> <span class="font-medium">Support Inbox</span></div><span class="bg-blue-500/20 text-blue-400 text-[10px] px-2 py-0.5 rounded font-bold" id="badge-msg">0</span></button>
                 
                 <div class="text-[10px] text-textMuted uppercase font-bold tracking-widest px-4 mb-2 mt-4">System</div>
                 <button class="nav-btn sidebar-item flex items-center gap-3 px-4 py-2.5 rounded-lg text-left text-sm" data-target="v-settings"><i data-lucide="settings" class="w-4 h-4"></i> <span class="font-medium">App Settings</span></button>
@@ -150,8 +149,8 @@
 
                 <!-- USERS MANAGEMENT -->
                 <div id="v-users" class="admin-view hide flex flex-col gap-6">
-                    <div><h3 class="font-bold text-white text-lg">User Accounts</h3><p class="text-xs text-textMuted">View and manage registered user accounts and balances.</p></div>
-                    <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>User ID</th><th>Name / Email</th><th>Available Balance (৳)</th><th>Actions</th></tr></thead><tbody id="tb-users"></tbody></table></div>
+                    <div><h3 class="font-bold text-white text-lg">User Accounts</h3><p class="text-xs text-textMuted">View and manage registered user accounts, referral codes, and balances.</p></div>
+                    <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>User ID</th><th>Name / Email</th><th>Ref Code / Invited</th><th>Available Balance (৳)</th><th>Actions</th></tr></thead><tbody id="tb-users"></tbody></table></div>
                 </div>
 
                 <!-- ROBOT CATALOG -->
@@ -184,6 +183,12 @@
                     <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>User Details</th><th>Method</th><th>Destination Acc</th><th>Amount (৳)</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb-withdrawals"></tbody></table></div>
                 </div>
 
+                <!-- SUPPORT INBOX -->
+                <div id="v-support" class="admin-view hide flex flex-col gap-6">
+                    <div><h3 class="font-bold text-white text-lg">Support Inbox</h3><p class="text-xs text-textMuted">Messages sent by users from the Help & Support page.</p></div>
+                    <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>User Details</th><th>Message</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb-support"></tbody></table></div>
+                </div>
+
                 <!-- PAYMENT METHODS -->
                 <div id="v-payments" class="admin-view hide flex flex-col gap-6">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -193,10 +198,10 @@
                     <div class="admin-card overflow-x-auto"><table class="whitespace-nowrap"><thead><tr><th>Method Name</th><th>Type</th><th>Number / Details</th><th>Actions</th></tr></thead><tbody id="tb-payments"></tbody></table></div>
                 </div>
 
-                <!-- SETTINGS -->
+                <!-- SETTINGS (With Referral Bonus & Hourly Commission %) -->
                 <div id="v-settings" class="admin-view hide flex flex-col gap-6">
                     <div class="admin-card p-6 max-w-2xl border border-white/5">
-                        <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4"><div class="w-10 h-10 rounded-lg bg-electric/10 flex items-center justify-center"><i data-lucide="sliders" class="w-5 h-5 text-electric"></i></div><div><h3 class="text-lg font-bold text-white">Financial Limits & Rewards</h3><p class="text-xs text-textMuted">Updates reflect on the User Panel instantly.</p></div></div>
+                        <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4"><div class="w-10 h-10 rounded-lg bg-electric/10 flex items-center justify-center"><i data-lucide="sliders" class="w-5 h-5 text-electric"></i></div><div><h3 class="text-lg font-bold text-white">Financial Limits, Check-In & Referral Rewards</h3><p class="text-xs text-textMuted">Updates reflect on the User Panel instantly.</p></div></div>
                         <div class="space-y-5">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 <div><label class="block text-xs text-textMuted uppercase font-bold mb-1.5">Min Deposit (৳ BDT)</label><input type="number" id="set-min-dep" class="input-dark font-medium"></div>
@@ -205,6 +210,16 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-white/5">
                                 <div><label class="block text-xs text-gold uppercase font-bold mb-1.5">Daily Check-in Reward (৳)</label><input type="number" id="set-daily-reward" class="input-dark font-medium border-gold/30 focus:border-gold"></div>
                                 <div><label class="block text-xs text-gold uppercase font-bold mb-1.5">7th Day Gift Box Reward (৳)</label><input type="number" id="set-day7-reward" class="input-dark font-medium border-gold/30 focus:border-gold"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-white/5">
+                                <div>
+                                    <label class="block text-xs text-emerald uppercase font-bold mb-1.5">Referral Signup Bonus (৳)</label>
+                                    <input type="number" id="set-signup-bonus" class="input-dark font-medium border-emerald/30 focus:border-emerald" placeholder="e.g. 50">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-electric uppercase font-bold mb-1.5">Referral Mining Commission (%)</label>
+                                    <input type="number" id="set-ref-comm" step="0.5" class="input-dark font-medium border-electric/30 focus:border-electric" placeholder="e.g. 5">
+                                </div>
                             </div>
                             <button onclick="window.saveSettings()" class="bg-electric text-navy font-bold px-6 py-4 rounded-xl w-full mt-6 glow-btn text-sm">Save Global Configuration</button>
                         </div>
@@ -234,7 +249,7 @@
         </div>
     </div>
 
-    <!-- Task Modal (NO Description Box, Custom Official Icon Select) -->
+    <!-- Task Modal -->
     <div id="modal-task" class="hide fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
         <div class="glass-panel w-[90%] max-w-md p-6 rounded-2xl transform scale-95 transition-transform duration-300 relative overflow-visible">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -243,7 +258,6 @@
             <div class="space-y-4">
                 <div><label class="block text-xs text-textMuted mb-1">Task Title</label><input type="text" id="task-title" placeholder="e.g. Subscribe to our YouTube" class="input-dark"></div>
                 
-                <!-- Custom Official Icon Platform Selector -->
                 <div class="custom-select-wrapper">
                     <label class="block text-xs text-textMuted mb-1">Target Platform</label>
                     <input type="hidden" id="task-cat" value="youtube">
@@ -251,9 +265,7 @@
                         <span id="selected-platform-display" class="flex items-center gap-2"><i class="fa-brands fa-youtube text-[#FF0000]"></i> YouTube</span>
                         <i data-lucide="chevron-down" class="w-4 h-4 text-textMuted"></i>
                     </div>
-                    <div class="custom-options shadow-xl" id="platform-options">
-                        <!-- Options generated by JS -->
-                    </div>
+                    <div class="custom-options shadow-xl" id="platform-options"></div>
                 </div>
 
                 <div><label class="block text-xs text-textMuted mb-1">Task Link (URL)</label><input type="url" id="task-link" placeholder="https://youtube.com/..." class="input-dark"></div>
@@ -314,24 +326,23 @@
         let cachedRobots = {}; let cachedTasks = {}; let cachedPayments = {}; let cachedUsers = {}; let cachedWallets = {};
         let cachedDepositsData = null; let cachedWithdrawalsData = null;
 
-        // --- 24 Official Social Media Platforms Setup ---
         const socialPlatforms = [
-            { id: 'facebook', name: 'Facebook', icon: 'fa-brands fa-facebook', color: '#1877F2' },
+            { id: 'facebook', name: 'Facebook', icon: 'fa-brands fa-facebook-f', color: '#1877F2' },
             { id: 'instagram', name: 'Instagram', icon: 'fa-brands fa-instagram', color: '#E1306C' },
             { id: 'tiktok', name: 'TikTok', icon: 'fa-brands fa-tiktok', color: '#ffffff' },
             { id: 'snapchat', name: 'Snapchat', icon: 'fa-brands fa-snapchat', color: '#FFFC00' },
-            { id: 'x-twitter', name: 'X / Twitter', icon: 'fa-brands fa-x-twitter', color: '#ffffff' },
+            { id: 'x-twitter', name: 'X', icon: 'fa-brands fa-x-twitter', color: '#ffffff' },
             { id: 'threads', name: 'Threads', icon: 'fa-brands fa-threads', color: '#ffffff' },
-            { id: 'pinterest', name: 'Pinterest', icon: 'fa-brands fa-pinterest', color: '#E60023' },
+            { id: 'pinterest', name: 'Pinterest', icon: 'fa-brands fa-pinterest-p', color: '#E60023' },
             { id: 'whatsapp', name: 'WhatsApp', icon: 'fa-brands fa-whatsapp', color: '#25D366' },
             { id: 'youtube', name: 'YouTube', icon: 'fa-brands fa-youtube', color: '#FF0000' },
-            { id: 'linkedin', name: 'LinkedIn', icon: 'fa-brands fa-linkedin', color: '#0A66C2' },
+            { id: 'linkedin', name: 'LinkedIn', icon: 'fa-brands fa-linkedin-in', color: '#0A66C2' },
             { id: 'behance', name: 'Behance', icon: 'fa-brands fa-behance', color: '#1769ff' },
             { id: 'skype', name: 'Skype', icon: 'fa-brands fa-skype', color: '#00AFF0' },
-            { id: 'reddit', name: 'Reddit', icon: 'fa-brands fa-reddit', color: '#FF4500' },
+            { id: 'reddit', name: 'Reddit', icon: 'fa-brands fa-reddit-alien', color: '#FF4500' },
             { id: 'messenger', name: 'Messenger', icon: 'fa-brands fa-facebook-messenger', color: '#0084FF' },
             { id: 'spotify', name: 'Spotify', icon: 'fa-brands fa-spotify', color: '#1DB954' },
-            { id: 'vimeo', name: 'Vimeo', icon: 'fa-brands fa-vimeo', color: '#1AB7EA' },
+            { id: 'vimeo', name: 'Vimeo', icon: 'fa-brands fa-vimeo-v', color: '#1AB7EA' },
             { id: 'dribbble', name: 'Dribbble', icon: 'fa-brands fa-dribbble', color: '#ea4c89' },
             { id: 'google', name: 'Google+', icon: 'fa-brands fa-google-plus-g', color: '#db4a39' },
             { id: 'line', name: 'Line', icon: 'fa-brands fa-line', color: '#00C300' },
@@ -342,7 +353,6 @@
             { id: 'discord', name: 'Discord', icon: 'fa-brands fa-discord', color: '#5865F2' }
         ];
 
-        // Init Custom Dropdown
         const initPlatformDropdown = () => {
             let html = '';
             socialPlatforms.forEach(p => {
@@ -376,7 +386,7 @@
             lucide.createIcons();
             t.classList.remove('opacity-0', 'translate-y-[-20px]');
             setTimeout(() => t.classList.add('opacity-0', 'translate-y-[-20px]'), 3000);
-        }
+        };
 
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -390,14 +400,10 @@
             });
         });
 
-        // BUG FIX: Don't globally sign out normal users, just deny access to dashboard.
         onAuthStateChanged(auth, (user) => {
             if (user && user.uid === SUPER_ADMIN_UID) {
                 hide('view-login'); show('main-admin');
                 initData();
-            } else if (user) {
-                hide('main-admin'); show('view-login');
-                window.showToast("Access Denied: Not an Admin. Normal user sessions cannot view this page.", "error");
             } else {
                 show('view-login'); hide('main-admin');
             }
@@ -408,7 +414,7 @@
             try { 
                 await signInWithEmailAndPassword(auth, el('admin-email').value, el('admin-password').value); 
                 window.showToast("Access Granted");
-            } catch(e) { window.showToast(e.message, "error"); }
+            } catch(e) { window.showToast(e.message, "error"); signOut(auth); }
             finally { btn.innerText = "Authorize Access"; }
         };
         
@@ -423,7 +429,7 @@
             if(id === 'modal-task' && !el('task-edit-id').value) {
                 el('task-modal-title').innerHTML = `<i data-lucide="list-todo" class="text-blue-400"></i> Add New Task`;
                 el('btn-submit-task').innerText = "Publish Task";
-                window.selectPlatform('youtube', 'YouTube', 'fa-brands fa-youtube', '#FF0000'); // Reset to default
+                window.selectPlatform('youtube', 'YouTube', 'fa-brands fa-youtube', '#FF0000'); 
             }
             if(id === 'modal-payment' && !el('pay-edit-id').value) {
                 el('pay-modal-title').innerHTML = `<i data-lucide="credit-card" class="text-violet"></i> Add Payment Method`;
@@ -451,7 +457,14 @@
             onValue(ref(db, 'wallets'), s => { if(s.exists()) cachedWallets = s.val(); renderUsersTable(); });
             
             onValue(ref(db, 'appConfig/walletSettings'), s => { if(s.exists()){ el('set-min-dep').value = s.val().minDeposit || 100; el('set-min-wit').value = s.val().minWithdraw || 100; } });
-            onValue(ref(db, 'appConfig/rewardSettings'), s => { if(s.exists()){ el('set-day7-reward').value = s.val().day7Reward || 10; el('set-daily-reward').value = s.val().checkinReward || 2; } });
+            onValue(ref(db, 'appConfig/rewardSettings'), s => {
+                if(s.exists()){
+                    el('set-day7-reward').value = s.val().day7Reward || 10;
+                    el('set-daily-reward').value = s.val().checkinReward || 2;
+                    el('set-signup-bonus').value = s.val().signupBonus || 50;
+                    el('set-ref-comm').value = s.val().refCommission || 5;
+                }
+            });
 
             onValue(ref(db, 'appConfig/paymentMethods'), s => {
                 let html = ''; cachedPayments = {};
@@ -466,6 +479,21 @@
 
             onValue(ref(db, 'depositRequests'), snap => { cachedDepositsData = snap; renderDeposits(); });
             onValue(ref(db, 'withdrawalRequests'), snap => { cachedWithdrawalsData = snap; renderWithdrawals(); });
+
+            onValue(ref(db, 'supportMessages'), snap => {
+                let html = ''; let p = 0;
+                if(snap.exists()) {
+                    snap.forEach(msg => {
+                        let v = msg.val();
+                        if(v.status === 'pending') p++;
+                        let statusColor = v.status === 'pending' ? 'bg-gold/20 text-gold' : 'bg-emerald/20 text-emerald';
+                        let actionHtml = v.status === 'pending' ? `<button onclick="window.resolveMessage('${msg.key}', '${v.uid}')" class="text-emerald bg-emerald/10 px-3 py-1 rounded text-xs">Mark Resolved</button>` : `<span class="text-[10px] text-textMuted">Resolved</span>`;
+                        html += `<tr><td><div class="font-bold text-sm text-white">${v.email}</div><div class="text-[10px] text-textMuted font-mono">${v.uid ? v.uid.substring(0,8) : ''}</div></td><td class="max-w-[260px] whitespace-normal text-xs text-white">${v.message}</td><td class="text-xs text-textMuted">${v.createdAt ? new Date(v.createdAt).toLocaleString() : ''}</td><td><span class="text-[10px] px-2 py-1 rounded uppercase font-bold ${statusColor}">${v.status}</span></td><td>${actionHtml}</td></tr>`;
+                    });
+                }
+                el('badge-msg').innerText = p;
+                el('tb-support').innerHTML = html || '<tr><td colspan="5" class="text-center text-textMuted py-4">No messages in inbox.</td></tr>';
+            });
 
             onValue(ref(db, 'robotCatalog'), snap => {
                 let html = ''; cachedRobots = {};
@@ -487,6 +515,16 @@
                 el('tb-tasks').innerHTML = html || '<tr><td colspan="4" class="text-center text-textMuted py-4">No tasks available.</td></tr>';
             });
         }
+
+        window.resolveMessage = async (msgId, uid) => {
+            try {
+                await update(ref(db, `supportMessages/${msgId}`), { status: 'resolved' });
+                if(uid) {
+                    await update(ref(db, `userSupportMessages/${uid}/${msgId}`), { status: 'resolved' });
+                }
+                window.showToast("Message Resolved.");
+            } catch(e) { window.showToast("Error updating.", "error"); }
+        };
 
         window.renderDeposits = () => {
             if(!cachedDepositsData) return; let p = 0; let html = '';
@@ -522,16 +560,24 @@
             let html = '';
             Object.keys(cachedUsers).forEach(uid => {
                 const u = cachedUsers[uid].profile || {}; const w = cachedWallets[uid] || { cachedBalance: 0 };
-                html += `<tr><td class="text-[10px] text-electric font-mono">${uid.substring(0,8)}...</td><td><div class="font-bold text-sm text-white">${u.name || 'User'}</div><div class="text-[10px] text-textMuted">${u.email || 'N/A'}</div></td><td class="font-bold text-emerald">৳${(w.cachedBalance || 0).toFixed(2)}</td><td><button onclick="window.deleteUser('${uid}')" class="text-danger bg-danger/10 px-3 py-1.5 rounded text-xs">Delete User</button></td></tr>`;
+                html += `<tr><td class="text-[10px] text-electric font-mono">${uid.substring(0,8)}...</td><td><div class="font-bold text-sm text-white">${u.name || 'User'}</div><div class="text-[10px] text-textMuted">${u.email || 'N/A'}</div></td><td><span class="font-mono text-xs text-gold font-bold">${u.referralCode || 'N/A'}</span> <span class="text-[10px] text-textMuted">(${u.totalReferred || 0} invited)</span></td><td class="font-bold text-emerald">৳${(w.cachedBalance || 0).toFixed(2)}</td><td><button onclick="window.deleteUser('${uid}')" class="text-danger bg-danger/10 px-3 py-1.5 rounded text-xs">Delete User</button></td></tr>`;
             });
-            el('tb-users').innerHTML = html || '<tr><td colspan="4" class="text-center text-textMuted py-4">No users found.</td></tr>';
+            el('tb-users').innerHTML = html || '<tr><td colspan="5" class="text-center text-textMuted py-4">No users found.</td></tr>';
         }
 
         window.saveSettings = async () => {
             try {
-                await update(ref(db, 'appConfig/walletSettings'), { minDeposit: parseInt(el('set-min-dep').value)||100, minWithdraw: parseInt(el('set-min-wit').value)||100 });
-                await update(ref(db, 'appConfig/rewardSettings'), { day7Reward: parseInt(el('set-day7-reward').value)||10, checkinReward: parseInt(el('set-daily-reward').value)||2 });
-                window.showToast("Settings Updated");
+                await update(ref(db, 'appConfig/walletSettings'), {
+                    minDeposit: parseInt(el('set-min-dep').value) || 100,
+                    minWithdraw: parseInt(el('set-min-wit').value) || 100
+                });
+                await update(ref(db, 'appConfig/rewardSettings'), {
+                    day7Reward: parseInt(el('set-day7-reward').value) || 10,
+                    checkinReward: parseInt(el('set-daily-reward').value) || 2,
+                    signupBonus: parseFloat(el('set-signup-bonus').value) || 50,
+                    refCommission: parseFloat(el('set-ref-comm').value) || 5
+                });
+                window.showToast("Settings Updated Successfully");
             } catch(e) { window.showToast("Update Failed", "error"); }
         };
 
