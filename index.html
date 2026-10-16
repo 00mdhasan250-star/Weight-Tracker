@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEXORA MINING - Premium Earning Panel</title>
     
+    <!-- MONETAG OFFICIAL SDK -->
+    <script src='//libtl.com/sdk.js' data-zone='10605119' data-sdk='show_10605119'></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -200,14 +203,14 @@
                                 <i data-lucide="calendar-check" class="w-6 h-6 text-emerald drop-shadow-[0_0_10px_rgba(0,255,135,0.8)]"></i>
                             </div>
                             <div class="font-extrabold text-sm text-white relative z-10" data-i18n="checkin">Daily Check-In</div>
-                            <div class="text-[10px] font-medium text-textMuted mt-1 relative z-10" data-i18n="checkin_sub">Earn Cash & Spins</div>
+                            <div class="text-[10px] font-medium text-textMuted mt-1 relative z-10" data-i18n="checkin_sub">Watch Ad & Claim</div>
                         </button>
                         <button onclick="window.openSpinModal()" class="glass-card p-5 flex flex-col items-center text-center group border border-violet/20 relative overflow-hidden hover:scale-[1.02] transition-transform shadow-md">
                             <div class="w-14 h-14 rounded-full bg-gradient-to-br from-violet/30 to-violet/5 flex items-center justify-center mb-3 relative z-10 shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-violet/30">
                                 <i data-lucide="aperture" class="w-6 h-6 text-violet drop-shadow-[0_0_10px_rgba(139,92,246,0.8)] animate-spin-slow"></i>
                             </div>
                             <div class="font-extrabold text-sm text-white relative z-10" data-i18n="spin">Spin Wheel</div>
-                            <div class="text-[10px] font-medium text-textMuted mt-1 relative z-10" data-i18n="spin_sub">Use your free spins</div>
+                            <div class="text-[10px] font-medium text-textMuted mt-1 relative z-10" data-i18n="spin_sub">Watch Ad & Spin</div>
                         </button>
                     </div>
 
@@ -226,7 +229,7 @@
                     </div>
                 </div>
 
-                <!-- BUY ROBOTS (Dynamic Grid with Fixed Price Alignment) -->
+                <!-- BUY ROBOTS (Dynamic Grid + Free Robot 10-Ad Unlock) -->
                 <div id="tab-buy" class="view-section hide px-5 py-4 space-y-4">
                     <div class="flex items-center justify-between mb-2">
                         <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="market">Marketplace</h2>
@@ -248,7 +251,7 @@
                     </div>
                 </div>
 
-                <!-- TASKS (Dynamic Full Catalog like Marketplace) -->
+                <!-- TASKS -->
                 <div id="tab-tasks" class="view-section hide px-5 py-4 space-y-4">
                     <div class="flex items-center justify-between mb-2">
                         <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="tasks">Tasks & Rewards</h2>
@@ -492,7 +495,7 @@
                 <div class="glass-card p-5 border border-white/5 shadow-sm space-y-4 divide-y divide-white/5">
                     <div class="pt-1">
                         <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4 text-electric"></i> <span data-i18n="r2_title">1. AI Robot Mining & 3-Hour Cycle</span></h4>
-                        <p class="text-xs leading-relaxed" data-i18n="r2_desc">When you purchase a robot from the Marketplace, it activates immediately. Each mining cycle runs for 3 hours—even if you close the app or leave the browser, the timer continues counting in the cloud. After 3 hours, the status becomes READY—simply click 'Collect' to add the earnings to your wallet, then click 'Activate' to start the next 3-hour cycle.</p>
+                        <p class="text-xs leading-relaxed" data-i18n="r2_desc">When you purchase a robot from the Marketplace, it activates immediately. Free Starter Robots can be unlocked by watching 10 rewarded ads. Each mining cycle runs for 3 hours—even if you close the app, the timer continues counting. After 3 hours, click 'Claim' and watch a short ad to credit your wallet.</p>
                     </div>
                     <div class="pt-4">
                         <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="calendar-check" class="w-4 h-4 text-emerald"></i> <span data-i18n="r5_title">2. Daily Check-In, Spins & Tasks</span></h4>
@@ -552,9 +555,9 @@
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             <div class="w-16 h-16 rounded-full bg-emerald/10 flex items-center justify-center mb-3 shadow-[0_0_20px_rgba(0,255,135,0.3)]"><i data-lucide="calendar-check" class="w-8 h-8 text-emerald drop-shadow-[0_0_10px_rgba(0,255,135,0.8)]"></i></div>
             <h3 class="text-2xl font-extrabold text-white mb-1 tracking-tight" data-i18n="checkin">Daily Check-In</h3>
-            <p class="text-xs text-textMuted mb-6 text-center" data-i18n="checkin_sub">Earn Cash & Spins</p>
+            <p class="text-xs text-textMuted mb-6 text-center" data-i18n="checkin_sub">Watch Ad to Claim Cash & Spins</p>
             <div class="checkin-grid w-full mb-8" id="checkin-grid"></div>
-            <button id="btn-claim-checkin" onclick="window.executeCheckin()" class="w-full bg-emerald text-navy font-bold py-3.5 rounded-xl hover:bg-emerald/90 transition shadow-[0_0_15px_rgba(0,255,135,0.4)] text-sm">Claim Reward</button>
+            <button id="btn-claim-checkin" onclick="window.executeCheckin()" class="w-full bg-emerald text-navy font-bold py-3.5 rounded-xl hover:bg-emerald/90 transition shadow-[0_0_15px_rgba(0,255,135,0.4)] text-sm flex items-center justify-center gap-2"><i data-lucide="play-circle" class="w-4 h-4"></i> Claim Reward</button>
         </div>
     </div>
 
@@ -573,7 +576,7 @@
                 </div>
             </div>
             
-            <button id="btn-spin" onclick="window.executeSpin()" class="w-full bg-gradient-to-r from-violet to-fuchsia-600 text-white font-bold py-4 rounded-xl hover:opacity-90 transition shadow-[0_0_20px_rgba(139,92,246,0.5)] text-sm tracking-wider">SPIN NOW</button>
+            <button id="btn-spin" onclick="window.executeSpin()" class="w-full bg-gradient-to-r from-violet to-fuchsia-600 text-white font-bold py-4 rounded-xl hover:opacity-90 transition shadow-[0_0_20px_rgba(139,92,246,0.5)] text-sm tracking-wider flex items-center justify-center gap-2"><i data-lucide="play-circle" class="w-4 h-4"></i> SPIN NOW</button>
         </div>
     </div>
 
@@ -630,14 +633,69 @@
         let ownedRobotIds = [];
         let allRobotsMap = {};
         let allTasksMap = {};
+        let freeRobotAdProgress = {}; // Tracks 0/10 to 10/10 ad progress per free robot
         let appSettings = { minDeposit: 100, minWithdraw: 100, day7Reward: 10, checkinReward: 2, signupBonus: 50, refCommission: 5 };
         let paymentMethodsData = [];
         let activeInterval = null;
         let completedTaskIds = [];
-        let taskTimersState = {}; // Preserves 10s countdown across live re-renders
+        let taskTimersState = {};
         let pendingDepositsList = [];
         let pendingWithdrawalsList = [];
         let mySupportMessages = [];
+        let isAdPlaying = false;
+        let inAppAdInitialized = false;
+
+        // --- MONETAG AD INTEGRATION HELPERS ---
+        function initMonetagInApp() {
+            if (inAppAdInitialized) return;
+            if (typeof window.show_10605119 === 'function') {
+                try {
+                    window.show_10605119({
+                        type: 'inApp',
+                        inAppSettings: {
+                            frequency: 2,
+                            capping: 0.1,
+                            interval: 30,
+                            timeout: 5,
+                            everyPage: false
+                        }
+                    });
+                    inAppAdInitialized = true;
+                } catch (err) {
+                    console.warn("Monetag inApp init warning:", err);
+                }
+            }
+        }
+
+        // Trigger Monetag Rewarded Interstitial or Rewarded Popup before granting reward
+        async function triggerMonetagAd(format = 'interstitial') {
+            if (isAdPlaying) return false;
+            isAdPlaying = true;
+            try {
+                if (typeof window.show_10605119 === 'function') {
+                    if (format === 'pop') {
+                        await window.show_10605119('pop');
+                    } else {
+                        try {
+                            await window.show_10605119();
+                        } catch (interstitialErr) {
+                            // Fallback to Rewarded Popup if interstitial fails to fill
+                            await window.show_10605119('pop');
+                        }
+                    }
+                    isAdPlaying = false;
+                    return true;
+                } else {
+                    window.showToast(t('ad_block_err'), "error");
+                    isAdPlaying = false;
+                    return false;
+                }
+            } catch (e) {
+                window.showToast(t('ad_skip_err'), "error");
+                isAdPlaying = false;
+                return false;
+            }
+        }
 
         // --- OFFICIAL SOCIAL MEDIA DATA ---
         const socialPlatforms = [
@@ -678,8 +736,8 @@
             en: {
                 app_name: "NEXORA", network: "MINING NETWORK", sign_in: "Sign In", register: "Register",
                 email_ph: "Email Address", pass_ph: "Password", name_ph: "Full Name", welcome: "Welcome,",
-                tot_bal: "Total Balance", dep: "Deposit", wit: "Withdraw", checkin: "Daily Check-In", checkin_sub: "Earn Cash & Spins",
-                spin: "Spin Wheel", spin_sub: "Use your free spins", overview: "Quick Overview", act_rob: "Active Robots",
+                tot_bal: "Total Balance", dep: "Deposit", wit: "Withdraw", checkin: "Daily Check-In", checkin_sub: "Watch Ad & Claim",
+                spin: "Spin Wheel", spin_sub: "Watch Ad & Spin", overview: "Quick Overview", act_rob: "Active Robots",
                 tot_earn: "Total Earned", market: "Marketplace", my_miners: "My Miners", tasks: "Tasks & Rewards",
                 wallet: "Wallet", avail_bal: "Available Balance", recent_tx: "Recent Transactions", rob_own: "Robots Owned",
                 avail_spin: "Available Spins", sec_rules: "Security & Platform Rules", help_sup: "Help & Support Inbox", logout: "Secure Logout",
@@ -699,7 +757,7 @@
                 ref_ph: "Referral Code (Optional)", sel_pay: "Select Method...", acc_num: "Account Number", send_pay: "Send payment to:",
                 plat_rules: "About NEXORA & Security Rules",
                 r1_title: "5. Anti-Fraud & Multiple Accounts Policy", r1_desc: "Creating multiple accounts on the same device/IP to abuse signup bonuses, using automated scripts/auto-clickers, or submitting fake deposit TrxIDs is strictly prohibited and will result in permanent account suspension.",
-                r2_title: "1. AI Robot Mining & 3-Hour Cycle", r2_desc: "When you purchase a robot from the Marketplace, it activates immediately. Each mining cycle runs for 3 hours—even if you close the app or leave the browser, the timer continues counting in the cloud. After 3 hours, the status becomes READY—simply click 'Claim' to add the earnings to your wallet, then click 'Start Mining' to begin the next 3-hour cycle.",
+                r2_title: "1. AI Robot Mining & 3-Hour Cycle", r2_desc: "When you purchase a robot from the Marketplace, it activates immediately. Free Starter Robots can be unlocked by watching 10 rewarded ads. Each mining cycle runs for 3 hours—even if you close the app, the timer continues counting. After 3 hours, click 'Claim' and watch a short ad to credit your wallet.",
                 r3_title: "3. Deposits & Fast Withdrawals", r3_desc: "Always send deposits to the exact number or QR code shown on the Deposit page and submit the valid Transaction ID (TrxID). Withdrawals are processed within 1–24 hours. If a withdrawal request is rejected by the admin, 100% of the amount is automatically refunded to your wallet balance.",
                 r4_title: "4. Referral Bonus & Hourly Commission", r4_desc: "Every user receives a unique 6-character Referral Code. When a new user registers with your code, they get an instant Signup Bonus. Furthermore, whenever your referred user buys a robot and collects mining earnings, you automatically earn an hourly percentage commission!",
                 r5_title: "2. Daily Check-In, Spins & Tasks", r5_desc: "Check in daily to receive instant cash rewards plus 1 Free Spin. Completing 7 consecutive days unlocks the special Gift Box and 5 Bonus Spins (missing a day resets the streak). You can also visit social media links in the Tasks tab for 10 seconds to claim additional instant cash rewards.",
@@ -717,13 +775,15 @@
                 ref_step_3: "Whenever your referred friend deposits, buys a robot, and collects hourly mining earnings, you automatically receive commission directly to your wallet!",
                 sec_verified_tag: "100% Automated AI Cloud Mining Ecosystem",
                 sec_intro_desc: "NEXORA MINING is an advanced cloud-based AI robot mining platform. Our system allows users to rent automated mining robots that generate hourly rewards in BDT/USDT/INR, complete social media tasks, spin the lucky wheel, and build a passive income network through referrals.",
-                new_support_msg: "New Message to Admin", my_support_inbox: "My Support Inbox History", no_msg_yet: "No support messages sent yet."
+                new_support_msg: "New Message to Admin", my_support_inbox: "My Support Inbox History", no_msg_yet: "No support messages sent yet.",
+                free_lbl: "FREE", watch_ad_btn: "Watch Ad", ad_progress_lbl: "Ad Unlock Progress",
+                ad_skip_err: "Please watch the full ad to complete this action!", ad_block_err: "Ad failed to load. Please disable AdBlocker and try again."
             },
             bn: {
                 app_name: "নেক্সোরা", network: "মাইনিং নেটওয়ার্ক", sign_in: "লগইন", register: "নিবন্ধন",
                 email_ph: "ইমেইল ঠিকানা", pass_ph: "পাসওয়ার্ড", name_ph: "পুরো নাম", welcome: "স্বাগতম,",
-                tot_bal: "মোট ব্যালেন্স", dep: "ডিপোজিট", wit: "উত্তোলন", checkin: "ডেলি চেকিং", checkin_sub: "ক্যাশ এবং স্পিন জিতুন",
-                spin: "স্পিন হুইল", spin_sub: "ফ্রি স্পিন ব্যবহার করুন", overview: "একনজরে", act_rob: "সক্রিয় রোবট",
+                tot_bal: "মোট ব্যালেন্স", dep: "ডিপোজিট", wit: "উত্তোলন", checkin: "ডেলি চেকিং", checkin_sub: "বিজ্ঞাপন দেখে ক্লেইম করুন",
+                spin: "স্পিন হুইল", spin_sub: "বিজ্ঞাপন দেখে স্পিন করুন", overview: "একনজরে", act_rob: "সক্রিয় রোবট",
                 tot_earn: "মোট আয়", market: "মার্কেটপ্লেস", my_miners: "আমার রোবট", tasks: "টাস্ক ও রিওয়ার্ড",
                 wallet: "ওয়ালেট", avail_bal: "বর্তমান ব্যালেন্স", recent_tx: "সাম্প্রতিক লেনদেন", rob_own: "রোবটের সংখ্যা",
                 avail_spin: "ফ্রি স্পিন", sec_rules: "নিরাপত্তা ও প্ল্যাটফর্মের নিয়ম", help_sup: "হেল্প এবং সাপোর্ট ইনবক্স", logout: "লগআউট",
@@ -743,7 +803,7 @@
                 ref_ph: "রেফারেল কোড (ঐচ্ছিক)", sel_pay: "মেথড সিলেক্ট করুন...", acc_num: "একাউন্ট নাম্বার", send_pay: "এই নাম্বারে টাকা পাঠান:",
                 plat_rules: "নেক্সোরা সম্পর্কে ও সিকিউরিটি নিয়মাবলী",
                 r1_title: "৫. অ্যান্টি-ফ্রড এবং মাল্টিপল একাউন্ট পলিসি", r1_desc: "বোনাস নেওয়ার জন্য একই ডিভাইসে একাধিক একাউন্ট খোলা, অটো-ক্লিকার ব্যবহার করা বা ভুয়া TrxID দেওয়া সম্পূর্ণ নিষিদ্ধ। এতে একাউন্ট স্থায়ীভাবে ব্যান হবে।",
-                r2_title: "১. এআই রোবট মাইনিং ও ৩ ঘণ্টার সাইকেল", r2_desc: "মার্কেটপ্লেস থেকে রোবট কেনার সাথে সাথেই মাইনিং শুরু হয় এবং একটানা ৩ ঘণ্টা চলমান থাকে। অ্যাপ থেকে বের হয়ে গেলেও মাইনিং টাইম কাউন্ট বন্ধ হবে না। ৩ ঘণ্টা পর অ্যাপে প্রবেশ করলে 'ক্লেইম করুন' বাটন দেখা যাবে—সেখানে ক্লিক করে টাকা ওয়ালেটে যোগ করবেন এবং পুনরায় মাইনিং চালু করবেন।",
+                r2_title: "১. এআই রোবট মাইনিং ও ৩ ঘণ্টার সাইকেল", r2_desc: "মার্কেটপ্লেস থেকে রোবট কেনার সাথে সাথেই মাইনিং শুরু হয়। ফ্রি রোবটটি ১০টি বিজ্ঞাপন দেখে আনলক করা যায়। মাইনিং একটানা ৩ ঘণ্টা চলমান থাকে এবং অ্যাপ বন্ধ থাকলেও টাইম কাউন্ট বন্ধ হয় না। ৩ ঘণ্টা পর বিজ্ঞাপন দেখে ক্লেইম করে টাকা ওয়ালেটে যোগ করবেন।",
                 r3_title: "৩. ডিপোজিট এবং দ্রুত উইথড্রয়াল", r3_desc: "ডিপোজিট পেজে দেওয়া নাম্বারে বা কিউআর কোডে টাকা পাঠিয়ে সঠিক TrxID দিয়ে সাবমিট করুন। উইথড্র রিকোয়েস্ট ১-২৪ ঘণ্টার মধ্যে সম্পন্ন হয়। কোনো কারণে উইথড্র রিজেক্ট হলে সম্পূর্ণ টাকা অটোমেটিক আপনার ওয়ালেটে রিফান্ড হয়ে যাবে।",
                 r4_title: "৪. রেফারেল বোনাস ও প্রতি ঘণ্টায় কমিশন", r4_desc: "প্রত্যেক ইউজারের জন্য একটি আলাদা ৬-অক্ষরের রেফারেল কোড থাকে। আপনার সঠিক কোড ব্যবহার করে কেউ সাইন-আপ করলেই সে সাইন-আপ বোনাস পাবে এবং সে রোবট কিনে মাইনিং কালেক্ট করলে আপনি আজীবন কমিশন পাবেন!",
                 r5_title: "২. ডেইলি চেক-ইন, স্পিন ও সোশ্যাল টাস্ক", r5_desc: "প্রতিদিন চেক-ইন করলে নগদ টাকা ও ১টি ফ্রি স্পিন পাবেন। টানা ৭ দিন চেক-ইন করলে ৭ম দিনে স্পেশাল গিফট বক্স ও ৫টি ফ্রি স্পিন পাবেন। এছাড়া টাস্ক পেজে ১০ সেকেন্ড লিংক ভিজিট করেও ইনস্ট্যান্ট রিওয়ার্ড আয় করতে পারবেন।",
@@ -761,13 +821,15 @@
                 ref_step_3: "আপনার রেফার করা বন্ধু ডিপোজিট করে রোবট কিনলে এবং প্রতি ৩ ঘণ্টা পর মাইনিং রিওয়ার্ড কালেক্ট করলে আপনি সাথে সাথে শতকরা কমিশন আপনার ওয়ালেটে পাবেন!",
                 sec_verified_tag: "১০০% অটোমেটেড এআই ক্লাউড মাইনিং ইকোসিস্টেম",
                 sec_intro_desc: "নেক্সোরা মাইনিং একটি আধুনিক ক্লাউড-ভিত্তিক এআই রোবট আর্নিং প্ল্যাটফর্ম। এখানে আপনি রোবট কিনে প্রতি ঘণ্টায় আয় করতে পারবেন, ডেইলি চেক-ইন ও স্পিন করতে পারবেন, সোশ্যাল মিডিয়া টাস্ক পূরণ করতে পারবেন এবং রেফার করে প্যাসিভ ইনকাম করতে পারবেন।",
-                new_support_msg: "অ্যাডমিনের কাছে নতুন মেসেজ", my_support_inbox: "আমার পাঠানো মেসেজ সমূহ", no_msg_yet: "এখনো কোনো মেসেজ পাঠানো হয়নি।"
+                new_support_msg: "অ্যাডমিনের কাছে নতুন মেসেজ", my_support_inbox: "আমার পাঠানো মেসেজ সমূহ", no_msg_yet: "এখনো কোনো মেসেজ পাঠানো হয়নি।",
+                free_lbl: "ফ্রি", watch_ad_btn: "বিজ্ঞাপন দেখুন", ad_progress_lbl: "বিজ্ঞাপন প্রগ্রেস",
+                ad_skip_err: "রিওয়ার্ড পেতে সম্পূর্ণ বিজ্ঞাপনটি দেখুন!", ad_block_err: "বিজ্ঞাপন লোড হয়নি। অনুগ্রহ করে অ্যাডব্লকার বন্ধ করে আবার চেষ্টা করুন।"
             },
             hi: {
                 app_name: "नेक्सोरा", network: "माइनिंग नेटवर्क", sign_in: "साइन इन", register: "रजिस्टर",
                 email_ph: "ईमेल पता", pass_ph: "पासवर्ड", name_ph: "पूरा नाम", welcome: "स्वागत है,",
-                tot_bal: "कुल बैलेंस", dep: "जमा करें", wit: "निकासी", checkin: "डेली चेक-इन", checkin_sub: "कैश और स्पिन कमाएं",
-                spin: "स्पिन व्हील", spin_sub: "अपने फ्री स्पिन का उपयोग करें", overview: "एक नज़र में", act_rob: "सक्रिय रोबोट",
+                tot_bal: "कुल बैलेंस", dep: "जमा करें", wit: "निकासी", checkin: "डेली चेक-इन", checkin_sub: "विज्ञापन देखें और कमाएं",
+                spin: "स्पिन व्हील", spin_sub: "विज्ञापन देखें और स्पिन करें", overview: "एक नज़र में", act_rob: "सक्रिय रोबोट",
                 tot_earn: "कुल कमाई", market: "मार्केटप्लेस", my_miners: "मेरे माइनर", tasks: "टास्क और इनाम",
                 wallet: "वॉलेट", avail_bal: "उपलब्ध बैलेंस", recent_tx: "हाल के लेनदेन", rob_own: "रोबोट स्वामित्व",
                 avail_spin: "उपलब्ध स्पिन", sec_rules: "सुरक्षा और प्लेटफ़ॉर्म नियम", help_sup: "मदद और सपोर्ट इनबॉक्स", logout: "लॉगआउट",
@@ -787,7 +849,7 @@
                 ref_ph: "रेफरल कोड (वैकल्पिक)", sel_pay: "विधि चुनें...", acc_num: "खाता संख्या", send_pay: "इस नंबर पर भुगतान भेजें:",
                 plat_rules: "नेक्सोरा और सुरक्षा नियम",
                 r1_title: "5. एकाधिक खाते और धोखाधड़ी नीति", r1_desc: "बोनस के लिए एक ही डिवाइस पर कई खाते बनाना या नकली TrxID सबमिट करना सख्त वर्जित है।",
-                r2_title: "1. AI रोबोट माइनिंग और 3-घंटे का चक्र", r2_desc: "रोबोट खरीदने के तुरंत बाद माइनिंग शुरू हो जाती है और ऐप बंद होने पर भी 3 घंटे तक चलती रहती है। 3 घंटे के बाद अपनी कमाई क्लेम करें और फिर से सक्रिय करें।",
+                r2_title: "1. AI रोबोट माइनिंग और 3-घंटे का चक्र", r2_desc: "रोबोट खरीदने के तुरंत बाद माइनिंग शुरू हो जाती है। फ्री रोबोट को 10 विज्ञापन देखकर अनलॉक किया जा सकता है। 3 घंटे के बाद विज्ञापन देखकर अपनी कमाई क्लेम करें।",
                 r3_title: "3. जमा और त्वरित निकासी", r3_desc: "हमेशा सही TrxID प्रदान करें। यदि कोई निकासी अस्वीकार कर दी जाती है, तो राशि तुरंत आपके वॉलेट में वापस कर दी जाती है।",
                 r4_title: "4. रेफरल बोनस और प्रति घंटा कमीशन", r4_desc: "जब कोई नया उपयोगकर्ता आपके कोड के साथ साइन अप करता है, तो उसे साइनअप बोनस मिलता है और आपको उसकी माइनिंग कमाई से कमीशन मिलता है!",
                 r5_title: "2. दैनिक चेक-इन, स्पिन और टास्क", r5_desc: "नकद और मुफ्त स्पिन पाने के लिए रोजाना चेक-इन करें। लगातार 7 दिनों तक चेक-इन करने पर विशेष गिफ्ट बॉक्स मिलता है।",
@@ -803,9 +865,11 @@
                 ref_step_1: "ऊपर दिया गया अपना यूनिक रेफरल कोड कॉपी करें और दोस्तों के साथ शेयर करें।",
                 ref_step_2: "जब आपका दोस्त आपके वैध कोड से रजिस्टर करता है, तो उसे तुरंत वॉलेट में साइनअप बोनस मिलता है।",
                 ref_step_3: "जब भी आपका रेफर किया गया दोस्त रोबोट खरीदता है और माइनिंग कलेक्ट करता है, तो आपको स्वचालित रूप से कमीशन मिलता है!",
-                sec_verified_tag: "100% स्वचालित एआई क्लाउड माइनिंग",
+                sec_verified_tag: "100% स्वचालित एआई क्लाউड माइनिंग",
                 sec_intro_desc: "नेक्सोरा माइनिंग एक उन्नत एआई रोबोट माइनिंग प्लेटफॉर्म है जहां आप रोबोट किराए पर लेकर, टास्क पूरे करके और रेफरल के जरिए कमाई कर सकते हैं।",
-                new_support_msg: "एडमिन को नया संदेश", my_support_inbox: "मेरे भेजे गए संदेश", no_msg_yet: "अभी तक कोई संदेश नहीं भेजा गया।"
+                new_support_msg: "एडमिन को नया संदेश", my_support_inbox: "मेरे भेजे गए संदेश", no_msg_yet: "अभी तक कोई संदेश नहीं भेजा गया।",
+                free_lbl: "फ्री", watch_ad_btn: "विज्ञापन देखें", ad_progress_lbl: "विज्ञापन प्रगति",
+                ad_skip_err: "इनाम पाने के लिए कृपया पूरा विज्ञापन देखें!", ad_block_err: "विज्ञापन लोड नहीं हुआ। कृपया एडब्लॉकर बंद करें।"
             }
         };
         const t = (key) => translations[window.currentLang][key] || key;
@@ -902,6 +966,7 @@
                 const lastTab = localStorage.getItem('nexora_active_tab') || 'home';
                 window.switchTab(lastTab); 
                 initLiveListeners(user.uid);
+                initMonetagInApp(); // Start Monetag In-App Interstitial session
             } else {
                 currentUser = null; show('screen-auth'); hide('screen-main'); if(activeInterval) clearInterval(activeInterval);
             }
@@ -1045,6 +1110,12 @@
                 }
             });
 
+            // Listen to Free Robot Ad Progress (0/10 to 10/10)
+            onValue(ref(db, `users/${uid}/freeRobotAds`), snap => {
+                freeRobotAdProgress = snap.exists() ? snap.val() : {};
+                renderMarketplace();
+            });
+
             // Load All Robots From Admin Catalog
             onValue(ref(db, `robotCatalog`), snap => {
                 let tempMap = {};
@@ -1053,6 +1124,18 @@
                     for(let key in rawCatalog) {
                         if(rawCatalog[key]) tempMap[key] = rawCatalog[key];
                     }
+                }
+                // Ensure a Default Free Starter Bot is always available if no free bot exists in catalog
+                const hasFreeBot = Object.values(tempMap).some(bot => Number(bot.price || 0) === 0);
+                if(!hasFreeBot) {
+                    tempMap['starter_free_bot'] = {
+                        name: 'Starter Bot (Free)',
+                        price: 0,
+                        duration: 3,
+                        rewardRate: 5,
+                        enabled: true,
+                        isFreeStarter: true
+                    };
                 }
                 allRobotsMap = tempMap;
                 renderMarketplace();
@@ -1092,7 +1175,7 @@
                 renderTasks();
             });
 
-            // Load All Tasks From Admin Panel (Just like Buy Robots Catalog)
+            // Load All Tasks From Admin Panel
             onValue(ref(db, `tasks`), snap => {
                 let tempTasks = {};
                 if(snap.exists()) {
@@ -1105,7 +1188,7 @@
                 renderTasks();
             });
 
-            // Load All Wallet Transactions (Check-in, Spin, Mining Claim, Task Claim, Deposit, Withdraw)
+            // Load All Wallet Transactions
             onValue(ref(db, `walletTransactions/${uid}`), snap => {
                 let txns = [];
                 if(snap.exists()) {
@@ -1155,7 +1238,6 @@
                 renderSupportHistory();
             });
 
-            // Re-sync countdown immediately when user returns to the app/tab
             document.addEventListener('visibilitychange', () => {
                 if(!document.hidden) renderMyRobots();
             });
@@ -1198,25 +1280,63 @@
             el('home-total-earned').innerText = formatMoney(userWallet.totalEarned);
         }
 
-        // Dynamic Marketplace Render
+        // Dynamic Marketplace Render (Supports 10-Ad Free Robot Unlock + Paid Robots)
         function renderMarketplace() {
             let html = ''; const sym = getSym();
             const keys = Object.keys(allRobotsMap);
+            // Put free robot at the very beginning
+            keys.sort((a, b) => Number(allRobotsMap[a]?.price || 0) - Number(allRobotsMap[b]?.price || 0));
+
             keys.forEach(key => {
                 const r = allRobotsMap[key];
                 if(r && r.enabled !== false) {
                     const isOwned = ownedRobotIds.includes(key); 
+                    const priceNum = Number(r.price || 0);
+                    const isFreeBot = priceNum <= 0;
                     const safeName = (r.name || 'AI Miner').replace(/'/g, "\\'");
-                    const btnHtml = isOwned 
-                        ? `<button disabled class="w-full bg-white/5 border border-white/10 text-textMuted text-xs font-bold py-2.5 rounded-xl cursor-not-allowed shadow-inner uppercase tracking-wider">${t('owned_btn')}</button>`
-                        : `<button onclick="window.purchaseRobot('${key}', ${Number(r.price || 0)}, '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-electric text-navy text-xs font-extrabold py-2.5 rounded-xl hover:bg-cyan-300 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1.5"><i data-lucide="zap" class="w-3.5 h-3.5"></i> ${t('buy_btn')}</button>`;
+
+                    let btnHtml = '';
+                    let extraAdBarHtml = '';
+                    let priceDisplayHtml = '';
+
+                    if (isFreeBot) {
+                        const adsWatched = Number(freeRobotAdProgress[key] || 0);
+                        const pct = Math.min(100, (adsWatched / 10) * 100);
+                        priceDisplayHtml = `<span class="text-emerald font-extrabold text-xs uppercase px-2 py-0.5 rounded bg-emerald/15 border border-emerald/30">${t('free_lbl')} (10 Ads)</span>`;
+                        
+                        if (!isOwned) {
+                            extraAdBarHtml = `
+                            <div class="mb-2.5">
+                                <div class="flex justify-between text-[9px] text-textMuted font-bold mb-1">
+                                    <span>${t('ad_progress_lbl')}</span>
+                                    <span class="text-gold">${adsWatched}/10 Ads</span>
+                                </div>
+                                <div class="w-full bg-navy h-1.5 rounded-full overflow-hidden border border-white/10">
+                                    <div class="bg-gradient-to-r from-gold to-emerald h-full transition-all duration-300" style="width:${pct}%"></div>
+                                </div>
+                            </div>`;
+                        }
+
+                        btnHtml = isOwned
+                            ? `<button disabled class="w-full bg-white/5 border border-white/10 text-textMuted text-xs font-bold py-2.5 rounded-xl cursor-not-allowed shadow-inner uppercase tracking-wider">${t('owned_btn')}</button>`
+                            : `<button onclick="window.watchAdForFreeRobot('${key}', '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-gradient-to-r from-gold to-emerald text-navy text-xs font-extrabold py-2.5 rounded-xl hover:opacity-95 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1.5"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> ${t('watch_ad_btn')} (${adsWatched}/10)</button>`;
+                    } else {
+                        priceDisplayHtml = `
+                        <div class="inline-flex items-baseline gap-0.5 font-extrabold text-white text-sm tracking-tight">
+                            <span class="text-electric text-xs font-bold">${sym}</span><span>${formatMoney(priceNum)}</span>
+                        </div>`;
+
+                        btnHtml = isOwned 
+                            ? `<button disabled class="w-full bg-white/5 border border-white/10 text-textMuted text-xs font-bold py-2.5 rounded-xl cursor-not-allowed shadow-inner uppercase tracking-wider">${t('owned_btn')}</button>`
+                            : `<button onclick="window.purchaseRobot('${key}', ${priceNum}, '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-electric text-navy text-xs font-extrabold py-2.5 rounded-xl hover:bg-cyan-300 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1.5"><i data-lucide="zap" class="w-3.5 h-3.5"></i> ${t('buy_btn')}</button>`;
+                    }
 
                     html += `
-                    <div class="robot-marketplace-card p-3.5 flex flex-col justify-between h-full group">
+                    <div class="robot-marketplace-card p-3.5 flex flex-col justify-between h-full group ${isFreeBot ? 'border-gold/40' : ''}">
                         <div>
                             <div class="flex items-center gap-2.5 mb-3 relative z-10">
-                                <div class="w-10 h-10 rounded-xl bg-electric/10 flex items-center justify-center border border-electric/25 shadow-[0_0_15px_rgba(0,240,255,0.2)] shrink-0 group-hover:scale-105 transition">
-                                    <i data-lucide="bot" class="w-5 h-5 text-electric"></i>
+                                <div class="w-10 h-10 rounded-xl ${isFreeBot ? 'bg-gold/15 border-gold/40' : 'bg-electric/10 border-electric/25'} flex items-center justify-center border shadow-[0_0_15px_rgba(0,240,255,0.2)] shrink-0 group-hover:scale-105 transition">
+                                    <i data-lucide="bot" class="w-5 h-5 ${isFreeBot ? 'text-gold' : 'text-electric'}"></i>
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <h3 class="font-bold text-white text-xs truncate">${r.name || 'Robot'}</h3>
@@ -1231,11 +1351,10 @@
                                 </div>
                                 <div class="flex justify-between items-center pt-1.5 border-t border-white/5">
                                     <span class="text-[10px] text-textMuted uppercase font-semibold">${t('price_lbl')}</span>
-                                    <div class="inline-flex items-baseline gap-0.5 font-extrabold text-white text-sm tracking-tight">
-                                        <span class="text-electric text-xs font-bold">${sym}</span><span>${formatMoney(r.price)}</span>
-                                    </div>
+                                    ${priceDisplayHtml}
                                 </div>
                             </div>
+                            ${extraAdBarHtml}
                         </div>
 
                         <div class="mt-auto relative z-10">
@@ -1248,7 +1367,46 @@
             safeCreateIcons();
         }
 
-        // Persistent 3-Hour Mining Render (Works even if user closes app and returns later)
+        // Watch 10 Ads to Unlock Free Robot
+        window.watchAdForFreeRobot = async (robotId, name, rewardRate) => {
+            if(ownedRobotIds.includes(robotId)) return window.showToast("You already own this robot!", "error");
+            
+            const adWatched = await triggerMonetagAd('interstitial');
+            if(!adWatched) return;
+
+            const currentCount = Number(freeRobotAdProgress[robotId] || 0) + 1;
+
+            try {
+                if(currentCount >= 10) {
+                    const nowMs = Date.now();
+                    await set(ref(db, `users/${currentUser.uid}/freeRobotAds/${robotId}`), 10);
+                    await push(ref(db, `userRobots/${currentUser.uid}`), {
+                        robotId: robotId,
+                        robotName: name,
+                        rewardRate: Number(rewardRate || 0),
+                        status: 'mining',
+                        purchasedAt: nowMs,
+                        lastActivatedAt: nowMs,
+                        cycleEndsAt: nowMs + THREE_HOURS_MS
+                    });
+                    await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                        type: 'purchase',
+                        amount: 0,
+                        status: 'successful',
+                        createdAt: nowMs
+                    });
+                    window.showToast("10/10 Ads Completed! Free Robot Activated!", "success");
+                    window.switchTab('my-robots');
+                } else {
+                    await set(ref(db, `users/${currentUser.uid}/freeRobotAds/${robotId}`), currentCount);
+                    window.showToast(`Ad Watched (${currentCount}/10)! Watch ${10 - currentCount} more to unlock.`, "success");
+                }
+            } catch(e) {
+                window.showToast("Failed to update progress.", "error");
+            }
+        };
+
+        // Persistent 3-Hour Mining Render
         function renderMyRobots() {
             if(!window.currentActiveRobots) return;
             let rHtml = '';
@@ -1261,7 +1419,6 @@
                 const hourlyRate = Number(catalogBot.rewardRate !== undefined ? catalogBot.rewardRate : (r.rewardRate || 0));
 
                 const lastActive = Number(r.lastActivatedAt || 0);
-                // Calculate exact end timestamp from DB so closing the app never interrupts the 3-hour countdown
                 const cycleEndsAt = Number(r.cycleEndsAt || (lastActive > 0 ? lastActive + THREE_HOURS_MS : 0));
 
                 let actionHtml = '';
@@ -1293,7 +1450,7 @@
                         statusColor = 'text-gold border-gold bg-gold/10 animate-pulse';
                         statusText = t('ready');
                         const reward = hourlyRate * 3;
-                        actionHtml = `<button onclick="window.collectRobot('${r.key}', ${reward})" class="bg-gold text-navy text-xs uppercase font-extrabold px-4 py-2 rounded-lg hover:bg-yellow-400 transition glow-btn shadow-md flex items-center gap-1.5"><i data-lucide="coins" class="w-3.5 h-3.5"></i> ${t('collect')} ${sym}${formatMoney(reward)}</button>`;
+                        actionHtml = `<button onclick="window.collectRobot('${r.key}', ${reward})" class="bg-gold text-navy text-xs uppercase font-extrabold px-4 py-2 rounded-lg hover:bg-yellow-400 transition glow-btn shadow-md flex items-center gap-1.5"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> ${t('collect')} ${sym}${formatMoney(reward)}</button>`;
                         progressBarHtml = `
                         <div class="w-full bg-navy/90 h-1.5 rounded-full overflow-hidden mt-3 border border-gold/20">
                             <div class="bg-gold h-full w-full"></div>
@@ -1328,14 +1485,13 @@
             safeCreateIcons();
         }
 
-        // Dynamic Tasks Render (Loads all tasks added from Admin Panel like Buy Robots)
+        // Dynamic Tasks Render
         function renderTasks() {
             let html = '';
             const sym = getSym();
             const taskKeys = Object.keys(allTasksMap);
             let totalVisible = 0;
 
-            // Sort newest tasks first
             taskKeys.sort((a,b) => Number(allTasksMap[b]?.createdAt || 0) - Number(allTasksMap[a]?.createdAt || 0));
 
             taskKeys.forEach(taskId => {
@@ -1353,7 +1509,7 @@
                 if(isCompleted) {
                     btnHtml = `<button disabled class="text-[10px] font-extrabold text-emerald bg-emerald/10 border border-emerald/30 px-3.5 py-2 rounded-xl uppercase tracking-wider shadow-sm flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> ${t('completed')}</button>`;
                 } else if(tState && tState.readyToClaim) {
-                    btnHtml = `<button id="btn-task-${taskId}" onclick="window.claimTaskReward('${taskId}', ${rewardAmt})" class="text-[11px] font-extrabold text-navy bg-emerald hover:bg-emerald/90 px-4 py-2 rounded-xl uppercase tracking-wider transition glow-btn">${t('claim_now')}</button>`;
+                    btnHtml = `<button id="btn-task-${taskId}" onclick="window.claimTaskReward('${taskId}', ${rewardAmt})" class="text-[11px] font-extrabold text-navy bg-emerald hover:bg-emerald/90 px-4 py-2 rounded-xl uppercase tracking-wider transition glow-btn flex items-center gap-1"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> ${t('claim_now')}</button>`;
                 } else if(tState && tState.remaining > 0) {
                     btnHtml = `<button id="btn-task-${taskId}" disabled class="text-[11px] font-bold text-electric bg-electric/10 border border-electric/30 px-3.5 py-2 rounded-xl uppercase tracking-wider">Wait ${tState.remaining}s</button>`;
                 } else {
@@ -1396,7 +1552,6 @@
             'signup_bonus': { k: 'tx_signup_bonus', color: 'text-gold', icon: 'gift', sign: '+' }
         };
 
-        // Render All Recent Transactions (Check-in, Spin, Mining Claim, Task Claim, Deposit, Withdraw)
         function renderTransactions() {
             if(!window.currentTxns) return;
             let html = ''; const sym = getSym();
@@ -1453,6 +1608,10 @@
         };
 
         window.activateRobot = async (userRobotId) => {
+            // Show Rewarded Popup Ad when re-activating 3-Hour mining cycle
+            const adWatched = await triggerMonetagAd('pop');
+            if(!adWatched) return;
+
             const nowMs = Date.now();
             try {
                 await update(ref(db, `userRobots/${currentUser.uid}/${userRobotId}`), {
@@ -1464,7 +1623,11 @@
             } catch(e) { window.showToast("Activation failed", "error"); }
         };
 
+        // Collect Robot Mining Earnings (Shows Monetag Ad before crediting wallet)
         window.collectRobot = async (userRobotId, reward) => {
+            const adWatched = await triggerMonetagAd('interstitial');
+            if(!adWatched) return;
+
             const rewardNum = Number(reward || 0);
             const nowMs = Date.now();
             try {
@@ -1544,8 +1707,13 @@
             }, 1000);
         };
 
+        // Claim Task Reward (Shows Monetag Ad before crediting wallet)
         window.claimTaskReward = async (taskId, reward) => {
             if(completedTaskIds.includes(taskId)) return;
+
+            const adWatched = await triggerMonetagAd('pop');
+            if(!adWatched) return;
+
             const rewardNum = Number(reward || 0);
             const nowMs = Date.now();
             try {
@@ -1685,7 +1853,7 @@
             } catch(e) { window.showToast("Failed to send message.", "error"); }
         };
 
-        // --- CHECKIN & SPIN ---
+        // --- CHECKIN & SPIN (With Monetag Ads) ---
         window.openCheckinModal = () => {
             let html = ''; let currentStreak = checkInStatus.streak || 0;
             const now = new Date(); const last = new Date(Number(checkInStatus.lastCheckIn || 0)); let canClaim = false;
@@ -1703,11 +1871,15 @@
                 html += `<div class="${classes} shadow-sm"><i data-lucide="${icon}" class="w-5 h-5 mb-1"></i><span>${text}</span></div>`;
             }
             el('checkin-grid').innerHTML = html; el('btn-claim-checkin').disabled = !canClaim;
-            el('btn-claim-checkin').innerText = canClaim ? t('claim_now') : "Come back tomorrow";
+            el('btn-claim-checkin').innerHTML = canClaim ? `<i data-lucide="play-circle" class="w-4 h-4"></i> ${t('claim_now')}` : "Come back tomorrow";
             safeCreateIcons(); openModal('modal-checkin', 'scale');
         };
 
+        // Daily Check-in Claim triggers Monetag Ad first
         window.executeCheckin = async () => {
+            const adWatched = await triggerMonetagAd('interstitial');
+            if(!adWatched) return;
+
             let rewardAmount = Number(appSettings.checkinReward || 2);
             let addedSpins = 1;
             let newStreak = Number(checkInStatus.streak || 0) + 1;
@@ -1746,7 +1918,7 @@
             } catch(e) { window.showToast("Claim failed", "error"); }
         };
 
-        // ACCURATE PHYSICS SPIN WHEEL
+        // ACCURATE PHYSICS SPIN WHEEL (Triggers Monetag Ad on Spin)
         const spinRewards = [2, 5, 0, 3, 1, 10, 2, 0];
         const weights = [40, 5, 10, 10, 10, 5, 10, 10]; 
         const colors = ['#00f0ff', '#8b5cf6', '#11192b', '#00ff87', '#00f0ff', '#fbbf24', '#8b5cf6', '#11192b'];
@@ -1774,6 +1946,10 @@
             if(isSpinning) return;
             const availSpins = Number(checkInStatus.spins || 0);
             if(availSpins <= 0) return window.showToast("0 Spins Left!", "error");
+
+            // Show Monetag Ad before spinning the wheel
+            const adWatched = await triggerMonetagAd('interstitial');
+            if(!adWatched) return;
 
             isSpinning = true;
             let randomNum = Math.random() * 100; let weightSum = 0; let resultIdx = 0;
