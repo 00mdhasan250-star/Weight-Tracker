@@ -43,8 +43,8 @@
         .input-dark { background: #0a1122; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 0.75rem; padding: 0.875rem 1rem; width: 100%; transition: all 0.2s; }
         .input-dark:focus { outline: none; border-color: #00f0ff; box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2); }
 
-        .glow-btn { box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); transition: all 0.3s ease; }
-        .glow-btn:active { transform: scale(0.95); box-shadow: 0 0 5px rgba(0, 240, 255, 0.5); }
+        .glow-btn { box-shadow: 0 0 18px rgba(0, 240, 255, 0.35); transition: all 0.3s ease; }
+        .glow-btn:active { transform: scale(0.96); box-shadow: 0 0 8px rgba(0, 240, 255, 0.5); }
         .glow-btn:disabled { opacity: 0.5; box-shadow: none; transform: none; cursor: not-allowed; }
 
         .nav-item { color: #64748b; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; font-size: 0.65rem; font-weight: 500; }
@@ -58,7 +58,7 @@
         .animate-fade-up { animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-fade-in { animation: fadeIn 0.4s ease forwards; }
 
-        /* Accurate Spin Wheel CSS */
+        /* Spin Wheel CSS */
         .wheel-wrapper { position: relative; width: 280px; height: 280px; margin: 0 auto; }
         .wheel-container {
             width: 100%; height: 100%; border-radius: 50%; border: 6px solid #0a1122;
@@ -88,57 +88,58 @@
         .checkin-day.today { background: rgba(0, 240, 255, 0.1); border-color: #00f0ff; color: #00f0ff; box-shadow: 0 0 10px rgba(0,240,255,0.3); cursor: pointer; }
         .checkin-day-7 { grid-column: span 2; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(251, 191, 36, 0.2)); border-color: #fbbf24; color: #fbbf24; }
 
-        /* Classic Premium Robot Card Styling (Restored & Perfected for Mobile) */
-        .robot-card-bg {
-            background: linear-gradient(155deg, rgba(17, 25, 43, 0.96) 0%, rgba(10, 17, 34, 0.98) 55%, rgba(0, 240, 255, 0.08) 100%);
-            border: 1px solid rgba(0, 240, 255, 0.25);
-            border-radius: 1.15rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        /* Exact Screenshot Matching Robot Card */
+        .bot-market-card {
+            background: #0d1527;
+            border: 1px solid rgba(0, 240, 255, 0.16);
+            border-radius: 1.25rem;
+            padding: 0.9rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
-        .robot-card-bg::after {
-            content: '';
-            position: absolute;
-            top: -35px;
-            right: -35px;
-            width: 90px;
-            height: 90px;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.22) 0%, transparent 70%);
-            pointer-events: none;
+        .bot-market-card:hover {
+            border-color: rgba(0, 240, 255, 0.35);
         }
-        .robot-card-bg.free-card-bg {
-            background: linear-gradient(155deg, rgba(17, 25, 43, 0.96) 0%, rgba(10, 17, 34, 0.98) 55%, rgba(251, 191, 36, 0.1) 100%);
-            border-color: rgba(251, 191, 36, 0.35);
-        }
-        .robot-card-bg.free-card-bg::after {
-            background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, transparent 70%);
-        }
-        .robot-card-bg:hover {
-            border-color: rgba(0, 240, 255, 0.55);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 28px rgba(0, 240, 255, 0.16);
-        }
-        .robot-icon-box {
-            width: 52px;
-            height: 52px;
-            border-radius: 1rem;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(139, 92, 246, 0.18));
-            border: 1px solid rgba(0, 240, 255, 0.35);
+        .bot-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 0.85rem;
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.28);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 0.65rem auto;
-            box-shadow: 0 0 18px rgba(0, 240, 255, 0.22), inset 0 0 10px rgba(0, 240, 255, 0.12);
+            flex-shrink: 0;
         }
-        .robot-icon-box.free-icon-box {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.22), rgba(0, 255, 135, 0.14));
-            border-color: rgba(251, 191, 36, 0.45);
-            box-shadow: 0 0 18px rgba(251, 191, 36, 0.25), inset 0 0 10px rgba(251, 191, 36, 0.12);
+        .bot-stats-inner {
+            background: #070d19;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 0.85rem;
+            padding: 0.65rem 0.75rem;
+            margin: 0.75rem 0;
+        }
+        .bot-buy-btn {
+            background: #00f0ff;
+            color: #040b16;
+            font-weight: 800;
+            font-size: 0.75rem;
+            padding: 0.65rem 0.5rem;
+            border-radius: 0.75rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.35);
+            transition: all 0.2s ease;
+        }
+        .bot-buy-btn:active {
+            transform: scale(0.97);
         }
         
         #toast { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); }
@@ -279,18 +280,15 @@
                     </div>
                 </div>
 
-                <!-- BUY ROBOTS (Responsive 2-Column Aligned Grid) -->
+                <!-- BUY ROBOTS (Exact Screenshot Layout in 2-Column Grid) -->
                 <div id="tab-buy" class="view-section hide px-4 py-4 space-y-4">
-                    <div class="flex items-center justify-between px-1">
+                    <div class="flex items-center justify-between">
                         <div>
-                            <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="market">Marketplace</h2>
+                            <h2 class="text-xl font-extrabold text-white tracking-tight" data-i18n="market">Marketplace</h2>
                             <p class="text-[11px] text-textMuted" data-i18n="future_ai">The future of AI automated mining.</p>
                         </div>
-                        <span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-electric/10 text-electric border border-electric/30 flex items-center gap-1">
-                            <i data-lucide="bot" class="w-3.5 h-3.5"></i> AI Bots
-                        </span>
                     </div>
-                    <div id="marketplace-container" class="grid grid-cols-2 gap-3 items-stretch">
+                    <div id="marketplace-container" class="grid grid-cols-2 gap-3.5">
                         <div class="col-span-2 p-10 text-center text-sm text-textMuted glass-card" data-i18n="loading">Loading live catalog...</div>
                     </div>
                 </div>
@@ -429,21 +427,21 @@
 
     <!-- FULL SCREEN PAGES -->
     
-    <!-- DEPOSIT PAGE -->
+    <!-- DEPOSIT PAGE (With Gallery Screenshot Proof Upload) -->
     <div id="page-deposit" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-x-full">
         <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20 shadow-md">
             <button onclick="window.closePage('page-deposit')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10 transition"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
             <h2 class="text-lg font-bold text-white" data-i18n="dep">Deposit</h2>
         </header>
-        <div class="flex-1 overflow-y-auto p-5 pb-10 space-y-6">
+        <div class="flex-1 overflow-y-auto p-5 pb-10 space-y-5 no-scrollbar">
             <div class="glass-card p-5 border-electric/30 shadow-lg relative overflow-hidden">
                 <div class="absolute right-[-20%] top-[-20%] w-[50%] h-[100%] bg-electric/10 blur-[40px] rounded-full"></div>
                 <h3 class="text-sm font-bold text-white mb-2 relative z-10" data-i18n="dep_inst">Deposit Instructions</h3>
-                <ol class="text-xs text-textMuted list-decimal list-inside space-y-2 relative z-10">
+                <ol class="text-xs text-textMuted list-decimal list-inside space-y-1.5 relative z-10">
                     <li data-i18n="dep_i1">Select payment method & copy number.</li>
                     <li data-i18n="dep_i2">Send exact amount from your app.</li>
-                    <li data-i18n="dep_i3">Copy the Transaction ID (TrxID).</li>
-                    <li data-i18n="dep_i4">Paste TrxID below and submit.</li>
+                    <li data-i18n="dep_i3">Copy the Transaction ID (TrxID) & take screenshot.</li>
+                    <li data-i18n="dep_i4">Paste TrxID, upload proof screenshot & submit.</li>
                 </ol>
             </div>
             <form id="form-deposit" onsubmit="event.preventDefault(); window.submitDeposit();" class="space-y-4">
@@ -452,14 +450,26 @@
                         <option value="" disabled selected data-i18n="loading">Loading...</option>
                     </select>
                 </div>
-                <div class="bg-cardSolid border border-white/5 rounded-xl p-4 flex flex-col items-center gap-3 shadow-md">
+                <div class="bg-cardSolid border border-white/5 rounded-xl p-4 flex flex-col items-center gap-2.5 shadow-md">
                     <div class="text-xs text-textMuted uppercase tracking-wide" data-i18n="send_pay">Send payment to:</div>
                     <div class="text-xl font-bold text-electric tracking-wider" id="dep-display-number">Select Method</div>
-                    <div class="p-2 bg-white rounded-xl mt-2 shadow-[0_0_20px_rgba(0,240,255,0.2)]"><img id="dep-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEXORA" class="w-32 h-32 rounded-lg" alt="QR Code"></div>
+                    <div class="p-2 bg-white rounded-xl mt-1 shadow-[0_0_20px_rgba(0,240,255,0.2)]"><img id="dep-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEXORA" class="w-28 h-28 rounded-lg" alt="QR Code"></div>
                 </div>
                 <div><input type="number" id="dep-amount" placeholder="Amount" required class="input-dark font-bold text-lg shadow-inner"></div>
                 <div><input type="text" id="dep-ref" placeholder="TrxID / Reference" required class="input-dark shadow-inner"></div>
-                <button type="submit" id="btn-submit-dep" class="w-full bg-electric text-navy font-bold py-4 rounded-xl mt-4 hover:bg-cyan-300 transition glow-btn" data-i18n="dep">Submit</button>
+                
+                <!-- Payment Proof Screenshot Selector -->
+                <div class="bg-cardSolid border border-dashed border-electric/40 rounded-xl p-3.5 text-center">
+                    <label class="cursor-pointer flex flex-col items-center justify-center gap-1.5">
+                        <i data-lucide="image-plus" class="w-6 h-6 text-electric"></i>
+                        <span class="text-xs font-bold text-white" data-i18n="upload_proof">Select Payment Proof Screenshot</span>
+                        <span class="text-[10px] text-textMuted" id="dep-file-status">Tap to choose from Gallery</span>
+                        <input type="file" id="dep-proof-file" accept="image/*" class="hidden" onchange="window.handleProofImage(this)">
+                    </label>
+                    <img id="dep-proof-preview" class="hide w-24 h-24 object-cover rounded-lg mx-auto mt-2.5 border border-electric/40 shadow-md" alt="Proof Preview">
+                </div>
+
+                <button type="submit" id="btn-submit-dep" class="w-full bg-electric text-navy font-bold py-4 rounded-xl mt-2 hover:bg-cyan-300 transition glow-btn" data-i18n="dep">Submit</button>
             </form>
         </div>
     </div>
@@ -558,7 +568,7 @@
                     </div>
                     <div class="pt-4">
                         <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="wallet" class="w-4 h-4 text-gold"></i> <span data-i18n="r3_title">3. Deposits & Fast Withdrawals</span></h4>
-                        <p class="text-xs leading-relaxed" data-i18n="r3_desc">Always send deposits to the exact number or QR code shown on the Deposit page and submit the valid Transaction ID (TrxID). Withdrawals are processed within 1–24 hours. If a withdrawal request is rejected by the admin, 100% of the amount is automatically refunded to your wallet balance.</p>
+                        <p class="text-xs leading-relaxed" data-i18n="r3_desc">Always send deposits to the exact number or QR code shown on the Deposit page and submit the valid Transaction ID (TrxID) along with your screenshot proof. Withdrawals are processed within 1–24 hours. If a withdrawal request is rejected by the admin, 100% of the amount is automatically refunded to your wallet balance.</p>
                     </div>
                     <div class="pt-4">
                         <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="gift" class="w-4 h-4 text-violet"></i> <span data-i18n="r4_title">4. Referral Bonus & Hourly Commission</span></h4>
@@ -635,10 +645,10 @@
         </div>
     </div>
 
-    <!-- Withdraw Modal -->
+    <!-- Withdraw Modal (Clean - No Screenshot Required) -->
     <div id="modal-withdraw" class="hide fixed inset-0 z-[250] flex flex-col justify-end items-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300 w-full h-full">
         <div class="glass-card w-full max-w-[480px] rounded-t-3xl rounded-b-none p-6 transform translate-y-full transition-transform duration-300 border-t border-danger/30 shadow-2xl">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex justify-between items-center mb-5">
                 <div class="flex items-center gap-2"><i data-lucide="arrow-up-circle" class="w-6 h-6 text-danger"></i><h3 class="text-xl font-bold text-white" data-i18n="wit_funds">Withdraw Funds</h3></div>
                 <button onclick="window.closeModals()" class="text-textMuted hover:text-white bg-white/5 p-1 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
@@ -650,7 +660,7 @@
                 </div>
                 <div><input type="text" id="wit-dest" data-i18n="acc_num" placeholder="Account Number" required class="input-dark shadow-inner"></div>
                 <div><input type="number" id="wit-amount" placeholder="Amount" required class="input-dark font-bold shadow-inner"></div>
-                <button type="submit" id="btn-submit-wit" class="w-full bg-danger text-white font-bold py-4 rounded-xl mt-4 hover:bg-red-500 transition shadow-[0_0_15px_rgba(255,51,102,0.4)]" data-i18n="wit">Confirm</button>
+                <button type="submit" id="btn-submit-wit" class="w-full bg-danger text-white font-bold py-4 rounded-xl mt-2 hover:bg-red-500 transition shadow-[0_0_15px_rgba(255,51,102,0.4)]" data-i18n="wit">Confirm</button>
             </form>
         </div>
     </div>
@@ -699,6 +709,46 @@
         let mySupportMessages = [];
         let isAdPlaying = false;
         let inAppAdInitialized = false;
+        let currentDepProofData = null;
+
+        // --- GALLERY IMAGE CONVERTER FOR DEPOSIT PROOF ---
+        window.handleProofImage = (input) => {
+            const file = input.files && input.files[0];
+            if (!file) return;
+
+            const statusEl = el('dep-file-status');
+            const previewEl = el('dep-proof-preview');
+            statusEl.innerText = "Processing screenshot...";
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_W = 650;
+                    const MAX_H = 650;
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > h) {
+                        if (w > MAX_W) { h = Math.round(h * (MAX_W / w)); w = MAX_W; }
+                    } else {
+                        if (h > MAX_H) { w = Math.round(w * (MAX_H / h)); h = MAX_H; }
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const encodedImageText = canvas.toDataURL('image/jpeg', 0.65);
+
+                    currentDepProofData = encodedImageText;
+                    previewEl.src = encodedImageText;
+                    previewEl.classList.remove('hide');
+                    statusEl.innerText = `Screenshot Selected: ${file.name.substring(0, 20)}`;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
 
         // --- MONETAG AD INTEGRATION HELPERS ---
         function initMonetagInApp() {
@@ -800,9 +850,9 @@
                 no_market: "No robots available.", no_task: "No tasks right now.", no_tx: "No transactions yet.",
                 dep_inst: "Deposit Instructions", wit_funds: "Withdraw Funds", sec_title: "Security & Platform Guide",
                 help_title: "Help & Support Inbox", help_p1: "Have an issue with deposits, withdrawals, robots, or referrals? Send a message below and it will go directly to the Admin Panel.", 
-                dep_i1: "Select payment method & copy number.", dep_i2: "Send exact amount from your app.", dep_i3: "Copy the Transaction ID (TrxID).", dep_i4: "Paste TrxID below and submit.",
+                dep_i1: "Select payment method & copy number.", dep_i2: "Send exact amount from your app.", dep_i3: "Copy the Transaction ID (TrxID) & take screenshot.", dep_i4: "Paste TrxID, upload proof screenshot & submit.",
                 loading: "Loading...", start_journey: "Start Your Journey", future_ai: "The future of AI automated mining.",
-                referral: "Referral Program", owned_btn: "OWNED", ready: "READY TO CLAIM", price_lbl: "Price",
+                referral: "Referral Program", owned_btn: "OWNED", ready: "READY TO CLAIM", price_lbl: "PRICE",
                 pend_dep: "Pending Deposits", pend_wit: "Pending Withdrawals", visit: "Visit", claim_now: "Claim Now", completed: "Completed",
                 tx_mining: "Mining Claim", tx_spin: "Spin Reward", tx_checkin: "Daily Check-In", tx_task: "Task Claim",
                 tx_deposit: "Deposit", tx_withdrawal: "Withdrawal", tx_purchase: "Robot Purchase", tx_refund: "Refund", tx_ref_comm: "Referral Commission", tx_signup_bonus: "Referral Signup Bonus",
@@ -811,7 +861,7 @@
                 plat_rules: "About NEXORA & Security Rules",
                 r1_title: "5. Anti-Fraud & Multiple Accounts Policy", r1_desc: "Creating multiple accounts on the same device/IP to abuse signup bonuses, using automated scripts/auto-clickers, or submitting fake deposit TrxIDs is strictly prohibited and will result in permanent account suspension.",
                 r2_title: "1. AI Robot Mining & 3-Hour Cycle", r2_desc: "When you purchase a robot from the Marketplace, it activates immediately. Free Starter Robots can be unlocked by watching 10 rewarded ads. Each mining cycle runs for 3 hours—even if you close the app, the timer continues counting. After 3 hours, click 'Claim' and watch a short ad to credit your wallet.",
-                r3_title: "3. Deposits & Fast Withdrawals", r3_desc: "Always send deposits to the exact number or QR code shown on the Deposit page and submit the valid Transaction ID (TrxID). Withdrawals are processed within 1–24 hours. If a withdrawal request is rejected by the admin, 100% of the amount is automatically refunded to your wallet balance.",
+                r3_title: "3. Deposits & Fast Withdrawals", r3_desc: "Always send deposits to the exact number or QR code shown on the Deposit page and submit the valid Transaction ID (TrxID) along with your screenshot proof. Withdrawals are processed within 1–24 hours. If a withdrawal request is rejected by the admin, 100% of the amount is automatically refunded to your wallet balance.",
                 r4_title: "4. Referral Bonus & Hourly Commission", r4_desc: "Every user receives a unique 6-character Referral Code. When a new user registers with your code, they get an instant Signup Bonus. Furthermore, whenever your referred user buys a robot and collects mining earnings, you automatically earn an hourly percentage commission!",
                 r5_title: "2. Daily Check-In, Spins & Tasks", r5_desc: "Check in daily to receive instant cash rewards plus 1 Free Spin. Completing 7 consecutive days unlocks the special Gift Box and 5 Bonus Spins (missing a day resets the streak). You can also visit social media links in the Tasks tab for 10 seconds to claim additional instant cash rewards.",
                 contact_admin: "Direct Admin Support Inbox", msg_ph: "Describe your issue or question in detail (include TrxID if related to deposit)...", send_msg: "Send Message to Admin",
@@ -829,8 +879,9 @@
                 sec_verified_tag: "100% Automated AI Cloud Mining Ecosystem",
                 sec_intro_desc: "NEXORA MINING is an advanced cloud-based AI robot mining platform. Our system allows users to rent automated mining robots that generate hourly rewards in BDT/USDT/INR, complete social media tasks, spin the lucky wheel, and build a passive income network through referrals.",
                 new_support_msg: "New Message to Admin", my_support_inbox: "My Support Inbox History", no_msg_yet: "No support messages sent yet.",
-                free_lbl: "FREE", watch_ad_btn: "Watch Ad", ad_progress_lbl: "Ad Unlock",
-                ad_skip_err: "Please watch the full ad to complete this action!", ad_block_err: "Ad failed to load. Please disable AdBlocker and try again."
+                free_lbl: "FREE", watch_ad_btn: "WATCH AD", ad_progress_lbl: "Ad Unlock",
+                ad_skip_err: "Please watch the full ad to complete this action!", ad_block_err: "Ad failed to load. Please disable AdBlocker and try again.",
+                upload_proof: "Select Payment Proof Screenshot", proof_req_err: "Please select a payment proof screenshot from gallery!"
             },
             bn: {
                 app_name: "নেক্সোরা", network: "মাইনিং নেটওয়ার্ক", sign_in: "লগইন", register: "নিবন্ধন",
@@ -841,14 +892,14 @@
                 wallet: "ওয়ালেট", avail_bal: "বর্তমান ব্যালেন্স", recent_tx: "সাম্প্রতিক লেনদেন", rob_own: "রোবটের সংখ্যা",
                 avail_spin: "ফ্রি স্পিন", sec_rules: "নিরাপত্তা ও প্ল্যাটফর্মের নিয়ম", help_sup: "হেল্প এবং সাপোর্ট ইনবক্স", logout: "লগআউট",
                 nav_home: "হোম", nav_buy: "কিনুন", nav_min: "রোবট", nav_task: "টাস্ক", nav_wal: "ওয়ালেট",
-                dur: "মেয়াদ:", days: "দিন", rate: "প্রতি ঘন্টায় আয়", hr: "ঘন্টা", buy_btn: "কিনুন", mining: "চলমান",
+                dur: "মেয়াদ:", days: "Days", rate: "Hourly Rate", hr: "hr", buy_btn: "BUY NOW", mining: "চলমান",
                 stopped: "বন্ধ", act_btn: "মাইনিং চালু করুন (৩ ঘন্টা)", collect: "ক্লেইম করুন", no_rob: "আপনার কোন রোবট নেই।",
                 no_market: "কোন রোবট নেই।", no_task: "কোন টাস্ক নেই।", no_tx: "কোন লেনদেন নেই।",
                 dep_inst: "ডিপোজিট নিয়মাবলী", wit_funds: "উত্তোলন করুন", sec_title: "নিরাপত্তা ও বিস্তারিত গাইড",
                 help_title: "হেল্প ও সাপোর্ট ইনবক্স", help_p1: "ডিপোজিট, উইথড্র, রোবট বা রেফারেল সংক্রান্ত যেকোনো সমস্যায় নিচে মেসেজ লিখুন। এটি সরাসরি অ্যাডমিন প্যানেলে চলে যাবে।", 
-                dep_i1: "পেমেন্ট মেথড সিলেক্ট করুন এবং নাম্বার কপি করুন।", dep_i2: "আপনার অ্যাপ থেকে সঠিক পরিমাণ টাকা পাঠান।", dep_i3: "ট্রানজেকশন আইডি (TrxID) কপি করুন।", dep_i4: "নিচে TrxID বসিয়ে সাবমিট করুন।",
+                dep_i1: "পেমেন্ট মেথড সিলেক্ট করুন এবং নাম্বার কপি করুন।", dep_i2: "আপনার অ্যাপ থেকে সঠিক পরিমাণ টাকা পাঠান।", dep_i3: "ট্রানজেকশন আইডি (TrxID) কপি করুন ও স্ক্রিনশট নিন।", dep_i4: "নিচে TrxID ও স্ক্রিনশট যুক্ত করে সাবমিট করুন।",
                 loading: "লোড হচ্ছে...", start_journey: "যাত্রা শুরু করুন", future_ai: "অটো মাইনিং এর ভবিষ্যৎ।",
-                referral: "রেফারেল প্রোগ্রাম", owned_btn: "আপনার আছে", ready: "ক্লেইম করার জন্য প্রস্তুত", price_lbl: "মূল্য",
+                referral: "রেফারেল প্রোগ্রাম", owned_btn: "OWNED", ready: "ক্লেইম করার জন্য প্রস্তুত", price_lbl: "PRICE",
                 pend_dep: "পেন্ডিং ডিপোজিট", pend_wit: "পেন্ডিং উত্তোলন", visit: "ভিজিট করুন", claim_now: "ক্লেম নাউ", completed: "সম্পন্ন",
                 tx_mining: "মাইনিং ক্লেইম", tx_spin: "স্পিন রিওয়ার্ড", tx_checkin: "ডেইলি চেক-ইন", tx_task: "টাস্ক ক্লেইম",
                 tx_deposit: "ডিপোজিট", tx_withdrawal: "উত্তোলন", tx_purchase: "রোবট ক্রয়", tx_refund: "রিফান্ড", tx_ref_comm: "রেফারেল কমিশন", tx_signup_bonus: "রেফারেল সাইনআপ বোনাস",
@@ -857,7 +908,7 @@
                 plat_rules: "নেক্সোরা সম্পর্কে ও সিকিউরিটি নিয়মাবলী",
                 r1_title: "৫. অ্যান্টি-ফ্রড এবং মাল্টিপল একাউন্ট পলিসি", r1_desc: "বোনাস নেওয়ার জন্য একই ডিভাইসে একাধিক একাউন্ট খোলা, অটো-ক্লিকার ব্যবহার করা বা ভুয়া TrxID দেওয়া সম্পূর্ণ নিষিদ্ধ। এতে একাউন্ট স্থায়ীভাবে ব্যান হবে।",
                 r2_title: "১. এআই রোবট মাইনিং ও ৩ ঘণ্টার সাইকেল", r2_desc: "মার্কেটপ্লেস থেকে রোবট কেনার সাথে সাথেই মাইনিং শুরু হয়। ফ্রি রোবটটি ১০টি বিজ্ঞাপন দেখে আনলক করা যায়। মাইনিং একটানা ৩ ঘণ্টা চলমান থাকে এবং অ্যাপ বন্ধ থাকলেও টাইম কাউন্ট বন্ধ হয় না। ৩ ঘণ্টা পর বিজ্ঞাপন দেখে ক্লেইম করে টাকা ওয়ালেটে যোগ করবেন।",
-                r3_title: "৩. ডিপোজিট এবং দ্রুত উইথড্রয়াল", r3_desc: "ডিপোজিট পেজে দেওয়া নাম্বারে বা কিউআর কোডে টাকা পাঠিয়ে সঠিক TrxID দিয়ে সাবমিট করুন। উইথড্র রিকোয়েস্ট ১-২৪ ঘণ্টার মধ্যে সম্পন্ন হয়। কোনো কারণে উইথড্র রিজেক্ট হলে সম্পূর্ণ টাকা অটোমেটিক আপনার ওয়ালেটে রিফান্ড হয়ে যাবে।",
+                r3_title: "৩. ডিপোজিট এবং দ্রুত উইথড্রয়াল", r3_desc: "ডিপোজিট পেজে দেওয়া নাম্বারে বা কিউআর কোডে টাকা পাঠিয়ে সঠিক TrxID ও স্ক্রিনশট দিয়ে সাবমিট করুন। উইথড্র রিকোয়েস্ট ১-২৪ ঘণ্টার মধ্যে সম্পন্ন হয়। কোনো কারণে উইথড্র রিজেক্ট হলে সম্পূর্ণ টাকা অটোমেটিক আপনার ওয়ালেটে রিফান্ড হয়ে যাবে।",
                 r4_title: "৪. রেফারেল বোনাস ও প্রতি ঘণ্টায় কমিশন", r4_desc: "প্রত্যেক ইউজারের জন্য একটি আলাদা ৬-অক্ষরের রেফারেল কোড থাকে। আপনার সঠিক কোড ব্যবহার করে কেউ সাইন-আপ করলেই সে সাইন-আপ বোনাস পাবে এবং সে রোবট কিনে মাইনিং কালেক্ট করলে আপনি আজীবন কমিশন পাবেন!",
                 r5_title: "২. ডেইলি চেক-ইন, স্পিন ও সোশ্যাল টাস্ক", r5_desc: "প্রতিদিন চেক-ইন করলে নগদ টাকা ও ১টি ফ্রি স্পিন পাবেন। টানা ৭ দিন চেক-ইন করলে ৭ম দিনে স্পেশাল গিফট বক্স ও ৫টি ফ্রি স্পিন পাবেন। এছাড়া টাস্ক পেজে ১০ সেকেন্ড লিংক ভিজিট করেও ইনস্ট্যান্ট রিওয়ার্ড আয় করতে পারবেন।",
                 contact_admin: "সরাসরি অ্যাডমিন সাপোর্ট ইনবক্স", msg_ph: "আপনার সমস্যার কথা বিস্তারিত লিখুন (ডিপোজিট সমস্যা হলে TrxID উল্লেখ করুন)...", send_msg: "অ্যাডমিনকে মেসেজ পাঠান",
@@ -875,8 +926,9 @@
                 sec_verified_tag: "১০০% অটোমেটেড এআই ক্লাউড মাইনিং ইকোসিস্টেম",
                 sec_intro_desc: "নেক্সোরা মাইনিং একটি আধুনিক ক্লাউড-ভিত্তিক এআই রোবট আর্নিং প্ল্যাটফর্ম। এখানে আপনি রোবট কিনে প্রতি ঘণ্টায় আয় করতে পারবেন, ডেইলি চেক-ইন ও স্পিন করতে পারবেন, সোশ্যাল মিডিয়া টাস্ক পূরণ করতে পারবেন এবং রেফার করে প্যাসিভ ইনকাম করতে পারবেন।",
                 new_support_msg: "অ্যাডমিনের কাছে নতুন মেসেজ", my_support_inbox: "আমার পাঠানো মেসেজ সমূহ", no_msg_yet: "এখনো কোনো মেসেজ পাঠানো হয়নি।",
-                free_lbl: "ফ্রি", watch_ad_btn: "বিজ্ঞাপন দেখুন", ad_progress_lbl: "বিজ্ঞাপন প্রগ্রেস",
-                ad_skip_err: "রিওয়ার্ড পেতে সম্পূর্ণ বিজ্ঞাপনটি দেখুন!", ad_block_err: "বিজ্ঞাপন লোড হয়নি। অনুগ্রহ করে অ্যাডব্লকার বন্ধ করে আবার চেষ্টা করুন।"
+                free_lbl: "ফ্রি", watch_ad_btn: "WATCH AD", ad_progress_lbl: "বিজ্ঞাপন প্রগ্রেস",
+                ad_skip_err: "রিওয়ার্ড পেতে সম্পূর্ণ বিজ্ঞাপনটি দেখুন!", ad_block_err: "বিজ্ঞাপন লোড হয়নি। অনুগ্রহ করে অ্যাডব্লকার বন্ধ করে আবার চেষ্টা করুন।",
+                upload_proof: "পেমেন্ট প্রুফ স্ক্রিনশট সিলেক্ট করুন", proof_req_err: "গ্যালারি থেকে পেমেন্ট প্রুফ স্ক্রিনশট সিলেক্ট করুন!"
             },
             hi: {
                 app_name: "नेक्सोरा", network: "माइनिंग नेटवर्क", sign_in: "साइन इन", register: "रजिस्टर",
@@ -887,14 +939,14 @@
                 wallet: "वॉलेट", avail_bal: "उपलब्ध बैलेंस", recent_tx: "हाल के लेनदेन", rob_own: "रोबोट स्वामित्व",
                 avail_spin: "उपलब्ध स्पिन", sec_rules: "सुरक्षा और प्लेटफ़ॉर्म नियम", help_sup: "मदद और सपोर्ट इनबॉक्स", logout: "लॉगआउट",
                 nav_home: "होम", nav_buy: "खरीदें", nav_min: "माइनर", nav_task: "टास्क", nav_wal: "वॉलेट",
-                dur: "अवधि:", days: "दिन", rate: "प्रति घंटा दर", hr: "घंटा", buy_btn: "खरीदें", mining: "माइनिंग चालू",
+                dur: "अवधि:", days: "Days", rate: "Hourly Rate", hr: "hr", buy_btn: "BUY NOW", mining: "माइनिंग चालू",
                 stopped: "रुका हुआ", act_btn: "माइनिंग शुरू करें (3H)", collect: "क्लेम करें", no_rob: "आपके पास कोई रोबोट नहीं है।",
                 no_market: "कोई रोबोट नहीं है।", no_task: "कोई टास्क नहीं है।", no_tx: "कोई लेनदेन नहीं है।",
                 dep_inst: "जमा करने के निर्देश", wit_funds: "फंड निकालें", sec_title: "सुरक्षा और नियम गाइड",
                 help_title: "मदद और सहायता इनबॉक्स", help_p1: "जमा, निकासी, रोबोट या रेफरल से संबंधित किसी भी समस्या के लिए नीचे संदेश भेजें। यह सीधे एडमिन पैनल में जाएगा।", 
-                dep_i1: "भुगतान विधि चुनें और नंबर कॉपी करें।", dep_i2: "सटीक राशि भेजें।", dep_i3: "लेनदेन आईडी कॉपी करें।", dep_i4: "आईडी पेस्ट करें और सबमिट करें।",
+                dep_i1: "भुगतान विधि चुनें और नंबर कॉपी करें।", dep_i2: "सटीक राशि भेजें।", dep_i3: "लेनदेन आईडी कॉपी करें और स्क्रीनशॉट लें।", dep_i4: "आईडी और स्क्रीनशॉट सबमिट करें।",
                 loading: "लोड हो रहा है...", start_journey: "अपनी यात्रा शुरू करें", future_ai: "AI स्वचालित माइनिंग।",
-                referral: "रेफरल प्रोग्राम", owned_btn: "स्वामित्व", ready: "क्लेम के लिए तैयार", price_lbl: "कीमत",
+                referral: "रेफरल प्रोग्राम", owned_btn: "OWNED", ready: "क्लेम के लिए तैयार", price_lbl: "PRICE",
                 pend_dep: "लंबित जमा", pend_wit: "लंबित निकासी", visit: "विजिट करें", claim_now: "दावा करें", completed: "पूरा हुआ",
                 tx_mining: "माइनिंग क्लेम", tx_spin: "स्पिन इनाम", tx_checkin: "दैनिक चेक-इन", tx_task: "टास्क क्लेम",
                 tx_deposit: "जमा", tx_withdrawal: "निकासी", tx_purchase: "रोबोट खरीद", tx_refund: "वापसी", tx_ref_comm: "रेफरल कमीशन", tx_signup_bonus: "साइनअप बोनस",
@@ -903,7 +955,7 @@
                 plat_rules: "नेक्सोरा और सुरक्षा नियम",
                 r1_title: "5. एकाधिक खाते और धोखाधड़ी नीति", r1_desc: "बोनस के लिए एक ही डिवाइस पर कई खाते बनाना या नकली TrxID सबमिट करना सख्त वर्जित है।",
                 r2_title: "1. AI रोबोट माइनिंग और 3-घंटे का चक्र", r2_desc: "रोबोट खरीदने के तुरंत बाद माइनिंग शुरू हो जाती है। फ्री रोबोट को 10 विज्ञापन देखकर अनलॉक किया जा सकता है। 3 घंटे के बाद विज्ञापन देखकर अपनी कमाई क्लेम करें।",
-                r3_title: "3. जमा और त्वरित निकासी", r3_desc: "हमेशा सही TrxID प्रदान करें। यदि कोई निकासी अस्वीकार कर दी जाती है, तो राशि तुरंत आपके वॉलेट में वापस कर दी जाती है।",
+                r3_title: "3. जमा और त्वरित निकासी", r3_desc: "हमेशा सही TrxID और स्क्रीनशॉट प्रदान करें। यदि कोई निकासी अस्वीकार कर दी जाती है, तो राशि तुरंत आपके वॉलेट में वापस कर दी जाती है।",
                 r4_title: "4. रेफरल बोनस और प्रति घंटा कमीशन", r4_desc: "जब कोई नया उपयोगकर्ता आपके कोड के साथ साइन अप करता है, तो उसे साइनअप बोनस मिलता है और आपको उसकी माइनिंग कमाई से कमीशन मिलता है!",
                 r5_title: "2. दैनिक चेक-इन, स्पिन और टास्क", r5_desc: "नकद और मुफ्त स्पिन पाने के लिए रोजाना चेक-इन करें। लगातार 7 दिनों तक चेक-इन करने पर विशेष गिफ्ट बॉक्स मिलता है।",
                 contact_admin: "एडमिन सपोर्ट इनबॉक्स", msg_ph: "अपनी समस्या का विस्तार से वर्णन करें...", send_msg: "एडमिन को संदेश भेजें",
@@ -921,8 +973,9 @@
                 sec_verified_tag: "100% स्वचालित एआई क्लाउड माइनिंग",
                 sec_intro_desc: "नेक्सोरा माइनिंग एक उन्नत एआई रोबोट माइनिंग प्लेटफॉर्म है जहां आप रोबोट किराए पर लेकर, टास्क पूरे करके और रेफरल के जरिए कमाई कर सकते हैं।",
                 new_support_msg: "एडमिन को नया संदेश", my_support_inbox: "मेरे भेजे गए संदेश", no_msg_yet: "अभी तक कोई संदेश नहीं भेजा गया।",
-                free_lbl: "फ्री", watch_ad_btn: "विज्ञापन देखें", ad_progress_lbl: "विज्ञापन प्रगति",
-                ad_skip_err: "इनाम पाने के लिए कृपया पूरा विज्ञापन देखें!", ad_block_err: "विज्ञापन लोড नहीं हुआ। कृपया एडब्लॉकर बंद करें।"
+                free_lbl: "फ्री", watch_ad_btn: "WATCH AD", ad_progress_lbl: "विज्ञापन प्रगति",
+                ad_skip_err: "इनाम पाने के लिए कृपया पूरा विज्ञापन देखें!", ad_block_err: "विज्ञापन लोड नहीं हुआ। कृपया एडब्लॉकर बंद करें।",
+                upload_proof: "पेমেন্ট प्रूफ स्क्रीनशॉट चुनें", proof_req_err: "कृपया गैलरी से पेमेंट प्रूफ स्क्रीनशॉट चुनें!"
             }
         };
         const t = (key) => translations[window.currentLang][key] || key;
@@ -1163,13 +1216,11 @@
                 }
             });
 
-            // Listen to Free Robot Ad Progress (0/10 to 10/10)
             onValue(ref(db, `users/${uid}/freeRobotAds`), snap => {
                 freeRobotAdProgress = snap.exists() ? snap.val() : {};
                 renderMarketplace();
             });
 
-            // Load All Robots From Admin Catalog
             onValue(ref(db, `robotCatalog`), snap => {
                 let tempMap = {};
                 if(snap.exists()) {
@@ -1181,9 +1232,9 @@
                 const hasFreeBot = Object.values(tempMap).some(bot => Number(bot.price || 0) === 0);
                 if(!hasFreeBot) {
                     tempMap['starter_free_bot'] = {
-                        name: 'Starter Bot',
+                        name: 'Free',
                         price: 0,
-                        duration: 3,
+                        duration: 2,
                         rewardRate: 5,
                         enabled: true,
                         isFreeStarter: true
@@ -1194,7 +1245,6 @@
                 renderMyRobots(); 
             });
 
-            // Load Owned Robots & Maintain Persistent 3-Hour Cloud Mining Cycle
             onValue(ref(db, `userRobots/${uid}`), snap => {
                 ownedRobotIds = [];
                 let activeRobotsData = [];
@@ -1217,7 +1267,6 @@
                 activeInterval = setInterval(renderMyRobots, 1000); 
             });
 
-            // Load Completed User Tasks
             onValue(ref(db, `userTasks/${uid}`), snap => {
                 completedTaskIds = [];
                 if(snap.exists()) {
@@ -1227,7 +1276,6 @@
                 renderTasks();
             });
 
-            // Load All Tasks From Admin Panel
             onValue(ref(db, `tasks`), snap => {
                 let tempTasks = {};
                 if(snap.exists()) {
@@ -1240,7 +1288,6 @@
                 renderTasks();
             });
 
-            // Load All Wallet Transactions
             onValue(ref(db, `walletTransactions/${uid}`), snap => {
                 let txns = [];
                 if(snap.exists()) {
@@ -1332,7 +1379,7 @@
             el('home-total-earned').innerText = formatMoney(userWallet.totalEarned);
         }
 
-        // Restored & Mobile-Responsive Premium Marketplace Card Design
+        // Exact Screenshot Matching Marketplace Robot Card
         function renderMarketplace() {
             let html = ''; const sym = getSym();
             const keys = Object.keys(allRobotsMap);
@@ -1345,74 +1392,53 @@
                     const priceNum = Number(r.price || 0);
                     const isFreeBot = priceNum <= 0;
                     const safeName = (r.name || 'AI Miner').replace(/'/g, "\\'");
+                    const adsWatched = Number(freeRobotAdProgress[key] || 0);
 
                     let btnHtml = '';
-                    let extraAdBarHtml = '';
-                    let priceBadgeHtml = '';
 
-                    if (isFreeBot) {
-                        const adsWatched = Number(freeRobotAdProgress[key] || 0);
-                        const pct = Math.min(100, (adsWatched / 10) * 100);
-                        priceBadgeHtml = `<div class="font-extrabold text-gold text-sm tracking-tight drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">${t('free_lbl')}</div>`;
-                        
-                        if (!isOwned) {
-                            extraAdBarHtml = `
-                            <div class="w-full mb-2.5 bg-navy/90 p-2 rounded-lg border border-gold/25">
-                                <div class="flex justify-between items-center text-[9px] font-bold mb-1">
-                                    <span class="text-textMuted uppercase">${t('ad_progress_lbl')}</span>
-                                    <span class="text-gold">${adsWatched}/10 Ads</span>
-                                </div>
-                                <div class="w-full bg-black/60 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-gradient-to-r from-gold to-emerald h-full transition-all duration-300" style="width:${pct}%"></div>
-                                </div>
-                            </div>`;
-                        }
-
-                        btnHtml = isOwned
-                            ? `<button disabled class="w-full bg-gray-800/80 border border-white/10 text-textMuted text-[11px] font-extrabold py-2.5 rounded-lg cursor-not-allowed uppercase tracking-wider">${t('owned_btn')}</button>`
-                            : `<button onclick="window.watchAdForFreeRobot('${key}', '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-gradient-to-r from-gold to-emerald text-navy text-[11px] font-extrabold py-2.5 rounded-lg hover:opacity-95 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> ${t('watch_ad_btn')} (${adsWatched}/10)</button>`;
+                    if (isOwned) {
+                        btnHtml = `<button disabled class="w-full bg-gray-800/80 border border-white/10 text-textMuted font-extrabold text-xs py-2.5 rounded-xl cursor-not-allowed uppercase tracking-wider">${t('owned_btn')}</button>`;
+                    } else if (isFreeBot && adsWatched < 10) {
+                        btnHtml = `
+                        <button onclick="window.watchAdForFreeRobot('${key}')" class="bot-buy-btn">
+                            <i data-lucide="play-circle" class="w-3.5 h-3.5 stroke-[2.5]"></i>
+                            <span>${t('watch_ad_btn')} (${adsWatched}/10)</span>
+                        </button>`;
                     } else {
-                        priceBadgeHtml = `<div class="font-extrabold text-white text-sm tracking-tight drop-shadow-[0_0_8px_rgba(0,240,255,0.4)]"><span class="text-electric text-xs mr-0.5">${sym}</span>${formatMoney(priceNum)}</div>`;
-
-                        btnHtml = isOwned 
-                            ? `<button disabled class="w-full bg-gray-800/80 border border-white/10 text-textMuted text-[11px] font-extrabold py-2.5 rounded-lg cursor-not-allowed uppercase tracking-wider">${t('owned_btn')}</button>`
-                            : `<button onclick="window.purchaseRobot('${key}', ${priceNum}, '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-electric text-navy text-[11px] font-extrabold py-2.5 rounded-lg hover:bg-cyan-300 transition glow-btn uppercase tracking-wider">${t('buy_btn')}</button>`;
+                        btnHtml = `
+                        <button onclick="window.purchaseRobot('${key}', ${priceNum}, '${safeName}', ${Number(r.rewardRate || 0)})" class="bot-buy-btn">
+                            <i data-lucide="zap" class="w-3.5 h-3.5 stroke-[2.5]"></i>
+                            <span>${t('buy_btn')}</span>
+                        </button>`;
                     }
 
                     html += `
-                    <div class="robot-card-bg ${isFreeBot ? 'free-card-bg' : ''} p-3.5 h-full group">
-                        <div class="relative z-10 flex flex-col items-center text-center w-full">
-                            <!-- Top Status & Duration Row -->
-                            <div class="w-full flex justify-between items-center mb-2">
-                                <span class="text-[9px] font-bold text-textMuted bg-navy/80 px-2 py-0.5 rounded-md border border-white/10">
-                                    ${r.duration || 30} ${t('days')}
-                                </span>
-                                <span class="w-2 h-2 rounded-full ${isFreeBot ? 'bg-gold shadow-[0_0_8px_#fbbf24]' : 'bg-electric shadow-[0_0_8px_#00f0ff]'}"></span>
+                    <div class="bot-market-card">
+                        <!-- Top Row: Icon Box + Name & Duration -->
+                        <div class="flex items-center gap-2.5">
+                            <div class="bot-icon-box">
+                                <i data-lucide="bot" class="w-5 h-5 text-electric"></i>
                             </div>
-
-                            <!-- Centered Robot Icon -->
-                            <div class="robot-icon-box ${isFreeBot ? 'free-icon-box' : ''} group-hover:scale-105 transition-transform">
-                                <i data-lucide="bot" class="w-6 h-6 ${isFreeBot ? 'text-gold' : 'text-electric'}"></i>
+                            <div class="min-w-0">
+                                <h3 class="font-extrabold text-white text-sm leading-tight truncate">${r.name || 'Robot'}</h3>
+                                <p class="text-[11px] text-textMuted font-medium mt-0.5">${r.duration || 15} ${t('days')}</p>
                             </div>
-
-                            <!-- Robot Name -->
-                            <h3 class="font-extrabold text-white text-sm leading-tight line-clamp-1 mb-2 w-full">${r.name || 'Robot'}</h3>
-
-                            <!-- Hourly Rate Pill -->
-                            <div class="w-full bg-navy/85 py-1.5 px-2 rounded-lg border border-white/5 mb-2.5 shadow-inner">
-                                <div class="text-[9px] text-textMuted uppercase tracking-wider">${t('rate')}</div>
-                                <div class="text-xs font-extrabold text-emerald mt-0.5">${sym}${formatMoney(r.rewardRate)}/${t('hr')}</div>
-                            </div>
-
-                            ${extraAdBarHtml}
                         </div>
 
-                        <!-- Aligned Bottom Footer: Price + Action Button -->
-                        <div class="pt-2.5 border-t border-white/10 flex flex-col gap-2 relative z-10 w-full mt-auto">
-                            <div class="flex justify-between items-center px-1">
-                                <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider">${t('price_lbl')}</span>
-                                ${priceBadgeHtml}
+                        <!-- Middle Dark Box: Hourly Rate & Price -->
+                        <div class="bot-stats-inner space-y-2">
+                            <div class="flex justify-between items-center text-[11px]">
+                                <span class="text-textMuted font-medium">${t('rate')}</span>
+                                <span class="font-extrabold text-emerald">${sym}${formatMoney(r.rewardRate)}/${t('hr')}</span>
                             </div>
+                            <div class="border-t border-white/5 pt-2 flex justify-between items-center">
+                                <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider">${t('price_lbl')}</span>
+                                <span class="font-extrabold text-white text-sm"><span class="text-electric text-xs mr-0.5">${sym}</span>${formatMoney(priceNum)}</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Action Button -->
+                        <div>
                             ${btnHtml}
                         </div>
                     </div>`;
@@ -1422,39 +1448,21 @@
             safeCreateIcons();
         }
 
-        // Watch 10 Ads to Unlock Free Robot
-        window.watchAdForFreeRobot = async (robotId, name, rewardRate) => {
+        // Watch 10 Ads to Unlock BUY NOW Button for Free Robot
+        window.watchAdForFreeRobot = async (robotId) => {
             if(ownedRobotIds.includes(robotId)) return window.showToast("You already own this robot!", "error");
             
             const adWatched = await triggerMonetagAd('interstitial');
             if(!adWatched) return;
 
-            const currentCount = Number(freeRobotAdProgress[robotId] || 0) + 1;
+            const currentCount = Math.min(10, Number(freeRobotAdProgress[robotId] || 0) + 1);
 
             try {
+                await set(ref(db, `users/${currentUser.uid}/freeRobotAds/${robotId}`), currentCount);
                 if(currentCount >= 10) {
-                    const nowMs = Date.now();
-                    await set(ref(db, `users/${currentUser.uid}/freeRobotAds/${robotId}`), 10);
-                    await push(ref(db, `userRobots/${currentUser.uid}`), {
-                        robotId: robotId,
-                        robotName: name,
-                        rewardRate: Number(rewardRate || 0),
-                        status: 'mining',
-                        purchasedAt: nowMs,
-                        lastActivatedAt: nowMs,
-                        cycleEndsAt: nowMs + THREE_HOURS_MS
-                    });
-                    await push(ref(db, `walletTransactions/${currentUser.uid}`), {
-                        type: 'purchase',
-                        amount: 0,
-                        status: 'successful',
-                        createdAt: nowMs
-                    });
-                    window.showToast("10/10 Ads Completed! Free Robot Activated!", "success");
-                    window.switchTab('my-robots');
+                    window.showToast("10/10 Ads Completed! Click BUY NOW to activate your free robot!", "success");
                 } else {
-                    await set(ref(db, `users/${currentUser.uid}/freeRobotAds/${robotId}`), currentCount);
-                    window.showToast(`Ad Watched (${currentCount}/10)! Watch ${10 - currentCount} more to unlock.`, "success");
+                    window.showToast(`Ad Watched (${currentCount}/10)! Watch ${10 - currentCount} more to unlock BUY NOW.`, "success");
                 }
             } catch(e) {
                 window.showToast("Failed to update progress.", "error");
@@ -1636,12 +1644,19 @@
         // --- FEATURE ACTIONS ---
         window.purchaseRobot = async (robotId, price, name, rewardRate) => {
             if(ownedRobotIds.includes(robotId)) return window.showToast("You already own this robot!", "error");
+            const priceNum = Number(price || 0);
+            if(priceNum <= 0 && Number(freeRobotAdProgress[robotId] || 0) < 10) {
+                return window.showToast("Please watch 10 ads first to unlock this free robot!", "error");
+            }
+
             const curBal = Number(userWallet.cachedBalance || 0);
-            if(curBal < price) return window.showToast(`Insufficient balance.`, "error");
+            if(curBal < priceNum) return window.showToast(`Insufficient balance.`, "error");
             
             const nowMs = Date.now();
             try {
-                await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: curBal - price });
+                if(priceNum > 0) {
+                    await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: curBal - priceNum });
+                }
                 await push(ref(db, `userRobots/${currentUser.uid}`), {
                     robotId: robotId,
                     robotName: name,
@@ -1653,11 +1668,11 @@
                 });
                 await push(ref(db, `walletTransactions/${currentUser.uid}`), {
                     type: 'purchase',
-                    amount: Number(price),
+                    amount: priceNum,
                     status: 'successful',
                     createdAt: nowMs
                 });
-                window.showToast("Robot purchased! 3-Hour Mining started.", "success");
+                window.showToast("Robot activated! 3-Hour Mining started.", "success");
                 window.switchTab('my-robots');
             } catch(e) { window.showToast("Purchase failed.", "error"); }
         };
@@ -1843,16 +1858,21 @@
         window.submitDeposit = async () => {
             const amt = parseFloat(el('dep-amount').value); const baseAmt = amt / RATES[window.currentCurrency];
             if(baseAmt < appSettings.minDeposit) return window.showToast(`Min deposit is ${getSym()}${formatMoney(appSettings.minDeposit)}`, "error");
+            if(!currentDepProofData) return window.showToast(t('proof_req_err'), "error");
 
             try {
                 await push(ref(db, `depositRequests/${currentUser.uid}`), {
                     paymentMethod: el('dep-method').value,
                     amount: baseAmt,
                     paymentReference: el('dep-ref').value,
+                    proofObbData: currentDepProofData,
                     status: 'pending',
                     createdAt: Date.now()
                 });
-                window.showToast("Deposit request sent.", "success"); el('form-deposit').reset(); window.closePage('page-deposit', 'side');
+                currentDepProofData = null;
+                el('dep-proof-preview').classList.add('hide');
+                el('dep-file-status').innerText = "Tap to choose from Gallery";
+                window.showToast("Deposit request & proof sent.", "success"); el('form-deposit').reset(); window.closePage('page-deposit', 'side');
             } catch(e) { window.showToast("Error processing request.", "error"); }
         };
 
@@ -1872,7 +1892,7 @@
                     status: 'pending',
                     createdAt: Date.now()
                 });
-                window.showToast("Withdrawal requested.", "success"); el('form-withdraw').reset(); window.closeModals();
+                window.showToast("Withdrawal request submitted.", "success"); el('form-withdraw').reset(); window.closeModals();
             } catch(e) { window.showToast("Error processing withdrawal.", "error"); }
         };
 
@@ -1915,7 +1935,7 @@
                 if(checkInStatus.lastCheckIn && msDiff > (48 * 60 * 60 * 1000)) currentStreak = 0; 
             }
             for(let i=1; i<=7; i++) {
-                let classes = 'checkin-day'; let icon = 'check'; let text = `${t('days')} ${i}`;
+                let classes = 'checkin-day'; let icon = 'check'; let text = `Day ${i}`;
                 if(i === 7) { classes += ' checkin-day-7'; icon = 'gift'; text = `Gift Box`; }
                 if(i <= currentStreak) classes += ' claimed';
                 else if (i === currentStreak + 1 && canClaim) classes += ' today';
