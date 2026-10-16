@@ -92,7 +92,8 @@
         #toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
 
         .task-icon-wrapper { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .task-card { background: #11192b; border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; padding: 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .task-card { background: #11192b; border: 1px solid rgba(255,255,255,0.06); border-radius: 1rem; padding: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: border-color 0.2s ease; }
+        .task-card:hover { border-color: rgba(0, 240, 255, 0.25); }
     </style>
 </head>
 <body>
@@ -238,15 +239,21 @@
 
                 <!-- MY ROBOTS -->
                 <div id="tab-my-robots" class="view-section hide px-5 py-4 space-y-4">
-                    <h2 class="text-2xl font-extrabold text-white mb-4 tracking-tight" data-i18n="my_miners">My Miners</h2>
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="my_miners">My Miners</h2>
+                        <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-emerald/10 text-emerald border border-emerald/20">3H Auto Cycle</span>
+                    </div>
                     <div id="my-robots-container" class="space-y-4">
                         <div class="p-10 text-center text-sm text-textMuted glass-card" data-i18n="loading">Loading your miners...</div>
                     </div>
                 </div>
 
-                <!-- TASKS -->
+                <!-- TASKS (Dynamic Full Catalog like Marketplace) -->
                 <div id="tab-tasks" class="view-section hide px-5 py-4 space-y-4">
-                    <h2 class="text-2xl font-extrabold text-white mb-4 tracking-tight" data-i18n="tasks">Tasks & Rewards</h2>
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="tasks">Tasks & Rewards</h2>
+                        <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-gold/10 text-gold border border-gold/20" id="tasks-count-badge">0 Tasks</span>
+                    </div>
                     <div id="tasks-container" class="space-y-3">
                         <div class="p-10 text-center text-sm text-textMuted glass-card" data-i18n="loading">Loading tasks...</div>
                     </div>
@@ -287,8 +294,11 @@
                     </div>
 
                     <div>
-                        <h3 class="font-bold text-sm mb-3 text-white" data-i18n="recent_tx">Recent Transactions</h3>
-                        <div class="glass-card p-0 overflow-hidden shadow-md" id="wallet-full-history">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-sm text-white" data-i18n="recent_tx">Recent Transactions</h3>
+                            <span class="text-[10px] text-textMuted" id="tx-total-count">All Activity</span>
+                        </div>
+                        <div class="glass-card p-0 overflow-hidden shadow-md divide-y divide-white/5" id="wallet-full-history">
                             <div class="p-8 text-center text-sm text-textMuted" data-i18n="loading">Loading...</div>
                         </div>
                     </div>
@@ -396,14 +406,13 @@
         </div>
     </div>
 
-    <!-- REFERRAL PAGE (Active & Detailed Layout) -->
+    <!-- REFERRAL PAGE -->
     <div id="page-referral" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-y-full">
         <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20 shadow-md">
             <button onclick="window.closePage('page-referral', 'down')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10 transition"><i data-lucide="chevron-down" class="w-5 h-5"></i></button>
             <h2 class="text-lg font-bold text-white" data-i18n="referral">Referral Program</h2>
         </header>
         <div class="flex-1 overflow-y-auto p-5 pb-12 space-y-5 no-scrollbar">
-            <!-- Hero Banner -->
             <div class="glass-card p-6 text-center border border-gold/30 shadow-[0_0_25px_rgba(251,191,36,0.15)] relative overflow-hidden">
                 <div class="absolute right-[-20%] top-[-20%] w-[60%] h-[100%] bg-gold/10 blur-[40px] rounded-full"></div>
                 <div class="w-16 h-16 rounded-2xl bg-gold/15 border border-gold/30 flex items-center justify-center mx-auto mb-3 relative z-10 shadow-[0_0_20px_rgba(251,191,36,0.3)]">
@@ -414,7 +423,6 @@
                 </h3>
                 <p class="text-xs text-textMuted mb-5 relative z-10 leading-relaxed" data-i18n="ref_desc">Share your unique code with friends! When they sign up using your code, they get an instant Signup Bonus, and you earn hourly commission every time they collect robot mining rewards.</p>
                 
-                <!-- Bonus Highlight Pills -->
                 <div class="grid grid-cols-2 gap-2.5 mb-5 relative z-10">
                     <div class="bg-navy/70 border border-emerald/20 rounded-xl p-2.5 text-center">
                         <div class="text-[10px] text-textMuted uppercase font-semibold" data-i18n="friend_gets">Friend Signup Bonus</div>
@@ -426,7 +434,6 @@
                     </div>
                 </div>
 
-                <!-- Unique Referral Code Box -->
                 <div class="text-[10px] uppercase tracking-widest text-textMuted font-bold mb-1.5 relative z-10" data-i18n="your_ref_code">Your Unique Referral Code</div>
                 <div class="bg-black/50 border border-electric/30 rounded-xl p-3.5 flex justify-between items-center relative z-10 shadow-inner">
                     <span class="text-2xl font-extrabold text-electric tracking-[0.25em] font-mono pl-2" id="ref-my-code">------</span>
@@ -438,7 +445,6 @@
                 </div>
             </div>
             
-            <!-- Live Referral Stats -->
             <div class="grid grid-cols-2 gap-4">
                 <div class="glass-card p-5 text-center shadow-md border border-white/10">
                     <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-2 text-blue-400"><i data-lucide="user-check" class="w-5 h-5"></i></div>
@@ -452,9 +458,8 @@
                 </div>
             </div>
 
-            <!-- How Referral Works Step-by-Step -->
             <div class="glass-card p-5 border border-white/5 space-y-3">
-                <h4 class="text-sm font-bold text-white flex items-center gap-2"><i data-lucide="Sparkles" class="w-4 h-4 text-gold"></i> <span data-i18n="how_ref_works">How Referral Works</span></h4>
+                <h4 class="text-sm font-bold text-white flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-gold"></i> <span data-i18n="how_ref_works">How Referral Works</span></h4>
                 <div class="space-y-2.5 text-xs text-textMuted">
                     <div class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-electric/10 text-electric font-bold flex items-center justify-center shrink-0 text-[10px]">1</span><p data-i18n="ref_step_1">Copy your unique referral code above and share it with your friends.</p></div>
                     <div class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-electric/10 text-electric font-bold flex items-center justify-center shrink-0 text-[10px]">2</span><p data-i18n="ref_step_2">When your friend registers using your valid code, they immediately receive the Signup Bonus in their wallet.</p></div>
@@ -464,7 +469,7 @@
         </div>
     </div>
 
-    <!-- SECURITY & PLATFORM DETAILS PAGE (Comprehensive Details) -->
+    <!-- SECURITY & PLATFORM DETAILS PAGE -->
     <div id="page-security" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-y-full">
         <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20 shadow-md">
             <button onclick="window.closePage('page-security', 'down')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10 transition"><i data-lucide="chevron-down" class="w-5 h-5"></i></button>
@@ -473,7 +478,6 @@
         <div class="flex-1 overflow-y-auto p-5 pb-12 space-y-5 text-sm text-textMuted bg-cardSolid relative no-scrollbar">
             <div class="absolute right-0 top-0 w-64 h-64 bg-emerald/5 blur-[80px] rounded-full pointer-events-none"></div>
             <div class="relative z-10 space-y-5">
-                <!-- Platform Overview Banner -->
                 <div class="glass-card p-5 border border-emerald/30 bg-gradient-to-br from-emerald/10 to-transparent">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="w-10 h-10 rounded-xl bg-emerald/20 flex items-center justify-center text-emerald shrink-0"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
@@ -485,11 +489,10 @@
                     <p class="text-xs leading-relaxed text-slate-300" data-i18n="sec_intro_desc">NEXORA MINING is an advanced cloud-based AI robot mining platform. Our system allows users to rent automated mining robots that generate hourly rewards in BDT/USDT/INR, complete social media tasks, spin the lucky wheel, and build a passive income network through referrals.</p>
                 </div>
                 
-                <!-- Detailed Rules & Complete Website Guide -->
                 <div class="glass-card p-5 border border-white/5 shadow-sm space-y-4 divide-y divide-white/5">
                     <div class="pt-1">
                         <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4 text-electric"></i> <span data-i18n="r2_title">1. AI Robot Mining & 3-Hour Cycle</span></h4>
-                        <p class="text-xs leading-relaxed" data-i18n="r2_desc">When you purchase a robot from the Marketplace, it activates immediately. Each mining cycle runs for 3 hours. After 3 hours, the status becomes READY—simply click 'Collect' to add the earnings to your wallet, then click 'Activate' to start the next 3-hour cycle. Each robot can be owned once per account.</p>
+                        <p class="text-xs leading-relaxed" data-i18n="r2_desc">When you purchase a robot from the Marketplace, it activates immediately. Each mining cycle runs for 3 hours—even if you close the app or leave the browser, the timer continues counting in the cloud. After 3 hours, the status becomes READY—simply click 'Collect' to add the earnings to your wallet, then click 'Activate' to start the next 3-hour cycle.</p>
                     </div>
                     <div class="pt-4">
                         <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="calendar-check" class="w-4 h-4 text-emerald"></i> <span data-i18n="r5_title">2. Daily Check-In, Spins & Tasks</span></h4>
@@ -512,7 +515,7 @@
         </div>
     </div>
 
-    <!-- SUPPORT PAGE (With Direct Admin Inbox & Live History) -->
+    <!-- SUPPORT PAGE -->
     <div id="page-support" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-y-full">
         <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20 shadow-md">
             <button onclick="window.closePage('page-support', 'down')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10 transition"><i data-lucide="chevron-down" class="w-5 h-5"></i></button>
@@ -526,7 +529,6 @@
                 <p data-i18n="help_p1" class="text-xs text-textMuted relative z-10">Have an issue with deposits, withdrawals, robots, or referrals? Send a message below and it will go directly to the Admin Panel.</p>
             </div>
 
-            <!-- Send Message Form -->
             <div class="glass-card p-4 border border-white/10 space-y-3">
                 <label class="text-xs font-bold text-white uppercase tracking-wider block" data-i18n="new_support_msg">New Message to Admin</label>
                 <textarea id="support-msg" class="input-dark w-full min-h-[110px] resize-none shadow-inner text-sm" data-i18n="msg_ph" placeholder="Describe your issue or question in detail (include TrxID if related to deposit)..."></textarea>
@@ -535,7 +537,6 @@
                 </button>
             </div>
 
-            <!-- User's Sent Support Inbox History -->
             <div>
                 <h4 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3" data-i18n="my_support_inbox">My Support Inbox History</h4>
                 <div id="user-support-history" class="space-y-2.5">
@@ -549,7 +550,7 @@
     <div id="modal-checkin" class="hide fixed inset-0 z-[250] flex flex-col justify-center items-center bg-black/80 backdrop-blur-md opacity-0 transition-opacity duration-300 w-full h-full">
         <div class="glass-card w-[90%] max-w-[360px] p-6 flex flex-col items-center relative transform scale-95 transition-transform duration-300 shadow-2xl border border-emerald/30">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <div class="w-16 h-16 rounded-full bg-emerald/10 flex items-center justify-center mb-3 shadow-[0_0_20px_rgba(0,255,135,0.3)]"><i data-lucide="calendar-gift" class="w-8 h-8 text-emerald drop-shadow-[0_0_10px_rgba(0,255,135,0.8)]"></i></div>
+            <div class="w-16 h-16 rounded-full bg-emerald/10 flex items-center justify-center mb-3 shadow-[0_0_20px_rgba(0,255,135,0.3)]"><i data-lucide="calendar-check" class="w-8 h-8 text-emerald drop-shadow-[0_0_10px_rgba(0,255,135,0.8)]"></i></div>
             <h3 class="text-2xl font-extrabold text-white mb-1 tracking-tight" data-i18n="checkin">Daily Check-In</h3>
             <p class="text-xs text-textMuted mb-6 text-center" data-i18n="checkin_sub">Earn Cash & Spins</p>
             <div class="checkin-grid w-full mb-8" id="checkin-grid"></div>
@@ -610,7 +611,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getDatabase, ref, onValue, set, push, update, serverTimestamp, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getDatabase, ref, onValue, set, push, update, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDEz88Sx7BdGOQ2ZHG_z_XBKntOhS3XJK8", authDomain: "rewardsapp-395d0.firebaseapp.com",
@@ -622,15 +623,20 @@
         const db = getDatabase(app);
 
         // --- GLOBAL VARIABLES ---
+        const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
         let currentUser = null;
         let userWallet = { cachedBalance: 0, totalEarned: 0 };
         let checkInStatus = { streak: 0, lastCheckIn: 0, spins: 0 };
-        let ownedRobotIds = []; let allRobotsMap = {};
+        let ownedRobotIds = [];
+        let allRobotsMap = {};
+        let allTasksMap = {};
         let appSettings = { minDeposit: 100, minWithdraw: 100, day7Reward: 10, checkinReward: 2, signupBonus: 50, refCommission: 5 };
         let paymentMethodsData = [];
         let activeInterval = null;
         let completedTaskIds = [];
-        let pendingDepositsList = []; let pendingWithdrawalsList = [];
+        let taskTimersState = {}; // Preserves 10s countdown across live re-renders
+        let pendingDepositsList = [];
+        let pendingWithdrawalsList = [];
         let mySupportMessages = [];
 
         // --- OFFICIAL SOCIAL MEDIA DATA ---
@@ -679,21 +685,21 @@
                 avail_spin: "Available Spins", sec_rules: "Security & Platform Rules", help_sup: "Help & Support Inbox", logout: "Secure Logout",
                 nav_home: "Home", nav_buy: "Buy", nav_min: "Miners", nav_task: "Tasks", nav_wal: "Wallet",
                 dur: "Duration", days: "Days", rate: "Hourly Rate", hr: "hr", buy_btn: "BUY NOW", mining: "MINING",
-                stopped: "STOPPED", act_btn: "Activate", collect: "Collect", no_rob: "You don't own any robots yet.",
+                stopped: "STOPPED", act_btn: "Start Mining (3H)", collect: "Claim", no_rob: "You don't own any robots yet.",
                 no_market: "No robots available.", no_task: "No tasks right now.", no_tx: "No transactions yet.",
                 dep_inst: "Deposit Instructions", wit_funds: "Withdraw Funds", sec_title: "Security & Platform Guide",
                 help_title: "Help & Support Inbox", help_p1: "Have an issue with deposits, withdrawals, robots, or referrals? Send a message below and it will go directly to the Admin Panel.", 
                 dep_i1: "Select payment method & copy number.", dep_i2: "Send exact amount from your app.", dep_i3: "Copy the Transaction ID (TrxID).", dep_i4: "Paste TrxID below and submit.",
                 loading: "Loading...", start_journey: "Start Your Journey", future_ai: "The future of AI automated mining.",
-                referral: "Referral Program", owned_btn: "OWNED", ready: "READY", price_lbl: "Price",
+                referral: "Referral Program", owned_btn: "OWNED", ready: "READY TO CLAIM", price_lbl: "Price",
                 pend_dep: "Pending Deposits", pend_wit: "Pending Withdrawals", visit: "Visit", claim_now: "Claim Now", completed: "Completed",
-                tx_mining: "Mining Reward", tx_spin: "Spin Reward", tx_checkin: "Daily Check-in", tx_task: "Task Reward",
+                tx_mining: "Mining Claim", tx_spin: "Spin Reward", tx_checkin: "Daily Check-In", tx_task: "Task Claim",
                 tx_deposit: "Deposit", tx_withdrawal: "Withdrawal", tx_purchase: "Robot Purchase", tx_refund: "Refund", tx_ref_comm: "Referral Commission", tx_signup_bonus: "Referral Signup Bonus",
                 err_login: "Incorrect email or password.", err_email_use: "Email is already registered.", err_weak: "Password is too weak (min 6 chars).", err_invalid: "Invalid email format.",
                 ref_ph: "Referral Code (Optional)", sel_pay: "Select Method...", acc_num: "Account Number", send_pay: "Send payment to:",
                 plat_rules: "About NEXORA & Security Rules",
                 r1_title: "5. Anti-Fraud & Multiple Accounts Policy", r1_desc: "Creating multiple accounts on the same device/IP to abuse signup bonuses, using automated scripts/auto-clickers, or submitting fake deposit TrxIDs is strictly prohibited and will result in permanent account suspension.",
-                r2_title: "1. AI Robot Mining & 3-Hour Cycle", r2_desc: "When you purchase a robot from the Marketplace, it activates immediately. Each mining cycle runs for 3 hours. After 3 hours, the status becomes READY—simply click 'Collect' to add the earnings to your wallet, then click 'Activate' to start the next 3-hour cycle. Each robot can be owned once per account.",
+                r2_title: "1. AI Robot Mining & 3-Hour Cycle", r2_desc: "When you purchase a robot from the Marketplace, it activates immediately. Each mining cycle runs for 3 hours—even if you close the app or leave the browser, the timer continues counting in the cloud. After 3 hours, the status becomes READY—simply click 'Claim' to add the earnings to your wallet, then click 'Start Mining' to begin the next 3-hour cycle.",
                 r3_title: "3. Deposits & Fast Withdrawals", r3_desc: "Always send deposits to the exact number or QR code shown on the Deposit page and submit the valid Transaction ID (TrxID). Withdrawals are processed within 1–24 hours. If a withdrawal request is rejected by the admin, 100% of the amount is automatically refunded to your wallet balance.",
                 r4_title: "4. Referral Bonus & Hourly Commission", r4_desc: "Every user receives a unique 6-character Referral Code. When a new user registers with your code, they get an instant Signup Bonus. Furthermore, whenever your referred user buys a robot and collects mining earnings, you automatically earn an hourly percentage commission!",
                 r5_title: "2. Daily Check-In, Spins & Tasks", r5_desc: "Check in daily to receive instant cash rewards plus 1 Free Spin. Completing 7 consecutive days unlocks the special Gift Box and 5 Bonus Spins (missing a day resets the streak). You can also visit social media links in the Tasks tab for 10 seconds to claim additional instant cash rewards.",
@@ -723,21 +729,21 @@
                 avail_spin: "ফ্রি স্পিন", sec_rules: "নিরাপত্তা ও প্ল্যাটফর্মের নিয়ম", help_sup: "হেল্প এবং সাপোর্ট ইনবক্স", logout: "লগআউট",
                 nav_home: "হোম", nav_buy: "কিনুন", nav_min: "রোবট", nav_task: "টাস্ক", nav_wal: "ওয়ালেট",
                 dur: "মেয়াদ:", days: "দিন", rate: "প্রতি ঘন্টায় আয়", hr: "ঘন্টা", buy_btn: "কিনুন", mining: "চলমান",
-                stopped: "বন্ধ", act_btn: "চালু করুন", collect: "সংগ্রহ করুন", no_rob: "আপনার কোন রোবট নেই।",
+                stopped: "বন্ধ", act_btn: "মাইনিং চালু করুন (৩ ঘন্টা)", collect: "ক্লেইম করুন", no_rob: "আপনার কোন রোবট নেই।",
                 no_market: "কোন রোবট নেই।", no_task: "কোন টাস্ক নেই।", no_tx: "কোন লেনদেন নেই।",
                 dep_inst: "ডিপোজিট নিয়মাবলী", wit_funds: "উত্তোলন করুন", sec_title: "নিরাপত্তা ও বিস্তারিত গাইড",
                 help_title: "হেল্প ও সাপোর্ট ইনবক্স", help_p1: "ডিপোজিট, উইথড্র, রোবট বা রেফারেল সংক্রান্ত যেকোনো সমস্যায় নিচে মেসেজ লিখুন। এটি সরাসরি অ্যাডমিন প্যানেলে চলে যাবে।", 
                 dep_i1: "পেমেন্ট মেথড সিলেক্ট করুন এবং নাম্বার কপি করুন।", dep_i2: "আপনার অ্যাপ থেকে সঠিক পরিমাণ টাকা পাঠান।", dep_i3: "ট্রানজেকশন আইডি (TrxID) কপি করুন।", dep_i4: "নিচে TrxID বসিয়ে সাবমিট করুন।",
                 loading: "লোড হচ্ছে...", start_journey: "যাত্রা শুরু করুন", future_ai: "অটো মাইনিং এর ভবিষ্যৎ।",
-                referral: "রেফারেল প্রোগ্রাম", owned_btn: "আপনার আছে", ready: "প্রস্তুত", price_lbl: "মূল্য",
+                referral: "রেফারেল প্রোগ্রাম", owned_btn: "আপনার আছে", ready: "ক্লেইম করার জন্য প্রস্তুত", price_lbl: "মূল্য",
                 pend_dep: "পেন্ডিং ডিপোজিট", pend_wit: "পেন্ডিং উত্তোলন", visit: "ভিজিট করুন", claim_now: "ক্লেম নাউ", completed: "সম্পন্ন",
-                tx_mining: "মাইনিং রিওয়ার্ড", tx_spin: "স্পিন রিওয়ার্ড", tx_checkin: "ডেলি চেকিং", tx_task: "টাস্ক রিওয়ার্ড",
+                tx_mining: "মাইনিং ক্লেইম", tx_spin: "স্পিন রিওয়ার্ড", tx_checkin: "ডেইলি চেক-ইন", tx_task: "টাস্ক ক্লেইম",
                 tx_deposit: "ডিপোজিট", tx_withdrawal: "উত্তোলন", tx_purchase: "রোবট ক্রয়", tx_refund: "রিফান্ড", tx_ref_comm: "রেফারেল কমিশন", tx_signup_bonus: "রেফারেল সাইনআপ বোনাস",
                 err_login: "ভুল ইমেইল বা পাসওয়ার্ড।", err_email_use: "এই ইমেইল দিয়ে ইতিমধ্যে অ্যাকাউন্ট খোলা হয়েছে।", err_weak: "পাসওয়ার্ড খুবই দুর্বল (কমপক্ষে ৬ অক্ষর)।", err_invalid: "ইমেইল সঠিক নয়।",
                 ref_ph: "রেফারেল কোড (ঐচ্ছিক)", sel_pay: "মেথড সিলেক্ট করুন...", acc_num: "একাউন্ট নাম্বার", send_pay: "এই নাম্বারে টাকা পাঠান:",
                 plat_rules: "নেক্সোরা সম্পর্কে ও সিকিউরিটি নিয়মাবলী",
                 r1_title: "৫. অ্যান্টি-ফ্রড এবং মাল্টিপল একাউন্ট পলিসি", r1_desc: "বোনাস নেওয়ার জন্য একই ডিভাইসে একাধিক একাউন্ট খোলা, অটো-ক্লিকার ব্যবহার করা বা ভুয়া TrxID দেওয়া সম্পূর্ণ নিষিদ্ধ। এতে একাউন্ট স্থায়ীভাবে ব্যান হবে।",
-                r2_title: "১. এআই রোবট মাইনিং ও ৩ ঘণ্টার সাইকেল", r2_desc: "মার্কেটপ্লেস থেকে রোবট কেনার সাথে সাথেই মাইনিং শুরু হয়। প্রতি ৩ ঘণ্টা পর পর মাইনিং সম্পন্ন হলে 'Collect' বাটনে ক্লিক করে টাকা ওয়ালেটে যোগ করতে হবে এবং পুনরায় 'Activate' দিয়ে পরবর্তী সাইকেল চালু করতে হবে।",
+                r2_title: "১. এআই রোবট মাইনিং ও ৩ ঘণ্টার সাইকেল", r2_desc: "মার্কেটপ্লেস থেকে রোবট কেনার সাথে সাথেই মাইনিং শুরু হয় এবং একটানা ৩ ঘণ্টা চলমান থাকে। অ্যাপ থেকে বের হয়ে গেলেও মাইনিং টাইম কাউন্ট বন্ধ হবে না। ৩ ঘণ্টা পর অ্যাপে প্রবেশ করলে 'ক্লেইম করুন' বাটন দেখা যাবে—সেখানে ক্লিক করে টাকা ওয়ালেটে যোগ করবেন এবং পুনরায় মাইনিং চালু করবেন।",
                 r3_title: "৩. ডিপোজিট এবং দ্রুত উইথড্রয়াল", r3_desc: "ডিপোজিট পেজে দেওয়া নাম্বারে বা কিউআর কোডে টাকা পাঠিয়ে সঠিক TrxID দিয়ে সাবমিট করুন। উইথড্র রিকোয়েস্ট ১-২৪ ঘণ্টার মধ্যে সম্পন্ন হয়। কোনো কারণে উইথড্র রিজেক্ট হলে সম্পূর্ণ টাকা অটোমেটিক আপনার ওয়ালেটে রিফান্ড হয়ে যাবে।",
                 r4_title: "৪. রেফারেল বোনাস ও প্রতি ঘণ্টায় কমিশন", r4_desc: "প্রত্যেক ইউজারের জন্য একটি আলাদা ৬-অক্ষরের রেফারেল কোড থাকে। আপনার সঠিক কোড ব্যবহার করে কেউ সাইন-আপ করলেই সে সাইন-আপ বোনাস পাবে এবং সে রোবট কিনে মাইনিং কালেক্ট করলে আপনি আজীবন কমিশন পাবেন!",
                 r5_title: "২. ডেইলি চেক-ইন, স্পিন ও সোশ্যাল টাস্ক", r5_desc: "প্রতিদিন চেক-ইন করলে নগদ টাকা ও ১টি ফ্রি স্পিন পাবেন। টানা ৭ দিন চেক-ইন করলে ৭ম দিনে স্পেশাল গিফট বক্স ও ৫টি ফ্রি স্পিন পাবেন। এছাড়া টাস্ক পেজে ১০ সেকেন্ড লিংক ভিজিট করেও ইনস্ট্যান্ট রিওয়ার্ড আয় করতে পারবেন।",
@@ -767,21 +773,21 @@
                 avail_spin: "उपलब्ध स्पिन", sec_rules: "सुरक्षा और प्लेटफ़ॉर्म नियम", help_sup: "मदद और सपोर्ट इनबॉक्स", logout: "लॉगआउट",
                 nav_home: "होम", nav_buy: "खरीदें", nav_min: "माइनर", nav_task: "टास्क", nav_wal: "वॉलेट",
                 dur: "अवधि:", days: "दिन", rate: "प्रति घंटा दर", hr: "घंटा", buy_btn: "खरीदें", mining: "माइनिंग चालू",
-                stopped: "रुका हुआ", act_btn: "सक्रिय करें", collect: "इकट्ठा करें", no_rob: "आपके पास कोई रोबोट नहीं है।",
+                stopped: "रुका हुआ", act_btn: "माइनिंग शुरू करें (3H)", collect: "क्लेम करें", no_rob: "आपके पास कोई रोबोट नहीं है।",
                 no_market: "कोई रोबोट नहीं है।", no_task: "कोई टास्क नहीं है।", no_tx: "कोई लेनदेन नहीं है।",
                 dep_inst: "जमा करने के निर्देश", wit_funds: "फंड निकालें", sec_title: "सुरक्षा और नियम गाइड",
                 help_title: "मदद और सहायता इनबॉक्स", help_p1: "जमा, निकासी, रोबोट या रेफरल से संबंधित किसी भी समस्या के लिए नीचे संदेश भेजें। यह सीधे एडमिन पैनल में जाएगा।", 
                 dep_i1: "भुगतान विधि चुनें और नंबर कॉपी करें।", dep_i2: "सटीक राशि भेजें।", dep_i3: "लेनदेन आईडी कॉपी करें।", dep_i4: "आईडी पेस्ट करें और सबमिट करें।",
                 loading: "लोड हो रहा है...", start_journey: "अपनी यात्रा शुरू करें", future_ai: "AI स्वचालित माइनिंग।",
-                referral: "रेफरल प्रोग्राम", owned_btn: "स्वामित्व", ready: "तैयार", price_lbl: "कीमत",
+                referral: "रेफरल प्रोग्राम", owned_btn: "स्वामित्व", ready: "क्लेम के लिए तैयार", price_lbl: "कीमत",
                 pend_dep: "लंबित जमा", pend_wit: "लंबित निकासी", visit: "विजिट करें", claim_now: "दावा करें", completed: "पूरा हुआ",
-                tx_mining: "माइनिंग इनाम", tx_spin: "स्पिन इनाम", tx_checkin: "दैनिक चेक-इन", tx_task: "टास्क इनाम",
+                tx_mining: "माइनिंग क्लेम", tx_spin: "स्पिन इनाम", tx_checkin: "दैनिक चेक-इन", tx_task: "टास्क क्लेम",
                 tx_deposit: "जमा", tx_withdrawal: "निकासी", tx_purchase: "रोबोट खरीद", tx_refund: "वापसी", tx_ref_comm: "रेफरल कमीशन", tx_signup_bonus: "साइनअप बोनस",
                 err_login: "ग़लत ईमेल या पासवर्ड।", err_email_use: "ईमेल पहले से पंजीकृत है।", err_weak: "पासवर्ड बहुत कमजोर है।", err_invalid: "अमान्य ईमेल प्रारूप।",
                 ref_ph: "रेफरल कोड (वैकल्पिक)", sel_pay: "विधि चुनें...", acc_num: "खाता संख्या", send_pay: "इस नंबर पर भुगतान भेजें:",
                 plat_rules: "नेक्सोरा और सुरक्षा नियम",
                 r1_title: "5. एकाधिक खाते और धोखाधड़ी नीति", r1_desc: "बोनस के लिए एक ही डिवाइस पर कई खाते बनाना या नकली TrxID सबमिट करना सख्त वर्जित है।",
-                r2_title: "1. AI रोबोट माइनिंग और 3-घंटे का चक्र", r2_desc: "रोबोट खरीदने के तुरंत बाद माइनिंग शुरू हो जाती है। हर 3 घंटे के बाद अपनी कमाई कलेक्ट करें और फिर से सक्रिय करें।",
+                r2_title: "1. AI रोबोट माइनिंग और 3-घंटे का चक्र", r2_desc: "रोबोट खरीदने के तुरंत बाद माइनिंग शुरू हो जाती है और ऐप बंद होने पर भी 3 घंटे तक चलती रहती है। 3 घंटे के बाद अपनी कमाई क्लेम करें और फिर से सक्रिय करें।",
                 r3_title: "3. जमा और त्वरित निकासी", r3_desc: "हमेशा सही TrxID प्रदान करें। यदि कोई निकासी अस्वीकार कर दी जाती है, तो राशि तुरंत आपके वॉलेट में वापस कर दी जाती है।",
                 r4_title: "4. रेफरल बोनस और प्रति घंटा कमीशन", r4_desc: "जब कोई नया उपयोगकर्ता आपके कोड के साथ साइन अप करता है, तो उसे साइनअप बोनस मिलता है और आपको उसकी माइनिंग कमाई से कमीशन मिलता है!",
                 r5_title: "2. दैनिक चेक-इन, स्पिन और टास्क", r5_desc: "नकद और मुफ्त स्पिन पाने के लिए रोजाना चेक-इन करें। लगातार 7 दिनों तक चेक-इन करने पर विशेष गिफ्ट बॉक्स मिलता है।",
@@ -872,6 +878,9 @@
             if(btn) btn.classList.add('active');
             el('main-content-area').scrollTo({top:0, behavior:'auto'});
             localStorage.setItem('nexora_active_tab', tabId);
+            if(tabId === 'my-robots') renderMyRobots();
+            if(tabId === 'tasks') renderTasks();
+            if(tabId === 'wallet') renderTransactions();
         };
         document.querySelectorAll('.nav-item').forEach(btn => { btn.addEventListener('click', (e) => window.switchTab(e.currentTarget.dataset.target)); });
 
@@ -920,9 +929,9 @@
                     const cred = await createUserWithEmailAndPassword(auth, el('reg-email').value, el('reg-pass').value);
                     const uid = cred.user.uid;
                     const myNewRefCode = uid.substring(0, 6).toUpperCase();
+                    const nowMs = Date.now();
 
                     try {
-                        // Fetch latest signup bonus setting from appConfig
                         const bonusSnap = await get(ref(db, `appConfig/rewardSettings/signupBonus`));
                         const configuredBonus = bonusSnap.exists() ? Number(bonusSnap.val()) : (appSettings.signupBonus || 50);
 
@@ -938,7 +947,7 @@
                             referredBy: referrerUid || null,
                             totalReferred: 0,
                             commissionEarned: 0,
-                            createdAt: serverTimestamp()
+                            createdAt: nowMs
                         });
                         await update(ref(db, `wallets/${uid}`), { cachedBalance: initBal, totalEarned: initBal });
                         await update(ref(db, `users/${uid}/checkIn`), { streak: 0, lastCheckIn: 0, spins: 0 });
@@ -949,7 +958,7 @@
                                 type: 'signup_bonus',
                                 amount: initBal,
                                 status: 'successful',
-                                createdAt: serverTimestamp()
+                                createdAt: nowMs
                             });
                         }
 
@@ -1010,7 +1019,6 @@
                     el('user-avatar-initial').innerText = init; el('profile-avatar-initial').innerText = init;
                     el('profile-name').innerText = p.name || 'User'; el('profile-email').innerText = p.email || '';
                     
-                    // Auto-generate referral code for existing users who don't have one yet
                     let refCode = p.referralCode;
                     if(!refCode) {
                         refCode = uid.substring(0, 6).toUpperCase();
@@ -1019,7 +1027,6 @@
                             await set(ref(db, `referralCodes/${refCode}`), uid);
                         } catch(err) {}
                     } else {
-                        // Ensure mapping exists in referralCodes node
                         set(ref(db, `referralCodes/${refCode}`), uid).catch(()=>{});
                     }
 
@@ -1038,64 +1045,119 @@
                 }
             });
 
+            // Load All Robots From Admin Catalog
             onValue(ref(db, `robotCatalog`), snap => {
                 let tempMap = {};
                 if(snap.exists()) {
-                    snap.forEach(childSnap => { tempMap[childSnap.key] = childSnap.val(); });
+                    const rawCatalog = snap.val();
+                    for(let key in rawCatalog) {
+                        if(rawCatalog[key]) tempMap[key] = rawCatalog[key];
+                    }
                 }
                 allRobotsMap = tempMap;
-                renderMarketplace(); renderMyRobots(); 
+                renderMarketplace();
+                renderMyRobots(); 
             });
 
+            // Load Owned Robots & Maintain Persistent 3-Hour Cloud Mining Cycle
             onValue(ref(db, `userRobots/${uid}`), snap => {
-                ownedRobotIds = []; let activeRobotsData = [];
+                ownedRobotIds = [];
+                let activeRobotsData = [];
                 if(snap.exists()) {
-                    snap.forEach(childSnap => {
-                        const ur = childSnap.val();
-                        ownedRobotIds.push(ur.robotId);
-                        activeRobotsData.push({ key: childSnap.key, ...ur, catalog: allRobotsMap[ur.robotId] || { name: 'Unknown', rewardRate: 0 } });
-                    });
+                    const rawOwned = snap.val();
+                    for(let key in rawOwned) {
+                        const ur = rawOwned[key];
+                        if(ur && ur.robotId) {
+                            ownedRobotIds.push(ur.robotId);
+                            activeRobotsData.push({ key: key, ...ur });
+                        }
+                    }
                 }
-                el('home-total-robots').innerText = activeRobotsData.length; el('profile-stat-robots').innerText = activeRobotsData.length;
-                window.currentActiveRobots = activeRobotsData; renderMarketplace(); renderMyRobots();
+                el('home-total-robots').innerText = activeRobotsData.length;
+                el('profile-stat-robots').innerText = activeRobotsData.length;
+                window.currentActiveRobots = activeRobotsData;
+                renderMarketplace();
+                renderMyRobots();
                 if(activeInterval) clearInterval(activeInterval);
                 activeInterval = setInterval(renderMyRobots, 1000); 
             });
 
+            // Load Completed User Tasks
             onValue(ref(db, `userTasks/${uid}`), snap => {
-                completedTaskIds = []; if(snap.exists()) snap.forEach(c => completedTaskIds.push(c.key));
-                if(window.rawTasksData) renderTasks();
+                completedTaskIds = [];
+                if(snap.exists()) {
+                    const rawDone = snap.val();
+                    for(let k in rawDone) completedTaskIds.push(k);
+                }
+                renderTasks();
             });
 
+            // Load All Tasks From Admin Panel (Just like Buy Robots Catalog)
             onValue(ref(db, `tasks`), snap => {
-                let tasks = []; if(snap.exists()) snap.forEach(c => tasks.push({id: c.key, ...c.val()}));
-                window.rawTasksData = tasks; renderTasks();
+                let tempTasks = {};
+                if(snap.exists()) {
+                    const rawTasks = snap.val();
+                    for(let key in rawTasks) {
+                        if(rawTasks[key]) tempTasks[key] = rawTasks[key];
+                    }
+                }
+                allTasksMap = tempTasks;
+                renderTasks();
             });
 
+            // Load All Wallet Transactions (Check-in, Spin, Mining Claim, Task Claim, Deposit, Withdraw)
             onValue(ref(db, `walletTransactions/${uid}`), snap => {
-                let txns = []; if(snap.exists()) snap.forEach(c => txns.push({id: c.key, ...c.val()}));
-                txns.sort((a,b) => b.createdAt - a.createdAt); window.currentTxns = txns; renderTransactions();
+                let txns = [];
+                if(snap.exists()) {
+                    const rawTx = snap.val();
+                    for(let key in rawTx) {
+                        if(rawTx[key]) {
+                            txns.push({ id: key, ...rawTx[key] });
+                        }
+                    }
+                }
+                txns.sort((a,b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+                window.currentTxns = txns;
+                renderTransactions();
             });
 
             onValue(ref(db, `depositRequests/${uid}`), snap => {
                 pendingDepositsList = []; let sum = 0;
-                if(snap.exists()) snap.forEach(c => { let r = c.val(); if(r.status === 'pending') { sum += r.amount; pendingDepositsList.push({...r, id: c.key, type:'deposit'}); } });
+                if(snap.exists()) {
+                    const rawDep = snap.val();
+                    for(let k in rawDep) {
+                        let r = rawDep[k];
+                        if(r && r.status === 'pending') { sum += Number(r.amount || 0); pendingDepositsList.push({...r, id: k, type:'deposit'}); }
+                    }
+                }
                 el('wallet-pend-dep').innerText = formatMoney(sum);
             });
+
             onValue(ref(db, `withdrawalRequests/${uid}`), snap => {
                 pendingWithdrawalsList = []; let sum = 0;
-                if(snap.exists()) snap.forEach(c => { let r = c.val(); if(r.status === 'pending') { sum += r.amount; pendingWithdrawalsList.push({...r, id: c.key, type:'withdrawal'}); } });
+                if(snap.exists()) {
+                    const rawWit = snap.val();
+                    for(let k in rawWit) {
+                        let r = rawWit[k];
+                        if(r && r.status === 'pending') { sum += Number(r.amount || 0); pendingWithdrawalsList.push({...r, id: k, type:'withdrawal'}); }
+                    }
+                }
                 el('wallet-pend-wit').innerText = formatMoney(sum);
             });
 
-            // Listen to user's own support messages
             onValue(ref(db, `userSupportMessages/${uid}`), snap => {
                 mySupportMessages = [];
                 if(snap.exists()) {
-                    snap.forEach(c => mySupportMessages.push({ id: c.key, ...c.val() }));
-                    mySupportMessages.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    const rawMsg = snap.val();
+                    for(let k in rawMsg) mySupportMessages.push({ id: k, ...rawMsg[k] });
+                    mySupportMessages.sort((a,b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
                 }
                 renderSupportHistory();
+            });
+
+            // Re-sync countdown immediately when user returns to the app/tab
+            document.addEventListener('visibilitychange', () => {
+                if(!document.hidden) renderMyRobots();
             });
         }
 
@@ -1114,7 +1176,7 @@
                 html += `
                 <div class="glass-card p-3.5 border border-white/10 space-y-1.5">
                     <div class="flex items-center justify-between">
-                        <span class="text-[10px] text-textMuted font-mono">${m.createdAt ? new Date(m.createdAt).toLocaleString() : 'Just now'}</span>
+                        <span class="text-[10px] text-textMuted font-mono">${m.createdAt ? new Date(Number(m.createdAt)).toLocaleString() : 'Just now'}</span>
                         <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full border ${badgeClass}">${statusLabel}</span>
                     </div>
                     <p class="text-xs text-white leading-relaxed break-words">${m.message}</p>
@@ -1136,16 +1198,18 @@
             el('home-total-earned').innerText = formatMoney(userWallet.totalEarned);
         }
 
-        // Fixed Price Text Alignment & Attractive Marketplace Cards
+        // Dynamic Marketplace Render
         function renderMarketplace() {
             let html = ''; const sym = getSym();
-            for(let key in allRobotsMap) {
+            const keys = Object.keys(allRobotsMap);
+            keys.forEach(key => {
                 const r = allRobotsMap[key];
-                if(r.enabled !== false) {
+                if(r && r.enabled !== false) {
                     const isOwned = ownedRobotIds.includes(key); 
+                    const safeName = (r.name || 'AI Miner').replace(/'/g, "\\'");
                     const btnHtml = isOwned 
                         ? `<button disabled class="w-full bg-white/5 border border-white/10 text-textMuted text-xs font-bold py-2.5 rounded-xl cursor-not-allowed shadow-inner uppercase tracking-wider">${t('owned_btn')}</button>`
-                        : `<button onclick="window.purchaseRobot('${key}', ${r.price}, '${r.name}')" class="w-full bg-electric text-navy text-xs font-extrabold py-2.5 rounded-xl hover:bg-cyan-300 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1.5"><i data-lucide="zap" class="w-3.5 h-3.5"></i> ${t('buy_btn')}</button>`;
+                        : `<button onclick="window.purchaseRobot('${key}', ${Number(r.price || 0)}, '${safeName}', ${Number(r.rewardRate || 0)})" class="w-full bg-electric text-navy text-xs font-extrabold py-2.5 rounded-xl hover:bg-cyan-300 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1.5"><i data-lucide="zap" class="w-3.5 h-3.5"></i> ${t('buy_btn')}</button>`;
 
                     html += `
                     <div class="robot-marketplace-card p-3.5 flex flex-col justify-between h-full group">
@@ -1155,8 +1219,8 @@
                                     <i data-lucide="bot" class="w-5 h-5 text-electric"></i>
                                 </div>
                                 <div class="min-w-0 flex-1">
-                                    <h3 class="font-bold text-white text-xs truncate">${r.name}</h3>
-                                    <div class="text-[10px] text-textMuted font-medium">${r.duration} ${t('days')}</div>
+                                    <h3 class="font-bold text-white text-xs truncate">${r.name || 'Robot'}</h3>
+                                    <div class="text-[10px] text-textMuted font-medium">${r.duration || 30} ${t('days')}</div>
                                 </div>
                             </div>
 
@@ -1179,47 +1243,84 @@
                         </div>
                     </div>`;
                 }
-            }
+            });
             el('marketplace-container').innerHTML = html || `<div class="col-span-2 p-10 text-center text-sm text-textMuted glass-card">${t('no_market')}</div>`;
             safeCreateIcons();
         }
 
+        // Persistent 3-Hour Mining Render (Works even if user closes app and returns later)
         function renderMyRobots() {
             if(!window.currentActiveRobots) return;
-            let rHtml = ''; const now = Date.now(); const THREE_HOURS = 3 * 60 * 60 * 1000; const sym = getSym();
+            let rHtml = '';
+            const now = Date.now();
+            const sym = getSym();
 
             window.currentActiveRobots.forEach(r => {
-                let lastActive = r.lastActivatedAt || 0; let timeSince = now - lastActive;
-                let actionHtml = ''; let statusColor = 'text-textMuted border-gray-600'; let statusText = t('stopped');
+                const catalogBot = allRobotsMap[r.robotId] || {};
+                const botName = catalogBot.name || r.robotName || 'AI Miner';
+                const hourlyRate = Number(catalogBot.rewardRate !== undefined ? catalogBot.rewardRate : (r.rewardRate || 0));
 
-                if(lastActive !== 0) {
-                    if(timeSince < THREE_HOURS) {
-                        statusColor = 'text-emerald border-emerald bg-emerald/10'; statusText = t('mining');
-                        let remaining = THREE_HOURS - timeSince;
-                        let h = Math.floor(remaining / 3600000); let m = Math.floor((remaining % 3600000) / 60000); let s = Math.floor((remaining % 60000) / 1000);
-                        actionHtml = `<div class="text-xs font-bold text-electric tabular-nums bg-electric/10 px-3 py-1.5 rounded border border-electric/20 shadow-sm">${h}h ${m}m ${s}s</div>`;
+                const lastActive = Number(r.lastActivatedAt || 0);
+                // Calculate exact end timestamp from DB so closing the app never interrupts the 3-hour countdown
+                const cycleEndsAt = Number(r.cycleEndsAt || (lastActive > 0 ? lastActive + THREE_HOURS_MS : 0));
+
+                let actionHtml = '';
+                let statusColor = 'text-textMuted border-gray-600';
+                let statusText = t('stopped');
+                let progressBarHtml = '';
+
+                if(lastActive > 0 && cycleEndsAt > 0) {
+                    const remaining = cycleEndsAt - now;
+                    if(remaining > 0) {
+                        statusColor = 'text-emerald border-emerald bg-emerald/10';
+                        statusText = t('mining');
+                        const h = String(Math.floor(remaining / 3600000)).padStart(2, '0');
+                        const m = String(Math.floor((remaining % 3600000) / 60000)).padStart(2, '0');
+                        const s = String(Math.floor((remaining % 60000) / 1000)).padStart(2, '0');
+                        const elapsedPercent = Math.min(100, Math.max(0, ((THREE_HOURS_MS - remaining) / THREE_HOURS_MS) * 100));
+
+                        actionHtml = `
+                        <div class="flex items-center gap-1.5 text-xs font-extrabold text-electric tabular-nums bg-electric/10 px-3 py-1.5 rounded-lg border border-electric/30 shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-emerald animate-ping"></span>
+                            <span>${h}h : ${m}m : ${s}s</span>
+                        </div>`;
+
+                        progressBarHtml = `
+                        <div class="w-full bg-navy/90 h-1.5 rounded-full overflow-hidden mt-3 border border-white/5">
+                            <div class="bg-gradient-to-r from-electric to-emerald h-full transition-all duration-1000" style="width: ${elapsedPercent.toFixed(1)}%"></div>
+                        </div>`;
                     } else {
-                        statusColor = 'text-gold border-gold bg-gold/10'; statusText = t('ready');
-                        let reward = r.catalog.rewardRate * 3;
-                        actionHtml = `<button onclick="window.collectRobot('${r.key}', ${reward})" class="bg-gold text-navy text-[10px] uppercase font-bold px-4 py-2 rounded-lg hover:bg-yellow-400 transition glow-btn shadow-md">${t('collect')} ${sym}${formatMoney(reward)}</button>`;
+                        statusColor = 'text-gold border-gold bg-gold/10 animate-pulse';
+                        statusText = t('ready');
+                        const reward = hourlyRate * 3;
+                        actionHtml = `<button onclick="window.collectRobot('${r.key}', ${reward})" class="bg-gold text-navy text-xs uppercase font-extrabold px-4 py-2 rounded-lg hover:bg-yellow-400 transition glow-btn shadow-md flex items-center gap-1.5"><i data-lucide="coins" class="w-3.5 h-3.5"></i> ${t('collect')} ${sym}${formatMoney(reward)}</button>`;
+                        progressBarHtml = `
+                        <div class="w-full bg-navy/90 h-1.5 rounded-full overflow-hidden mt-3 border border-gold/20">
+                            <div class="bg-gold h-full w-full"></div>
+                        </div>`;
                     }
                 } else {
-                    statusColor = 'text-danger border-danger bg-danger/10'; statusText = t('stopped');
-                    actionHtml = `<button onclick="window.activateRobot('${r.key}')" class="bg-violet text-white text-[10px] uppercase font-bold px-4 py-2 rounded-lg hover:bg-purple-500 transition glow-btn shadow-[0_0_15px_rgba(139,92,246,0.3)]">${t('act_btn')}</button>`;
+                    statusColor = 'text-danger border-danger bg-danger/10';
+                    statusText = t('stopped');
+                    actionHtml = `<button onclick="window.activateRobot('${r.key}')" class="bg-gradient-to-r from-electric to-violet text-navy text-xs uppercase font-extrabold px-4 py-2 rounded-lg hover:opacity-95 transition glow-btn shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center gap-1.5"><i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> ${t('act_btn')}</button>`;
                 }
 
                 rHtml += `
-                <div class="glass-card p-4 border border-white/5 relative overflow-hidden group shadow-md">
-                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition"></div>
-                    <div class="flex justify-between items-start mb-2 relative z-10">
+                <div class="glass-card p-4 border border-white/10 relative overflow-hidden group shadow-md">
+                    <div class="flex justify-between items-start mb-1 relative z-10">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-cardSolid flex items-center justify-center border border-white/10 group-hover:border-electric/50 transition shadow-inner"><i data-lucide="cpu" class="w-5 h-5 text-electric"></i></div>
-                            <div><div class="font-bold text-white text-sm">${r.catalog.name || 'Robot'}</div><div class="text-[10px] text-textMuted">ID: ${r.key.substring(0,8)}</div></div>
+                            <div class="w-11 h-11 rounded-xl bg-cardSolid flex items-center justify-center border border-electric/20 shadow-inner"><i data-lucide="cpu" class="w-5 h-5 text-electric"></i></div>
+                            <div>
+                                <div class="font-bold text-white text-sm">${botName}</div>
+                                <div class="text-[10px] text-textMuted font-mono">3H Reward: <span class="text-gold font-bold">${sym}${formatMoney(hourlyRate * 3)}</span></div>
+                            </div>
                         </div>
-                        <div class="text-[9px] px-2 py-0.5 rounded border font-bold tracking-wider ${statusColor} shadow-sm">${statusText}</div>
+                        <div class="text-[9px] px-2.5 py-1 rounded-full border font-extrabold tracking-wider ${statusColor} shadow-sm">${statusText}</div>
                     </div>
-                    <div class="flex items-center justify-between mt-4 pt-3 border-t border-white/5 relative z-10">
-                        <div class="text-xs text-emerald font-medium">${t('rate')}: ${sym}${formatMoney(r.catalog.rewardRate)}/${t('hr')}</div>${actionHtml}
+                    ${progressBarHtml}
+                    <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/5 relative z-10">
+                        <div class="text-xs text-emerald font-bold">${t('rate')}: ${sym}${formatMoney(hourlyRate)}/${t('hr')}</div>
+                        ${actionHtml}
                     </div>
                 </div>`;
             });
@@ -1227,60 +1328,93 @@
             safeCreateIcons();
         }
 
+        // Dynamic Tasks Render (Loads all tasks added from Admin Panel like Buy Robots)
         function renderTasks() {
-            if(!window.rawTasksData) return;
-            let html = ''; const sym = getSym();
-            window.rawTasksData.forEach(ts => {
-                const isCompleted = completedTaskIds.includes(ts.id);
-                const pData = socialPlatforms.find(p => p.id === ts.category) || { icon: 'fa-solid fa-globe', bg: '#11192b', text: '#ffffff' };
-                
-                let btnHtml = isCompleted 
-                    ? `<button disabled class="text-[10px] font-bold text-emerald bg-emerald/10 border border-emerald/20 px-3 py-1.5 rounded uppercase tracking-wider shadow-sm">${t('completed')}</button>`
-                    : `<button id="btn-task-${ts.id}" onclick="window.startTask('${ts.id}', '${ts.link || '#'}', ${ts.reward})" class="text-[10px] font-bold text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded uppercase tracking-wider transition shadow-sm glow-btn">${t('visit')}</button>`;
+            let html = '';
+            const sym = getSym();
+            const taskKeys = Object.keys(allTasksMap);
+            let totalVisible = 0;
+
+            // Sort newest tasks first
+            taskKeys.sort((a,b) => Number(allTasksMap[b]?.createdAt || 0) - Number(allTasksMap[a]?.createdAt || 0));
+
+            taskKeys.forEach(taskId => {
+                const ts = allTasksMap[taskId];
+                if(!ts || ts.status === 'paused' || ts.enabled === false) return;
+                totalVisible++;
+
+                const isCompleted = completedTaskIds.includes(taskId);
+                const pData = socialPlatforms.find(p => p.id === ts.category) || { name: 'Task', icon: 'fa-solid fa-globe', bg: '#11192b', text: '#ffffff' };
+                const safeLink = (ts.link || '#').replace(/'/g, "\\'");
+                const rewardAmt = Number(ts.reward || 0);
+                const tState = taskTimersState[taskId];
+
+                let btnHtml = '';
+                if(isCompleted) {
+                    btnHtml = `<button disabled class="text-[10px] font-extrabold text-emerald bg-emerald/10 border border-emerald/30 px-3.5 py-2 rounded-xl uppercase tracking-wider shadow-sm flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> ${t('completed')}</button>`;
+                } else if(tState && tState.readyToClaim) {
+                    btnHtml = `<button id="btn-task-${taskId}" onclick="window.claimTaskReward('${taskId}', ${rewardAmt})" class="text-[11px] font-extrabold text-navy bg-emerald hover:bg-emerald/90 px-4 py-2 rounded-xl uppercase tracking-wider transition glow-btn">${t('claim_now')}</button>`;
+                } else if(tState && tState.remaining > 0) {
+                    btnHtml = `<button id="btn-task-${taskId}" disabled class="text-[11px] font-bold text-electric bg-electric/10 border border-electric/30 px-3.5 py-2 rounded-xl uppercase tracking-wider">Wait ${tState.remaining}s</button>`;
+                } else {
+                    btnHtml = `<button id="btn-task-${taskId}" onclick="window.startTask('${taskId}', '${safeLink}', ${rewardAmt})" class="text-[11px] font-extrabold text-navy bg-electric hover:bg-cyan-300 px-4 py-2 rounded-xl uppercase tracking-wider transition shadow-sm glow-btn">${t('visit')}</button>`;
+                }
 
                 html += `
                 <div class="task-card">
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3.5 min-w-0 pr-2">
                         <div class="task-icon-wrapper" style="background:${pData.bg};">
                             <i class="${pData.icon} text-xl" style="color:${pData.text};"></i>
                         </div>
-                        <div class="flex flex-col justify-center">
-                            <h4 class="font-bold text-white text-xs leading-tight mb-1 truncate max-w-[140px]">${ts.title}</h4>
-                            <span class="text-xs font-extrabold text-gold drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]">+ ${sym}${formatMoney(ts.reward)}</span>
+                        <div class="flex flex-col justify-center min-w-0">
+                            <span class="text-[9px] uppercase tracking-wider text-textMuted font-bold">${pData.name}</span>
+                            <h4 class="font-bold text-white text-sm leading-snug truncate max-w-[175px]">${ts.title || 'Complete Task'}</h4>
+                            <span class="text-xs font-extrabold text-gold mt-0.5">+ ${sym}${formatMoney(rewardAmt)}</span>
                         </div>
                     </div>
-                    ${btnHtml}
+                    <div class="shrink-0">
+                        ${btnHtml}
+                    </div>
                 </div>`;
             });
+
+            if(el('tasks-count-badge')) el('tasks-count-badge').innerText = `${totalVisible} Tasks`;
             el('tasks-container').innerHTML = html || `<div class="p-10 text-center text-sm text-textMuted glass-card">${t('no_task')}</div>`;
             safeCreateIcons();
         }
 
         const txTypeLabels = {
-            'mining_reward': { k: 'tx_mining', color: 'text-emerald', icon: 'zap', sign: '+' },
+            'mining_reward': { k: 'tx_mining', color: 'text-emerald', icon: 'cpu', sign: '+' },
             'spin_reward': { k: 'tx_spin', color: 'text-emerald', icon: 'aperture', sign: '+' },
             'daily_checkin': { k: 'tx_checkin', color: 'text-emerald', icon: 'calendar-check', sign: '+' },
-            'task_reward': { k: 'tx_task', color: 'text-emerald', icon: 'check-circle', sign: '+' },
+            'task_reward': { k: 'tx_task', color: 'text-emerald', icon: 'list-checks', sign: '+' },
             'deposit': { k: 'tx_deposit', color: 'text-emerald', icon: 'arrow-down-left', sign: '+' },
             'withdrawal': { k: 'tx_withdrawal', color: 'text-danger', icon: 'arrow-up-right', sign: '-' },
-            'purchase': { k: 'tx_purchase', color: 'text-danger', icon: 'shopping-cart', sign: '-' },
+            'purchase': { k: 'tx_purchase', color: 'text-danger', icon: 'shopping-bag', sign: '-' },
             'refund': { k: 'tx_refund', color: 'text-emerald', icon: 'corner-down-left', sign: '+' },
             'referral_commission': { k: 'tx_ref_comm', color: 'text-emerald', icon: 'users', sign: '+' },
             'signup_bonus': { k: 'tx_signup_bonus', color: 'text-gold', icon: 'gift', sign: '+' }
         };
 
+        // Render All Recent Transactions (Check-in, Spin, Mining Claim, Task Claim, Deposit, Withdraw)
         function renderTransactions() {
             if(!window.currentTxns) return;
             let html = ''; const sym = getSym();
+            if(el('tx-total-count')) el('tx-total-count').innerText = `${window.currentTxns.length} Records`;
+
             window.currentTxns.forEach(tx => {
-                const conf = txTypeLabels[tx.type] || { k: tx.type, color: 'text-white', icon: 'circle', sign: '' };
+                const conf = txTypeLabels[tx.type] || { k: tx.type, color: 'text-white', icon: 'activity', sign: '+' };
                 const label = t(conf.k) || tx.type;
+                const timeStr = tx.createdAt ? new Date(Number(tx.createdAt)).toLocaleString() : 'Just now';
                 
                 html += `
-                <div class="flex justify-between items-center p-4 border-b border-white/5 hover:bg-white/5 transition">
+                <div class="flex justify-between items-center p-4 hover:bg-white/5 transition">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-full bg-cardSolid flex items-center justify-center border border-white/5 shadow-inner"><i data-lucide="${conf.icon}" class="w-4 h-4 ${conf.color}"></i></div>
-                        <div><div class="capitalize text-white text-sm font-bold">${label}</div><div class="text-[10px] text-textMuted">${new Date(tx.createdAt).toLocaleString()}</div></div>
+                        <div class="w-10 h-10 rounded-xl bg-cardSolid flex items-center justify-center border border-white/10 shadow-inner"><i data-lucide="${conf.icon}" class="w-4 h-4 ${conf.color}"></i></div>
+                        <div>
+                            <div class="text-white text-xs font-bold">${label}</div>
+                            <div class="text-[10px] text-textMuted">${timeStr}</div>
+                        </div>
                     </div>
                     <span class="font-extrabold ${conf.color} text-sm tracking-wider drop-shadow-md">${conf.sign}${sym}${formatMoney(tx.amount)}</span>
                 </div>`;
@@ -1290,27 +1424,49 @@
         }
 
         // --- FEATURE ACTIONS ---
-        window.purchaseRobot = async (robotId, price, name) => {
+        window.purchaseRobot = async (robotId, price, name, rewardRate) => {
             if(ownedRobotIds.includes(robotId)) return window.showToast("You already own this robot!", "error");
-            if(userWallet.cachedBalance < price) return window.showToast(`Insufficient balance.`, "error");
+            const curBal = Number(userWallet.cachedBalance || 0);
+            if(curBal < price) return window.showToast(`Insufficient balance.`, "error");
             
+            const nowMs = Date.now();
             try {
-                await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: userWallet.cachedBalance - price });
-                await push(ref(db, `userRobots/${currentUser.uid}`), { robotId: robotId, status: 'mining', purchasedAt: serverTimestamp(), lastActivatedAt: serverTimestamp() });
-                await push(ref(db, `walletTransactions/${currentUser.uid}`), { type: 'purchase', amount: price, status: 'successful', createdAt: serverTimestamp() });
-                window.showToast("Robot purchased! Mining started.", "success");
+                await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: curBal - price });
+                await push(ref(db, `userRobots/${currentUser.uid}`), {
+                    robotId: robotId,
+                    robotName: name,
+                    rewardRate: Number(rewardRate || 0),
+                    status: 'mining',
+                    purchasedAt: nowMs,
+                    lastActivatedAt: nowMs,
+                    cycleEndsAt: nowMs + THREE_HOURS_MS
+                });
+                await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                    type: 'purchase',
+                    amount: Number(price),
+                    status: 'successful',
+                    createdAt: nowMs
+                });
+                window.showToast("Robot purchased! 3-Hour Mining started.", "success");
                 window.switchTab('my-robots');
             } catch(e) { window.showToast("Purchase failed.", "error"); }
         };
 
         window.activateRobot = async (userRobotId) => {
+            const nowMs = Date.now();
             try {
-                await update(ref(db, `userRobots/${currentUser.uid}/${userRobotId}`), { lastActivatedAt: serverTimestamp() });
-                window.showToast("Mining Started!", "success");
+                await update(ref(db, `userRobots/${currentUser.uid}/${userRobotId}`), {
+                    status: 'mining',
+                    lastActivatedAt: nowMs,
+                    cycleEndsAt: nowMs + THREE_HOURS_MS
+                });
+                window.showToast("3-Hour Mining Activated!", "success");
             } catch(e) { window.showToast("Activation failed", "error"); }
         };
 
         window.collectRobot = async (userRobotId, reward) => {
+            const rewardNum = Number(reward || 0);
+            const nowMs = Date.now();
             try {
                 // Hourly / Cycle Referral Commission distribution to Referrer
                 const pSnap = await get(ref(db, `users/${currentUser.uid}/profile`));
@@ -1318,57 +1474,99 @@
                     const pData = pSnap.val();
                     if (pData.referredBy) {
                         const commissionRate = (appSettings.refCommission || 5) / 100;
-                        const comm = reward * commissionRate;
+                        const comm = rewardNum * commissionRate;
                         const rWalletSnap = await get(ref(db, `wallets/${pData.referredBy}`));
                         if(rWalletSnap.exists()) {
-                            let rBal = rWalletSnap.val().cachedBalance || 0;
-                            let rEarn = rWalletSnap.val().totalEarned || 0;
+                            let rBal = Number(rWalletSnap.val().cachedBalance || 0);
+                            let rEarn = Number(rWalletSnap.val().totalEarned || 0);
                             await update(ref(db, `wallets/${pData.referredBy}`), { cachedBalance: rBal + comm, totalEarned: rEarn + comm });
-                            await push(ref(db, `walletTransactions/${pData.referredBy}`), { type: 'referral_commission', amount: comm, status: 'successful', createdAt: serverTimestamp() });
+                            await push(ref(db, `walletTransactions/${pData.referredBy}`), {
+                                type: 'referral_commission',
+                                amount: comm,
+                                status: 'successful',
+                                createdAt: nowMs
+                            });
                             
                             const rProfSnap = await get(ref(db, `users/${pData.referredBy}/profile`));
                             if(rProfSnap.exists()) {
-                                await update(ref(db, `users/${pData.referredBy}/profile`), { commissionEarned: (rProfSnap.val().commissionEarned || 0) + comm });
+                                await update(ref(db, `users/${pData.referredBy}/profile`), {
+                                    commissionEarned: Number(rProfSnap.val().commissionEarned || 0) + comm
+                                });
                             }
                         }
                     }
                 }
 
-                await update(ref(db, `userRobots/${currentUser.uid}/${userRobotId}`), { lastActivatedAt: 0 });
-                await update(ref(db, `wallets/${currentUser.uid}`), { 
-                    cachedBalance: userWallet.cachedBalance + reward,
-                    totalEarned: (userWallet.totalEarned || 0) + reward
+                await update(ref(db, `userRobots/${currentUser.uid}/${userRobotId}`), {
+                    status: 'stopped',
+                    lastActivatedAt: 0,
+                    cycleEndsAt: 0
                 });
-                await push(ref(db, `walletTransactions/${currentUser.uid}`), { type: 'mining_reward', amount: reward, status: 'successful', createdAt: serverTimestamp() });
+                const curBal = Number(userWallet.cachedBalance || 0);
+                const curEarned = Number(userWallet.totalEarned || 0);
+                await update(ref(db, `wallets/${currentUser.uid}`), { 
+                    cachedBalance: curBal + rewardNum,
+                    totalEarned: curEarned + rewardNum
+                });
+                await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                    type: 'mining_reward',
+                    amount: rewardNum,
+                    status: 'successful',
+                    createdAt: nowMs
+                });
                 
-                const sym = getSym(); window.showToast(`Collected ${sym}${formatMoney(reward)}`, "success");
-            } catch(e) { window.showToast("Collect failed", "error"); }
+                const sym = getSym();
+                window.showToast(`Claimed ${sym}${formatMoney(rewardNum)}!`, "success");
+            } catch(e) { window.showToast("Claim failed", "error"); }
         };
 
         window.startTask = (taskId, link, reward) => {
-            window.open(link, '_blank');
-            const btn = el(`btn-task-${taskId}`); btn.disabled = true;
-            let timeLeft = 10; btn.innerText = `Wait ${timeLeft}s`;
-            
-            const timer = setInterval(() => {
-                timeLeft--;
-                if(timeLeft <= 0) {
-                    clearInterval(timer);
-                    btn.innerText = t('claim_now'); btn.disabled = false;
-                    btn.onclick = () => window.claimTaskReward(taskId, reward);
-                    btn.classList.replace('bg-white/10', 'bg-emerald'); btn.classList.add('text-navy', 'glow-btn');
-                } else { btn.innerText = `Wait ${timeLeft}s`; }
+            if(link && link !== '#') window.open(link, '_blank');
+            if(taskTimersState[taskId] && taskTimersState[taskId].interval) {
+                clearInterval(taskTimersState[taskId].interval);
+            }
+
+            taskTimersState[taskId] = { remaining: 10, readyToClaim: false, interval: null };
+            renderTasks();
+
+            taskTimersState[taskId].interval = setInterval(() => {
+                if(!taskTimersState[taskId]) return;
+                taskTimersState[taskId].remaining--;
+                const btn = el(`btn-task-${taskId}`);
+
+                if(taskTimersState[taskId].remaining <= 0) {
+                    clearInterval(taskTimersState[taskId].interval);
+                    taskTimersState[taskId].readyToClaim = true;
+                    renderTasks();
+                } else if(btn) {
+                    btn.innerText = `Wait ${taskTimersState[taskId].remaining}s`;
+                }
             }, 1000);
         };
 
         window.claimTaskReward = async (taskId, reward) => {
+            if(completedTaskIds.includes(taskId)) return;
+            const rewardNum = Number(reward || 0);
+            const nowMs = Date.now();
             try {
-                await update(ref(db, `userTasks/${currentUser.uid}/${taskId}`), { status: 'completed', claimedAt: serverTimestamp() });
-                await update(ref(db, `wallets/${currentUser.uid}`), { 
-                    cachedBalance: userWallet.cachedBalance + reward, totalEarned: (userWallet.totalEarned || 0) + reward
+                delete taskTimersState[taskId];
+                await update(ref(db, `userTasks/${currentUser.uid}/${taskId}`), {
+                    status: 'completed',
+                    claimedAt: nowMs
                 });
-                await push(ref(db, `walletTransactions/${currentUser.uid}`), { type: 'task_reward', amount: reward, status: 'successful', createdAt: serverTimestamp() });
-                window.showToast(`Task Complete! Earned ${getSym()}${formatMoney(reward)}`, "success");
+                const curBal = Number(userWallet.cachedBalance || 0);
+                const curEarned = Number(userWallet.totalEarned || 0);
+                await update(ref(db, `wallets/${currentUser.uid}`), { 
+                    cachedBalance: curBal + rewardNum,
+                    totalEarned: curEarned + rewardNum
+                });
+                await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                    type: 'task_reward',
+                    amount: rewardNum,
+                    status: 'successful',
+                    createdAt: nowMs
+                });
+                window.showToast(`Task Claimed! +${getSym()}${formatMoney(rewardNum)}`, "success");
             } catch (e) { window.showToast("Error claiming reward.", "error"); }
         };
 
@@ -1428,7 +1626,13 @@
             if(baseAmt < appSettings.minDeposit) return window.showToast(`Min deposit is ${getSym()}${formatMoney(appSettings.minDeposit)}`, "error");
 
             try {
-                await push(ref(db, `depositRequests/${currentUser.uid}`), { paymentMethod: el('dep-method').value, amount: baseAmt, paymentReference: el('dep-ref').value, status: 'pending', createdAt: serverTimestamp() });
+                await push(ref(db, `depositRequests/${currentUser.uid}`), {
+                    paymentMethod: el('dep-method').value,
+                    amount: baseAmt,
+                    paymentReference: el('dep-ref').value,
+                    status: 'pending',
+                    createdAt: Date.now()
+                });
                 window.showToast("Deposit request sent.", "success"); el('form-deposit').reset(); window.closePage('page-deposit', 'side');
             } catch(e) { window.showToast("Error processing request.", "error"); }
         };
@@ -1437,11 +1641,18 @@
             if(!el('wit-method').value) return window.showToast(t('sel_pay'), "error");
             const amt = parseFloat(el('wit-amount').value); const baseAmt = amt / RATES[window.currentCurrency];
             if(baseAmt < appSettings.minWithdraw) return window.showToast(`Min withdraw is ${getSym()}${formatMoney(appSettings.minWithdraw)}`, "error");
-            if(baseAmt > userWallet.cachedBalance) return window.showToast("Insufficient balance.", "error");
+            const curBal = Number(userWallet.cachedBalance || 0);
+            if(baseAmt > curBal) return window.showToast("Insufficient balance.", "error");
             
             try {
-                await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: userWallet.cachedBalance - baseAmt });
-                await push(ref(db, `withdrawalRequests/${currentUser.uid}`), { paymentMethod: el('wit-method').value, amount: baseAmt, destinationDetails: el('wit-dest').value, status: 'pending', createdAt: serverTimestamp() });
+                await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: curBal - baseAmt });
+                await push(ref(db, `withdrawalRequests/${currentUser.uid}`), {
+                    paymentMethod: el('wit-method').value,
+                    amount: baseAmt,
+                    destinationDetails: el('wit-dest').value,
+                    status: 'pending',
+                    createdAt: Date.now()
+                });
                 window.showToast("Withdrawal requested.", "success"); el('form-withdraw').reset(); window.closeModals();
             } catch(e) { window.showToast("Error processing withdrawal.", "error"); }
         };
@@ -1455,20 +1666,19 @@
         window.submitSupport = async () => {
             const msg = el('support-msg').value.trim();
             if(!msg) return window.showToast("Message cannot be empty.", "error");
-            
+            const nowMs = Date.now();
             try {
                 const msgRef = await push(ref(db, `supportMessages`), {
                     uid: currentUser.uid,
                     email: currentUser.email,
                     message: msg,
                     status: 'pending',
-                    createdAt: serverTimestamp()
+                    createdAt: nowMs
                 });
-                // Also save under user's own inbox history node
                 await set(ref(db, `userSupportMessages/${currentUser.uid}/${msgRef.key}`), {
                     message: msg,
                     status: 'pending',
-                    createdAt: serverTimestamp()
+                    createdAt: nowMs
                 });
                 window.showToast("Message sent to Admin Inbox!", "success");
                 el('support-msg').value = '';
@@ -1478,12 +1688,12 @@
         // --- CHECKIN & SPIN ---
         window.openCheckinModal = () => {
             let html = ''; let currentStreak = checkInStatus.streak || 0;
-            const now = new Date(); const last = new Date(checkInStatus.lastCheckIn || 0); let canClaim = false;
+            const now = new Date(); const last = new Date(Number(checkInStatus.lastCheckIn || 0)); let canClaim = false;
 
             const isDifferentDay = now.getDate() !== last.getDate() || now.getMonth() !== last.getMonth() || now.getFullYear() !== last.getFullYear();
-            if (checkInStatus.lastCheckIn === 0 || isDifferentDay) {
+            if (!checkInStatus.lastCheckIn || isDifferentDay) {
                 canClaim = true; const msDiff = now.getTime() - last.getTime();
-                if(checkInStatus.lastCheckIn !== 0 && msDiff > (48 * 60 * 60 * 1000)) currentStreak = 0; 
+                if(checkInStatus.lastCheckIn && msDiff > (48 * 60 * 60 * 1000)) currentStreak = 0; 
             }
             for(let i=1; i<=7; i++) {
                 let classes = 'checkin-day'; let icon = 'check'; let text = `${t('days')} ${i}`;
@@ -1498,16 +1708,40 @@
         };
 
         window.executeCheckin = async () => {
-            let rewardAmount = appSettings.checkinReward || 2; let addedSpins = 1;
-            let newStreak = (checkInStatus.streak || 0) + 1; let isDay7 = false;
-            if(newStreak === 7) { rewardAmount = appSettings.day7Reward || 10; addedSpins = 5; newStreak = 0; isDay7 = true; } 
+            let rewardAmount = Number(appSettings.checkinReward || 2);
+            let addedSpins = 1;
+            let newStreak = Number(checkInStatus.streak || 0) + 1;
+            let isDay7 = false;
+            if(newStreak >= 7) {
+                rewardAmount = Number(appSettings.day7Reward || 10);
+                addedSpins = 5;
+                newStreak = 0;
+                isDay7 = true;
+            } 
+
+            const nowMs = Date.now();
+            const curBal = Number(userWallet.cachedBalance || 0);
+            const curEarned = Number(userWallet.totalEarned || 0);
 
             try {
-                await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: userWallet.cachedBalance + rewardAmount, totalEarned: (userWallet.totalEarned || 0) + rewardAmount });
-                await update(ref(db, `users/${currentUser.uid}/checkIn`), { streak: newStreak, lastCheckIn: serverTimestamp(), spins: (checkInStatus.spins || 0) + addedSpins });
-                await push(ref(db, `walletTransactions/${currentUser.uid}`), { type: 'daily_checkin', amount: rewardAmount, status: 'successful', createdAt: serverTimestamp() });
+                await update(ref(db, `wallets/${currentUser.uid}`), {
+                    cachedBalance: curBal + rewardAmount,
+                    totalEarned: curEarned + rewardAmount
+                });
+                await update(ref(db, `users/${currentUser.uid}/checkIn`), {
+                    streak: newStreak,
+                    lastCheckIn: nowMs,
+                    spins: Number(checkInStatus.spins || 0) + addedSpins
+                });
+                await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                    type: 'daily_checkin',
+                    amount: rewardAmount,
+                    status: 'successful',
+                    createdAt: nowMs
+                });
                 
-                const sym = getSym(); window.showToast(isDay7 ? `Gift Box! Earned ${sym}${formatMoney(rewardAmount)} & ${addedSpins} Spins!` : `Claimed ${sym}${formatMoney(rewardAmount)} & ${addedSpins} Spin!`, "success");
+                const sym = getSym();
+                window.showToast(isDay7 ? `Gift Box! Earned ${sym}${formatMoney(rewardAmount)} & ${addedSpins} Spins!` : `Claimed ${sym}${formatMoney(rewardAmount)} & ${addedSpins} Spin!`, "success");
                 window.closeModals();
             } catch(e) { window.showToast("Claim failed", "error"); }
         };
@@ -1538,13 +1772,16 @@
 
         window.executeSpin = async () => {
             if(isSpinning) return;
-            if((checkInStatus.spins || 0) <= 0) return window.showToast("0 Spins Left!", "error");
+            const availSpins = Number(checkInStatus.spins || 0);
+            if(availSpins <= 0) return window.showToast("0 Spins Left!", "error");
 
             isSpinning = true;
             let randomNum = Math.random() * 100; let weightSum = 0; let resultIdx = 0;
             for(let i=0; i<weights.length; i++) { weightSum += weights[i]; if(randomNum <= weightSum) { resultIdx = i; break; } }
             
-            const reward = spinRewards[resultIdx]; const container = el('wheel'); const angle = 360 / spinRewards.length;
+            const reward = Number(spinRewards[resultIdx]);
+            const container = el('wheel');
+            const angle = 360 / spinRewards.length;
             
             const spins = 5; 
             const segmentCenterAngle = (resultIdx * angle) + (angle / 2);
@@ -1553,16 +1790,27 @@
             container.style.transform = `rotate(${targetRotation}deg)`;
             currentRotation = targetRotation;
             
-            try { await update(ref(db, `users/${currentUser.uid}/checkIn`), { spins: (checkInStatus.spins - 1) }); } catch(e) {}
+            try { await update(ref(db, `users/${currentUser.uid}/checkIn`), { spins: availSpins - 1 }); } catch(e) {}
 
             setTimeout(async () => {
                 isSpinning = false; const sym = getSym();
                 if(reward > 0) {
-                    window.showToast(`Won ${sym}${formatMoney(reward)}!`, "success");
+                    const nowMs = Date.now();
+                    const curBal = Number(userWallet.cachedBalance || 0);
+                    const curEarned = Number(userWallet.totalEarned || 0);
                     try {
-                        await update(ref(db, `wallets/${currentUser.uid}`), { cachedBalance: userWallet.cachedBalance + reward, totalEarned: (userWallet.totalEarned || 0) + reward });
-                        await push(ref(db, `walletTransactions/${currentUser.uid}`), { type: 'spin_reward', amount: reward, status: 'successful', createdAt: serverTimestamp() });
+                        await update(ref(db, `wallets/${currentUser.uid}`), {
+                            cachedBalance: curBal + reward,
+                            totalEarned: curEarned + reward
+                        });
+                        await push(ref(db, `walletTransactions/${currentUser.uid}`), {
+                            type: 'spin_reward',
+                            amount: reward,
+                            status: 'successful',
+                            createdAt: nowMs
+                        });
                     } catch(e) {}
+                    window.showToast(`Won ${sym}${formatMoney(reward)}!`, "success");
                 } else { window.showToast(`Oops, try again!`, "error"); }
                 setTimeout(() => window.closeModals(), 1500);
             }, 4000);
