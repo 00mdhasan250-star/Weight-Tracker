@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEXORA MINING - Premium Earning Panel</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,7 +13,7 @@
                     colors: {
                         navy: '#040b16', midnight: '#0a1122', card: 'rgba(17, 25, 43, 0.7)', cardSolid: '#11192b',
                         electric: '#00f0ff', violet: '#8b5cf6', emerald: '#00ff87', danger: '#ff3366',
-                        textMuted: '#94a3b8', gold: '#fbbf24'
+                        textMuted: '#94a3b8', gold: '#fbbf24', brandBlue: '#1DA1F2', brandRed: '#FF0000'
                     },
                     fontFamily: { sans: ['Inter', 'Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'], },
                     animation: {
@@ -28,8 +27,8 @@
         }
     </script>
 
-    <!-- Lucide Icons & Fonts -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -56,13 +55,12 @@
         .animate-fade-up { animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-fade-in { animation: fadeIn 0.4s ease forwards; }
 
-        /* Perfect Spin Wheel Physics CSS */
+        /* Accurate Spin Wheel CSS */
         .wheel-wrapper { position: relative; width: 280px; height: 280px; margin: 0 auto; }
         .wheel-container {
             width: 100%; height: 100%; border-radius: 50%; border: 6px solid #0a1122;
             box-shadow: 0 0 20px rgba(0,240,255,0.3), inset 0 0 15px rgba(0,0,0,0.8);
             position: relative; overflow: hidden; transition: transform 4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            /* Conic gradient starts at 0deg (Top / 12 o'clock) */
         }
         .wheel-segment-text {
             position: absolute; top: 50%; left: 50%; width: 50%; height: 20px;
@@ -84,13 +82,17 @@
         .checkin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .checkin-day { background: #11192b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: #94a3b8; transition: all 0.3s; }
         .checkin-day.claimed { background: rgba(0, 255, 135, 0.1); border-color: #00ff87; color: #00ff87; }
-        .checkin-day.today { background: rgba(0, 240, 255, 0.1); border-color: #00f0ff; color: #00f0ff; box-shadow: 0 0 10px rgba(0,240,255,0.3); }
+        .checkin-day.today { background: rgba(0, 240, 255, 0.1); border-color: #00f0ff; color: #00f0ff; box-shadow: 0 0 10px rgba(0,240,255,0.3); cursor: pointer; }
         .checkin-day-7 { grid-column: span 2; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(251, 191, 36, 0.2)); border-color: #fbbf24; color: #fbbf24; }
 
-        .robot-marketplace-card { background: linear-gradient(145deg, rgba(17, 25, 43, 0.8), rgba(10, 17, 34, 0.9)); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 1.25rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
+        .robot-marketplace-card { background: linear-gradient(145deg, rgba(17, 25, 43, 0.9), rgba(10, 17, 34, 0.95)); border: 1px solid rgba(0, 240, 255, 0.18); border-radius: 1.25rem; position: relative; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,0.6); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .robot-marketplace-card:hover { border-color: rgba(0, 240, 255, 0.4); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0, 240, 255, 0.12); }
         
         #toast { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); }
         #toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
+
+        .task-icon-wrapper { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .task-card { background: #11192b; border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; padding: 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
@@ -99,7 +101,6 @@
         <div class="absolute top-[-10%] left-[-10%] w-[70%] h-[50%] rounded-full bg-electric opacity-10 blur-[120px] pointer-events-none animate-pulse-slow"></div>
         <div class="absolute bottom-[-10%] right-[-10%] w-[70%] h-[50%] rounded-full bg-violet opacity-10 blur-[120px] pointer-events-none animate-pulse-slow"></div>
 
-        <!-- Centered Toast Notification -->
         <div id="toast" class="fixed z-[350] bg-cardSolid border border-gray-700 text-white px-6 py-4 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] transition-all duration-300 opacity-0 pointer-events-none flex flex-col items-center gap-2 w-10/12 max-w-[320px] text-center">
             <div id="toast-icon-wrapper" class="w-12 h-12 rounded-full bg-electric/10 flex items-center justify-center mb-1">
                 <i id="toast-icon" data-lucide="info" class="w-6 h-6 text-electric"></i>
@@ -124,15 +125,15 @@
                     <span class="text-xs font-bold text-white uppercase" id="auth-lang-indicator">EN</span>
                 </button>
             </div>
-            <div class="px-6 pt-20 pb-8 flex flex-col items-center animate-fade-in">
-                <div class="w-20 h-20 rounded-2xl bg-cardSolid border border-electric/40 flex items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.2)] mb-6 animate-float">
+            <div class="px-6 pt-16 pb-6 flex flex-col items-center animate-fade-in">
+                <div class="w-20 h-20 rounded-2xl bg-cardSolid border border-electric/40 flex items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.2)] mb-5 animate-float">
                     <i data-lucide="zap" class="w-10 h-10 text-electric"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-white text-center" data-i18n="start_journey">Start Your Journey</h2>
-                <p class="text-sm text-textMuted mt-2 text-center" data-i18n="future_ai">The future of AI automated mining.</p>
+                <p class="text-sm text-textMuted mt-1 text-center" data-i18n="future_ai">The future of AI automated mining.</p>
             </div>
             <div class="px-6 flex-1 flex flex-col animate-fade-up" style="animation-delay: 0.1s; opacity: 0;">
-                <div class="flex p-1 bg-cardSolid rounded-xl mb-8 border border-white/5">
+                <div class="flex p-1 bg-cardSolid rounded-xl mb-6 border border-white/5">
                     <button id="btn-tab-login" class="flex-1 py-2.5 text-sm font-semibold rounded-lg bg-card text-electric shadow-sm transition" data-i18n="sign_in">Sign In</button>
                     <button id="btn-tab-register" class="flex-1 py-2.5 text-sm font-semibold rounded-lg text-textMuted hover:text-white transition" data-i18n="register">Register</button>
                 </div>
@@ -141,18 +142,26 @@
                     <div class="relative"><i data-lucide="lock" class="absolute left-4 top-3.5 w-5 h-5 text-textMuted"></i><input type="password" id="login-pass" data-i18n="pass_ph" placeholder="Password" required class="input-dark pl-11"></div>
                     <button type="submit" id="btn-submit-login" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl mt-4 hover:bg-cyan-300 transition glow-btn" data-i18n="sign_in">Sign In</button>
                 </form>
-                <form id="form-register" class="hide space-y-4" onsubmit="event.preventDefault(); window.handleAuth('register');">
+                <form id="form-register" class="hide space-y-3.5" onsubmit="event.preventDefault(); window.handleAuth('register');">
                     <div class="relative"><i data-lucide="user" class="absolute left-4 top-3.5 w-5 h-5 text-textMuted"></i><input type="text" id="reg-name" data-i18n="name_ph" placeholder="Full Name" required class="input-dark pl-11"></div>
                     <div class="relative"><i data-lucide="mail" class="absolute left-4 top-3.5 w-5 h-5 text-textMuted"></i><input type="email" id="reg-email" data-i18n="email_ph" placeholder="Email Address" required class="input-dark pl-11"></div>
                     <div class="relative"><i data-lucide="lock" class="absolute left-4 top-3.5 w-5 h-5 text-textMuted"></i><input type="password" id="reg-pass" data-i18n="pass_ph" placeholder="Create Password" required class="input-dark pl-11"></div>
-                    <button type="submit" id="btn-submit-register" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl mt-4 hover:bg-cyan-300 transition glow-btn" data-i18n="register">Register</button>
+                    <div class="relative">
+                        <i data-lucide="gift" class="absolute left-4 top-3.5 w-5 h-5 text-gold"></i>
+                        <input type="text" id="reg-ref" data-i18n="ref_ph" placeholder="Referral Code (Optional)" class="input-dark pl-11 border-gold/40 focus:border-gold uppercase tracking-wider">
+                    </div>
+                    <div class="bg-gold/10 border border-gold/20 rounded-xl p-3 flex items-center gap-2.5 text-xs text-gold">
+                        <i data-lucide="sparkles" class="w-4 h-4 shrink-0"></i>
+                        <span data-i18n="ref_bonus_hint">Use a valid referral code to get an instant Signup Bonus!</span>
+                    </div>
+                    <button type="submit" id="btn-submit-register" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl mt-2 hover:bg-cyan-300 transition glow-btn" data-i18n="register">Register</button>
                 </form>
             </div>
         </div>
 
         <!-- MAIN APP SHELL -->
         <div id="screen-main" class="hide flex flex-col h-full w-full relative">
-            <header class="h-16 px-5 flex items-center justify-between shrink-0 bg-navy/80 backdrop-blur-xl z-20 border-b border-white/5">
+            <header class="h-16 px-5 flex items-center justify-between shrink-0 bg-navy/80 backdrop-blur-xl z-20 border-b border-white/10 shadow-sm">
                 <div class="flex items-center gap-3 cursor-pointer group" onclick="window.switchTab('profile')">
                     <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-electric to-violet flex items-center justify-center text-navy font-bold text-sm shadow-[0_0_10px_rgba(0,240,255,0.4)]" id="user-avatar-initial">U</div>
                     <div class="flex flex-col">
@@ -172,29 +181,29 @@
                 
                 <!-- HOME TAB -->
                 <div id="tab-home" class="view-section px-5 py-4 space-y-6 animate-fade-in">
-                    <div class="glass-card p-6 relative overflow-hidden">
+                    <div class="glass-card p-6 relative overflow-hidden shadow-lg border border-white/10">
                         <div class="absolute right-[-20%] top-[-20%] w-[50%] h-[100%] bg-electric/20 blur-[40px] rounded-full"></div>
                         <h3 class="text-[10px] font-semibold text-textMuted uppercase tracking-widest mb-1 relative z-10" data-i18n="tot_bal">Total Balance</h3>
                         <div class="flex items-baseline gap-2 mb-5 relative z-10">
                             <span class="text-xl text-electric font-bold currency-sym">৳</span><span class="text-4xl font-extrabold text-white tracking-tight" id="home-balance">0.00</span>
                         </div>
                         <div class="grid grid-cols-2 gap-3 pt-4 border-t border-white/10 relative z-10">
-                            <button onclick="window.openDepositPage()" class="flex items-center justify-center gap-2 bg-emerald/10 text-emerald py-2.5 rounded-lg font-bold text-xs hover:bg-emerald/20 transition border border-emerald/20"><i data-lucide="arrow-down-circle" class="w-4 h-4"></i> <span data-i18n="dep">Deposit</span></button>
-                            <button onclick="window.switchTab('wallet')" class="flex items-center justify-center gap-2 bg-danger/10 text-danger py-2.5 rounded-lg font-bold text-xs hover:bg-danger/20 transition border border-danger/20"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> <span data-i18n="wit">Withdraw</span></button>
+                            <button onclick="window.openDepositPage()" class="flex items-center justify-center gap-2 bg-emerald/10 text-emerald py-2.5 rounded-lg font-bold text-xs hover:bg-emerald/20 transition border border-emerald/20 shadow-sm"><i data-lucide="arrow-down-circle" class="w-4 h-4"></i> <span data-i18n="dep">Deposit</span></button>
+                            <button onclick="window.openWithdrawModal()" class="flex items-center justify-center gap-2 bg-danger/10 text-danger py-2.5 rounded-lg font-bold text-xs hover:bg-danger/20 transition border border-danger/20 shadow-sm"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> <span data-i18n="wit">Withdraw</span></button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 animate-fade-up" style="animation-delay: 0.1s; opacity: 0;">
-                        <button onclick="window.openCheckinModal()" class="glass-card p-5 flex flex-col items-center text-center group border-emerald/20 relative overflow-hidden hover:scale-[1.02] transition-transform">
-                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald/30 to-emerald/5 flex items-center justify-center mb-3 relative z-10 shadow-[0_0_20px_rgba(0,255,135,0.3)]">
-                                <i data-lucide="calendar-check" class="w-7 h-7 text-emerald drop-shadow-[0_0_10px_rgba(0,255,135,0.8)]"></i>
+                        <button onclick="window.openCheckinModal()" class="glass-card p-5 flex flex-col items-center text-center group border border-emerald/20 relative overflow-hidden hover:scale-[1.02] transition-transform shadow-md">
+                            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald/30 to-emerald/5 flex items-center justify-center mb-3 relative z-10 shadow-[0_0_20px_rgba(0,255,135,0.3)] border border-emerald/30">
+                                <i data-lucide="calendar-check" class="w-6 h-6 text-emerald drop-shadow-[0_0_10px_rgba(0,255,135,0.8)]"></i>
                             </div>
                             <div class="font-extrabold text-sm text-white relative z-10" data-i18n="checkin">Daily Check-In</div>
                             <div class="text-[10px] font-medium text-textMuted mt-1 relative z-10" data-i18n="checkin_sub">Earn Cash & Spins</div>
                         </button>
-                        <button onclick="window.openSpinModal()" class="glass-card p-5 flex flex-col items-center text-center group border-violet/20 relative overflow-hidden hover:scale-[1.02] transition-transform">
-                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet/30 to-violet/5 flex items-center justify-center mb-3 relative z-10 shadow-[0_0_20px_rgba(139,92,246,0.3)]">
-                                <i data-lucide="aperture" class="w-7 h-7 text-violet drop-shadow-[0_0_10px_rgba(139,92,246,0.8)] animate-spin-slow"></i>
+                        <button onclick="window.openSpinModal()" class="glass-card p-5 flex flex-col items-center text-center group border border-violet/20 relative overflow-hidden hover:scale-[1.02] transition-transform shadow-md">
+                            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-violet/30 to-violet/5 flex items-center justify-center mb-3 relative z-10 shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-violet/30">
+                                <i data-lucide="aperture" class="w-6 h-6 text-violet drop-shadow-[0_0_10px_rgba(139,92,246,0.8)] animate-spin-slow"></i>
                             </div>
                             <div class="font-extrabold text-sm text-white relative z-10" data-i18n="spin">Spin Wheel</div>
                             <div class="text-[10px] font-medium text-textMuted mt-1 relative z-10" data-i18n="spin_sub">Use your free spins</div>
@@ -204,11 +213,11 @@
                     <div class="animate-fade-up" style="animation-delay: 0.2s; opacity: 0;">
                         <h3 class="font-bold text-white text-sm mb-3" data-i18n="overview">Quick Overview</h3>
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="bg-cardSolid border border-white/5 p-4 rounded-xl flex items-center gap-3">
+                            <div class="bg-cardSolid border border-white/5 p-4 rounded-xl flex items-center gap-3 shadow-md">
                                 <div class="w-8 h-8 rounded bg-blue-500/10 flex items-center justify-center text-blue-400"><i data-lucide="cpu" class="w-4 h-4"></i></div>
                                 <div><div class="text-[10px] text-textMuted" data-i18n="act_rob">Active Robots</div><div class="font-bold text-sm text-white" id="home-total-robots">0</div></div>
                             </div>
-                            <div class="bg-cardSolid border border-white/5 p-4 rounded-xl flex items-center gap-3">
+                            <div class="bg-cardSolid border border-white/5 p-4 rounded-xl flex items-center gap-3 shadow-md">
                                 <div class="w-8 h-8 rounded bg-emerald-500/10 flex items-center justify-center text-emerald-400"><i data-lucide="activity" class="w-4 h-4"></i></div>
                                 <div><div class="text-[10px] text-textMuted" data-i18n="tot_earn">Total Earned</div><div class="font-bold text-sm text-white"><span class="currency-sym">৳</span><span id="home-total-earned">0.00</span></div></div>
                             </div>
@@ -216,10 +225,13 @@
                     </div>
                 </div>
 
-                <!-- BUY ROBOTS -->
+                <!-- BUY ROBOTS (Dynamic Grid with Fixed Price Alignment) -->
                 <div id="tab-buy" class="view-section hide px-5 py-4 space-y-4">
-                    <h2 class="text-2xl font-extrabold text-white mb-4 tracking-tight" data-i18n="market">Marketplace</h2>
-                    <div id="marketplace-container" class="grid grid-cols-2 gap-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="market">Marketplace</h2>
+                        <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-electric/10 text-electric border border-electric/20">AI Miners</span>
+                    </div>
+                    <div id="marketplace-container" class="grid grid-cols-2 gap-3.5">
                         <div class="col-span-2 p-10 text-center text-sm text-textMuted glass-card" data-i18n="loading">Loading live catalog...</div>
                     </div>
                 </div>
@@ -244,10 +256,10 @@
                 <div id="tab-wallet" class="view-section hide px-5 py-4 space-y-6">
                     <h2 class="text-2xl font-extrabold text-white tracking-tight" data-i18n="wallet">Wallet</h2>
                     
-                    <div class="glass-card p-6 relative overflow-hidden bg-gradient-to-br from-[#11192b] to-[#1a2542] border-electric/30">
+                    <div class="glass-card p-6 relative overflow-hidden bg-gradient-to-br from-[#11192b] to-[#1a2542] border border-white/10 shadow-lg">
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-[10px] font-semibold text-textMuted uppercase tracking-wider" data-i18n="avail_bal">Available Balance</h3>
-                            <div class="flex bg-navy/50 rounded-lg p-0.5 border border-white/10">
+                            <div class="flex bg-navy/50 rounded-lg p-0.5 border border-white/10 shadow-inner">
                                 <button onclick="window.setCurrency('BDT')" id="btn-curr-bdt" class="px-2 py-1 text-[10px] font-bold rounded-md bg-electric text-navy transition">BDT</button>
                                 <button onclick="window.setCurrency('INR')" id="btn-curr-inr" class="px-2 py-1 text-[10px] font-bold rounded-md text-textMuted transition">INR</button>
                                 <button onclick="window.setCurrency('USDT')" id="btn-curr-usdt" class="px-2 py-1 text-[10px] font-bold rounded-md text-textMuted transition">USDT</button>
@@ -258,25 +270,25 @@
                         </div>
                         
                         <div class="grid grid-cols-2 gap-3 mb-6 pt-3 border-t border-white/10">
-                            <button onclick="window.openPendingModal('deposit')" class="flex flex-col items-start p-2 rounded bg-emerald/5 hover:bg-emerald/10 border border-emerald/10 transition">
+                            <button onclick="window.openPendingModal('deposit')" class="flex flex-col items-start p-2 rounded bg-emerald/5 hover:bg-emerald/10 border border-emerald/10 transition shadow-sm">
                                 <span class="text-[9px] text-textMuted uppercase tracking-wider mb-1" data-i18n="pend_dep">Pending Deposits</span>
                                 <span class="text-sm font-bold text-emerald"><span class="currency-sym">৳</span><span id="wallet-pend-dep">0.00</span></span>
                             </button>
-                            <button onclick="window.openPendingModal('withdrawal')" class="flex flex-col items-start p-2 rounded bg-danger/5 hover:bg-danger/10 border border-danger/10 transition">
+                            <button onclick="window.openPendingModal('withdrawal')" class="flex flex-col items-start p-2 rounded bg-danger/5 hover:bg-danger/10 border border-danger/10 transition shadow-sm">
                                 <span class="text-[9px] text-textMuted uppercase tracking-wider mb-1" data-i18n="pend_wit">Pending Withdrawals</span>
                                 <span class="text-sm font-bold text-danger"><span class="currency-sym">৳</span><span id="wallet-pend-wit">0.00</span></span>
                             </button>
                         </div>
 
                         <div class="flex gap-3">
-                            <button onclick="window.openDepositPage()" class="flex-1 bg-electric text-navy font-bold py-3 rounded-lg hover:bg-cyan-300 transition text-sm shadow-[0_0_15px_rgba(0,240,255,0.3)]" data-i18n="dep">Deposit</button>
-                            <button onclick="window.openWithdrawModal()" class="flex-1 bg-cardSolid border border-white/10 text-white font-bold py-3 rounded-lg hover:bg-white/5 transition text-sm" data-i18n="wit">Withdraw</button>
+                            <button onclick="window.openDepositPage()" class="flex-1 bg-electric text-navy font-bold py-3 rounded-lg hover:bg-cyan-300 transition text-sm shadow-[0_0_15px_rgba(0,240,255,0.3)] glow-btn" data-i18n="dep">Deposit</button>
+                            <button onclick="window.openWithdrawModal()" class="flex-1 bg-cardSolid border border-white/10 text-white font-bold py-3 rounded-lg hover:bg-white/5 transition text-sm shadow-md" data-i18n="wit">Withdraw</button>
                         </div>
                     </div>
 
                     <div>
                         <h3 class="font-bold text-sm mb-3 text-white" data-i18n="recent_tx">Recent Transactions</h3>
-                        <div class="glass-card p-0 overflow-hidden" id="wallet-full-history">
+                        <div class="glass-card p-0 overflow-hidden shadow-md" id="wallet-full-history">
                             <div class="p-8 text-center text-sm text-textMuted" data-i18n="loading">Loading...</div>
                         </div>
                     </div>
@@ -284,41 +296,60 @@
 
                 <!-- PROFILE -->
                 <div id="tab-profile" class="view-section hide px-5 py-6 space-y-6">
-                    <div class="flex flex-col items-center mb-6">
-                        <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-electric to-violet flex items-center justify-center text-navy font-bold text-3xl shadow-[0_0_20px_rgba(0,240,255,0.4)] mb-3 animate-float" id="profile-avatar-initial">U</div>
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-electric to-violet flex items-center justify-center text-navy font-bold text-3xl shadow-[0_0_20px_rgba(0,240,255,0.4)] mb-3 animate-float border border-white/10" id="profile-avatar-initial">U</div>
                         <h2 class="text-xl font-bold text-white" id="profile-name">User Name</h2>
                         <p class="text-xs text-textMuted" id="profile-email">user@email.com</p>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 mb-6">
-                        <div class="bg-cardSolid border border-white/5 p-4 rounded-2xl text-center"><div class="text-xl font-bold text-white" id="profile-stat-robots">0</div><div class="text-[10px] text-textMuted uppercase mt-1" data-i18n="rob_own">Robots Owned</div></div>
-                        <div class="bg-cardSolid border border-white/5 p-4 rounded-2xl text-center"><div class="text-xl font-bold text-white" id="profile-stat-spins">0</div><div class="text-[10px] text-textMuted uppercase mt-1" data-i18n="avail_spin">Available Spins</div></div>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="bg-cardSolid border border-white/5 p-4 rounded-2xl text-center shadow-md"><div class="text-xl font-bold text-white" id="profile-stat-robots">0</div><div class="text-[10px] text-textMuted uppercase mt-1" data-i18n="rob_own">Robots Owned</div></div>
+                        <div class="bg-cardSolid border border-white/5 p-4 rounded-2xl text-center shadow-md"><div class="text-xl font-bold text-white" id="profile-stat-spins">0</div><div class="text-[10px] text-textMuted uppercase mt-1" data-i18n="avail_spin">Available Spins</div></div>
                     </div>
-                    <div class="space-y-2">
-                        <div class="bg-cardSolid border border-white/5 rounded-xl overflow-hidden mb-2">
-                            <button class="w-full p-4 flex items-center justify-between hover:bg-white/5 transition text-sm text-white cursor-default">
-                                <div class="flex items-center gap-3"><i data-lucide="users" class="w-5 h-5 text-gold"></i> <span data-i18n="referral">Referral System</span></div>
-                                <span class="text-[10px] bg-electric/20 text-electric px-2 py-1 rounded font-bold uppercase tracking-wider" data-i18n="coming_soon">Coming Soon</span>
+                    <div class="space-y-3">
+                        <div class="bg-gradient-to-r from-gold/15 to-violet/15 border border-gold/30 rounded-2xl overflow-hidden shadow-md">
+                            <button onclick="window.openPage('page-referral', 'down')" class="w-full p-4 flex items-center justify-between hover:bg-white/5 transition text-sm text-white">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-10 h-10 rounded-xl bg-gold/20 border border-gold/40 flex items-center justify-center text-gold"><i data-lucide="gift" class="w-5 h-5"></i></div>
+                                    <div class="text-left">
+                                        <div class="font-bold text-white text-sm" data-i18n="referral">Referral Program</div>
+                                        <div class="text-[10px] text-gold font-medium" data-i18n="ref_sub_tag">Invite friends & earn hourly commission</div>
+                                    </div>
+                                </div>
+                                <i data-lucide="chevron-right" class="w-5 h-5 text-gold"></i>
                             </button>
                         </div>
-                        <div class="bg-cardSolid border border-white/5 rounded-xl overflow-hidden">
-                            <button onclick="window.openPage('page-security')" class="w-full p-4 flex items-center justify-between hover:bg-white/5 transition text-sm text-white">
-                                <div class="flex items-center gap-3"><i data-lucide="shield" class="w-5 h-5 text-emerald"></i> <span data-i18n="sec_rules">Security & Rules</span></div>
+
+                        <div class="bg-cardSolid border border-white/5 rounded-2xl overflow-hidden shadow-sm divide-y divide-white/5">
+                            <button onclick="window.openPage('page-security', 'down')" class="w-full p-4 flex items-center justify-between hover:bg-white/5 transition text-sm text-white">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-9 h-9 rounded-xl bg-emerald/10 flex items-center justify-center text-emerald"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                                    <div class="text-left">
+                                        <div class="font-bold text-white" data-i18n="sec_rules">Security & Platform Rules</div>
+                                        <div class="text-[10px] text-textMuted" data-i18n="sec_sub_tag">Complete platform details, rules & guidelines</div>
+                                    </div>
+                                </div>
                                 <i data-lucide="chevron-right" class="w-4 h-4 text-textMuted"></i>
                             </button>
-                            <button onclick="window.openPage('page-support')" class="w-full p-4 flex items-center justify-between hover:bg-white/5 transition text-sm text-white border-t border-white/5">
-                                <div class="flex items-center gap-3"><i data-lucide="headphones" class="w-5 h-5 text-electric"></i> <span data-i18n="help_sup">Help & Support</span></div>
+                            <button onclick="window.openPage('page-support', 'down')" class="w-full p-4 flex items-center justify-between hover:bg-white/5 transition text-sm text-white">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-9 h-9 rounded-xl bg-electric/10 flex items-center justify-center text-electric"><i data-lucide="headphones" class="w-5 h-5"></i></div>
+                                    <div class="text-left">
+                                        <div class="font-bold text-white" data-i18n="help_sup">Help & Support Inbox</div>
+                                        <div class="text-[10px] text-textMuted" data-i18n="help_sub_tag">Direct message to Admin & ticket status</div>
+                                    </div>
+                                </div>
                                 <i data-lucide="chevron-right" class="w-4 h-4 text-textMuted"></i>
                             </button>
                         </div>
                     </div>
-                    <button onclick="window.handleLogout()" class="w-full glass-card p-4 flex items-center justify-center gap-2 text-danger hover:bg-danger/10 transition border border-danger/20 mt-8 rounded-xl">
+                    <button onclick="window.handleLogout()" class="w-full glass-card p-4 flex items-center justify-center gap-2 text-danger hover:bg-danger/10 transition border border-danger/20 mt-6 rounded-xl shadow-md">
                         <i data-lucide="log-out" class="w-5 h-5"></i><span class="font-bold text-sm" data-i18n="logout">Secure Logout</span>
                     </button>
                 </div>
             </main>
 
             <!-- Bottom Navigation -->
-            <nav class="h-[70px] bg-navy/95 backdrop-blur-xl border-t border-white/10 shrink-0 flex items-center justify-around px-2 z-20 pb-safe">
+            <nav class="h-[70px] bg-navy/95 backdrop-blur-xl border-t border-white/10 shrink-0 flex items-center justify-around px-2 z-20 pb-safe shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
                 <button class="nav-item active flex-1 py-2" data-target="home"><i data-lucide="home" class="w-5 h-5"></i><span data-i18n="nav_home">Home</span></button>
                 <button class="nav-item flex-1 py-2" data-target="buy"><i data-lucide="shopping-bag" class="w-5 h-5"></i><span data-i18n="nav_buy">Buy</span></button>
                 <button class="nav-item flex-1 py-2" data-target="my-robots"><i data-lucide="cpu" class="w-5 h-5"></i><span data-i18n="nav_min">Miners</span></button>
@@ -329,15 +360,18 @@
     </div>
 
     <!-- FULL SCREEN PAGES -->
+    
+    <!-- DEPOSIT PAGE -->
     <div id="page-deposit" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-x-full">
-        <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20">
-            <button onclick="window.closePage('page-deposit')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+        <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20 shadow-md">
+            <button onclick="window.closePage('page-deposit')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10 transition"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
             <h2 class="text-lg font-bold text-white" data-i18n="dep">Deposit</h2>
         </header>
         <div class="flex-1 overflow-y-auto p-5 pb-10 space-y-6">
-            <div class="glass-card p-5 border-electric/30">
-                <h3 class="text-sm font-bold text-white mb-2" data-i18n="dep_inst">Deposit Instructions</h3>
-                <ol class="text-xs text-textMuted list-decimal list-inside space-y-1.5">
+            <div class="glass-card p-5 border-electric/30 shadow-lg relative overflow-hidden">
+                <div class="absolute right-[-20%] top-[-20%] w-[50%] h-[100%] bg-electric/10 blur-[40px] rounded-full"></div>
+                <h3 class="text-sm font-bold text-white mb-2 relative z-10" data-i18n="dep_inst">Deposit Instructions</h3>
+                <ol class="text-xs text-textMuted list-decimal list-inside space-y-2 relative z-10">
                     <li data-i18n="dep_i1">Select payment method & copy number.</li>
                     <li data-i18n="dep_i2">Send exact amount from your app.</li>
                     <li data-i18n="dep_i3">Copy the Transaction ID (TrxID).</li>
@@ -346,50 +380,190 @@
             </div>
             <form id="form-deposit" onsubmit="event.preventDefault(); window.submitDeposit();" class="space-y-4">
                 <div>
-                    <select id="dep-method" class="input-dark appearance-none font-semibold text-white" required onchange="window.updateDepositInfo()">
+                    <select id="dep-method" class="input-dark appearance-none font-semibold text-white shadow-inner" required onchange="window.updateDepositInfo()">
                         <option value="" disabled selected data-i18n="loading">Loading...</option>
                     </select>
                 </div>
-                <div class="bg-cardSolid border border-white/5 rounded-xl p-4 flex flex-col items-center gap-3">
-                    <div class="text-xs text-textMuted uppercase tracking-wide">Send payment to:</div>
-                    <div class="text-xl font-bold text-electric tracking-wider" id="dep-display-number">Select a method</div>
-                    <div class="p-2 bg-white rounded-lg mt-2 relative"><img id="dep-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEXORA" class="w-32 h-32" alt="QR Code"></div>
+                <div class="bg-cardSolid border border-white/5 rounded-xl p-4 flex flex-col items-center gap-3 shadow-md">
+                    <div class="text-xs text-textMuted uppercase tracking-wide" data-i18n="send_pay">Send payment to:</div>
+                    <div class="text-xl font-bold text-electric tracking-wider" id="dep-display-number">Select Method</div>
+                    <div class="p-2 bg-white rounded-xl mt-2 shadow-[0_0_20px_rgba(0,240,255,0.2)]"><img id="dep-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEXORA" class="w-32 h-32 rounded-lg" alt="QR Code"></div>
                 </div>
-                <div><input type="number" id="dep-amount" placeholder="Amount" required class="input-dark font-bold text-lg"></div>
-                <div><input type="text" id="dep-ref" placeholder="TrxID / Reference" required class="input-dark"></div>
+                <div><input type="number" id="dep-amount" placeholder="Amount" required class="input-dark font-bold text-lg shadow-inner"></div>
+                <div><input type="text" id="dep-ref" placeholder="TrxID / Reference" required class="input-dark shadow-inner"></div>
                 <button type="submit" id="btn-submit-dep" class="w-full bg-electric text-navy font-bold py-4 rounded-xl mt-4 hover:bg-cyan-300 transition glow-btn" data-i18n="dep">Submit</button>
             </form>
         </div>
     </div>
 
-    <div id="page-security" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-y-full">
-        <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20"><button onclick="window.closePage('page-security', 'down')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10"><i data-lucide="chevron-down" class="w-5 h-5"></i></button><h2 class="text-lg font-bold text-white" data-i18n="sec_title">Security & Rules</h2></header>
-        <div class="flex-1 overflow-y-auto p-6 space-y-4 text-sm text-textMuted bg-cardSolid"><p data-i18n="sec_p1">1. Multiple accounts are strictly prohibited.</p><p data-i18n="sec_p2">2. Provide correct transaction ID during deposit.</p><p data-i18n="sec_p3">3. False claims will lead to permanent ban.</p></div>
-    </div>
-    <div id="page-support" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-y-full">
-        <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20"><button onclick="window.closePage('page-support', 'down')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10"><i data-lucide="chevron-down" class="w-5 h-5"></i></button><h2 class="text-lg font-bold text-white" data-i18n="help_title">Help & Support</h2></header>
-        <div class="flex-1 overflow-y-auto p-5 space-y-4 text-sm text-textMuted text-center mt-10"><i data-lucide="headphones" class="w-16 h-16 text-electric mx-auto mb-4 animate-float"></i><p data-i18n="help_p1">For any queries, contact our support admin.</p><button class="bg-electric/10 border border-electric/30 text-electric px-6 py-2 rounded-full font-bold mt-4">Contact on Telegram</button></div>
+    <!-- REFERRAL PAGE (Active & Detailed Layout) -->
+    <div id="page-referral" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-y-full">
+        <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20 shadow-md">
+            <button onclick="window.closePage('page-referral', 'down')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10 transition"><i data-lucide="chevron-down" class="w-5 h-5"></i></button>
+            <h2 class="text-lg font-bold text-white" data-i18n="referral">Referral Program</h2>
+        </header>
+        <div class="flex-1 overflow-y-auto p-5 pb-12 space-y-5 no-scrollbar">
+            <!-- Hero Banner -->
+            <div class="glass-card p-6 text-center border border-gold/30 shadow-[0_0_25px_rgba(251,191,36,0.15)] relative overflow-hidden">
+                <div class="absolute right-[-20%] top-[-20%] w-[60%] h-[100%] bg-gold/10 blur-[40px] rounded-full"></div>
+                <div class="w-16 h-16 rounded-2xl bg-gold/15 border border-gold/30 flex items-center justify-center mx-auto mb-3 relative z-10 shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                    <i data-lucide="users" class="w-8 h-8 text-gold"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-white mb-1 relative z-10">
+                    <span data-i18n="invite_earn">Invite & Earn</span> <span id="ref-comm-rate" class="text-gold">5</span>%
+                </h3>
+                <p class="text-xs text-textMuted mb-5 relative z-10 leading-relaxed" data-i18n="ref_desc">Share your unique code with friends! When they sign up using your code, they get an instant Signup Bonus, and you earn hourly commission every time they collect robot mining rewards.</p>
+                
+                <!-- Bonus Highlight Pills -->
+                <div class="grid grid-cols-2 gap-2.5 mb-5 relative z-10">
+                    <div class="bg-navy/70 border border-emerald/20 rounded-xl p-2.5 text-center">
+                        <div class="text-[10px] text-textMuted uppercase font-semibold" data-i18n="friend_gets">Friend Signup Bonus</div>
+                        <div class="text-base font-extrabold text-emerald mt-0.5"><span class="currency-sym">৳</span><span id="ref-signup-bonus-display">50.00</span></div>
+                    </div>
+                    <div class="bg-navy/70 border border-gold/20 rounded-xl p-2.5 text-center">
+                        <div class="text-[10px] text-textMuted uppercase font-semibold" data-i18n="you_get_comm">Your Mining Bonus</div>
+                        <div class="text-base font-extrabold text-gold mt-0.5"><span id="ref-comm-rate-box">5</span>% <span data-i18n="per_hr_collect">Lifetime</span></div>
+                    </div>
+                </div>
+
+                <!-- Unique Referral Code Box -->
+                <div class="text-[10px] uppercase tracking-widest text-textMuted font-bold mb-1.5 relative z-10" data-i18n="your_ref_code">Your Unique Referral Code</div>
+                <div class="bg-black/50 border border-electric/30 rounded-xl p-3.5 flex justify-between items-center relative z-10 shadow-inner">
+                    <span class="text-2xl font-extrabold text-electric tracking-[0.25em] font-mono pl-2" id="ref-my-code">------</span>
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.copyRefCode()" class="text-xs font-bold bg-electric text-navy px-4 py-2.5 rounded-lg hover:bg-cyan-300 transition shadow-sm flex items-center gap-1.5">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> <span data-i18n="copy">Copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Live Referral Stats -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="glass-card p-5 text-center shadow-md border border-white/10">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-2 text-blue-400"><i data-lucide="user-check" class="w-5 h-5"></i></div>
+                    <div class="text-[10px] text-textMuted uppercase mb-1 font-bold" data-i18n="tot_invited">Total Invited</div>
+                    <div class="text-2xl font-extrabold text-white" id="ref-total-users">0</div>
+                </div>
+                <div class="glass-card p-5 text-center shadow-md border border-emerald/20">
+                    <div class="w-10 h-10 rounded-full bg-emerald/10 flex items-center justify-center mx-auto mb-2 text-emerald"><i data-lucide="coins" class="w-5 h-5"></i></div>
+                    <div class="text-[10px] text-textMuted uppercase mb-1 font-bold" data-i18n="comm_earned">Commission Earned</div>
+                    <div class="text-2xl font-extrabold text-emerald"><span class="currency-sym">৳</span><span id="ref-total-earned">0.00</span></div>
+                </div>
+            </div>
+
+            <!-- How Referral Works Step-by-Step -->
+            <div class="glass-card p-5 border border-white/5 space-y-3">
+                <h4 class="text-sm font-bold text-white flex items-center gap-2"><i data-lucide="Sparkles" class="w-4 h-4 text-gold"></i> <span data-i18n="how_ref_works">How Referral Works</span></h4>
+                <div class="space-y-2.5 text-xs text-textMuted">
+                    <div class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-electric/10 text-electric font-bold flex items-center justify-center shrink-0 text-[10px]">1</span><p data-i18n="ref_step_1">Copy your unique referral code above and share it with your friends.</p></div>
+                    <div class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-electric/10 text-electric font-bold flex items-center justify-center shrink-0 text-[10px]">2</span><p data-i18n="ref_step_2">When your friend registers using your valid code, they immediately receive the Signup Bonus in their wallet.</p></div>
+                    <div class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-electric/10 text-electric font-bold flex items-center justify-center shrink-0 text-[10px]">3</span><p data-i18n="ref_step_3">Whenever your referred friend deposits, buys a robot, and collects hourly mining earnings, you automatically receive commission directly to your wallet!</p></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- MODALS -->
+    <!-- SECURITY & PLATFORM DETAILS PAGE (Comprehensive Details) -->
+    <div id="page-security" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-y-full">
+        <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20 shadow-md">
+            <button onclick="window.closePage('page-security', 'down')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10 transition"><i data-lucide="chevron-down" class="w-5 h-5"></i></button>
+            <h2 class="text-lg font-bold text-white" data-i18n="sec_title">Security & Platform Guide</h2>
+        </header>
+        <div class="flex-1 overflow-y-auto p-5 pb-12 space-y-5 text-sm text-textMuted bg-cardSolid relative no-scrollbar">
+            <div class="absolute right-0 top-0 w-64 h-64 bg-emerald/5 blur-[80px] rounded-full pointer-events-none"></div>
+            <div class="relative z-10 space-y-5">
+                <!-- Platform Overview Banner -->
+                <div class="glass-card p-5 border border-emerald/30 bg-gradient-to-br from-emerald/10 to-transparent">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-xl bg-emerald/20 flex items-center justify-center text-emerald shrink-0"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="font-extrabold text-white text-base" data-i18n="plat_rules">About NEXORA & Security Rules</h3>
+                            <p class="text-[11px] text-emerald font-medium" data-i18n="sec_verified_tag">100% Automated AI Cloud Mining Ecosystem</p>
+                        </div>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-300" data-i18n="sec_intro_desc">NEXORA MINING is an advanced cloud-based AI robot mining platform. Our system allows users to rent automated mining robots that generate hourly rewards in BDT/USDT/INR, complete social media tasks, spin the lucky wheel, and build a passive income network through referrals.</p>
+                </div>
+                
+                <!-- Detailed Rules & Complete Website Guide -->
+                <div class="glass-card p-5 border border-white/5 shadow-sm space-y-4 divide-y divide-white/5">
+                    <div class="pt-1">
+                        <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4 text-electric"></i> <span data-i18n="r2_title">1. AI Robot Mining & 3-Hour Cycle</span></h4>
+                        <p class="text-xs leading-relaxed" data-i18n="r2_desc">When you purchase a robot from the Marketplace, it activates immediately. Each mining cycle runs for 3 hours. After 3 hours, the status becomes READY—simply click 'Collect' to add the earnings to your wallet, then click 'Activate' to start the next 3-hour cycle. Each robot can be owned once per account.</p>
+                    </div>
+                    <div class="pt-4">
+                        <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="calendar-check" class="w-4 h-4 text-emerald"></i> <span data-i18n="r5_title">2. Daily Check-In, Spins & Tasks</span></h4>
+                        <p class="text-xs leading-relaxed" data-i18n="r5_desc">Check in daily to receive instant cash rewards plus 1 Free Spin. Completing 7 consecutive days unlocks the special Gift Box and 5 Bonus Spins (missing a day resets the streak). You can also visit social media links in the Tasks tab for 10 seconds to claim additional instant cash rewards.</p>
+                    </div>
+                    <div class="pt-4">
+                        <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="wallet" class="w-4 h-4 text-gold"></i> <span data-i18n="r3_title">3. Deposits & Fast Withdrawals</span></h4>
+                        <p class="text-xs leading-relaxed" data-i18n="r3_desc">Always send deposits to the exact number or QR code shown on the Deposit page and submit the valid Transaction ID (TrxID). Withdrawals are processed within 1–24 hours. If a withdrawal request is rejected by the admin, 100% of the amount is automatically refunded to your wallet balance.</p>
+                    </div>
+                    <div class="pt-4">
+                        <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="gift" class="w-4 h-4 text-violet"></i> <span data-i18n="r4_title">4. Referral Bonus & Hourly Commission</span></h4>
+                        <p class="text-xs leading-relaxed" data-i18n="r4_desc">Every user receives a unique 6-character Referral Code. When a new user registers with your code, they get an instant Signup Bonus. Furthermore, whenever your referred user buys a robot and collects mining earnings, you automatically earn an hourly percentage commission!</p>
+                    </div>
+                    <div class="pt-4">
+                        <h4 class="text-white font-bold mb-1.5 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4 text-danger"></i> <span data-i18n="r1_title">5. Anti-Fraud & Multiple Accounts Policy</span></h4>
+                        <p class="text-xs leading-relaxed" data-i18n="r1_desc">Creating multiple accounts on the same device/IP to abuse signup bonuses, using automated scripts/auto-clickers, or submitting fake deposit TrxIDs is strictly prohibited and will result in permanent account suspension.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUPPORT PAGE (With Direct Admin Inbox & Live History) -->
+    <div id="page-support" class="hide absolute inset-0 z-[200] bg-navy w-full h-full flex flex-col transition-transform duration-300 transform translate-y-full">
+        <header class="h-16 px-5 flex items-center gap-4 shrink-0 bg-navy/90 border-b border-white/10 z-20 shadow-md">
+            <button onclick="window.closePage('page-support', 'down')" class="text-white p-1 bg-white/5 rounded-full hover:bg-white/10 transition"><i data-lucide="chevron-down" class="w-5 h-5"></i></button>
+            <h2 class="text-lg font-bold text-white" data-i18n="help_title">Help & Support Inbox</h2>
+        </header>
+        <div class="flex-1 overflow-y-auto p-5 pb-12 space-y-5 no-scrollbar">
+            <div class="glass-card p-5 text-center border border-electric/20 shadow-lg relative overflow-hidden">
+                <div class="absolute left-[-20%] top-[-20%] w-[50%] h-[100%] bg-electric/10 blur-[40px] rounded-full"></div>
+                <i data-lucide="headphones" class="w-12 h-12 text-electric mx-auto mb-2 relative z-10 animate-float drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]"></i>
+                <h3 class="text-base font-bold text-white mb-1 relative z-10" data-i18n="contact_admin">Direct Admin Support Inbox</h3>
+                <p data-i18n="help_p1" class="text-xs text-textMuted relative z-10">Have an issue with deposits, withdrawals, robots, or referrals? Send a message below and it will go directly to the Admin Panel.</p>
+            </div>
+
+            <!-- Send Message Form -->
+            <div class="glass-card p-4 border border-white/10 space-y-3">
+                <label class="text-xs font-bold text-white uppercase tracking-wider block" data-i18n="new_support_msg">New Message to Admin</label>
+                <textarea id="support-msg" class="input-dark w-full min-h-[110px] resize-none shadow-inner text-sm" data-i18n="msg_ph" placeholder="Describe your issue or question in detail (include TrxID if related to deposit)..."></textarea>
+                <button onclick="window.submitSupport()" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl glow-btn transition text-sm flex justify-center items-center gap-2">
+                    <i data-lucide="send" class="w-4 h-4"></i> <span data-i18n="send_msg">Send Message to Admin</span>
+                </button>
+            </div>
+
+            <!-- User's Sent Support Inbox History -->
+            <div>
+                <h4 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3" data-i18n="my_support_inbox">My Support Inbox History</h4>
+                <div id="user-support-history" class="space-y-2.5">
+                    <div class="p-6 text-center text-xs text-textMuted glass-card" data-i18n="no_msg_yet">No support messages sent yet.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Daily Checkin Modal -->
     <div id="modal-checkin" class="hide fixed inset-0 z-[250] flex flex-col justify-center items-center bg-black/80 backdrop-blur-md opacity-0 transition-opacity duration-300 w-full h-full">
-        <div class="glass-card w-[90%] max-w-[360px] p-6 flex flex-col items-center relative transform scale-95 transition-transform duration-300">
-            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <div class="w-16 h-16 rounded-full bg-emerald/10 flex items-center justify-center mb-3"><i data-lucide="calendar-gift" class="w-8 h-8 text-emerald"></i></div>
-            <h3 class="text-2xl font-extrabold text-white mb-1" data-i18n="checkin">Daily Check-In</h3>
+        <div class="glass-card w-[90%] max-w-[360px] p-6 flex flex-col items-center relative transform scale-95 transition-transform duration-300 shadow-2xl border border-emerald/30">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <div class="w-16 h-16 rounded-full bg-emerald/10 flex items-center justify-center mb-3 shadow-[0_0_20px_rgba(0,255,135,0.3)]"><i data-lucide="calendar-gift" class="w-8 h-8 text-emerald drop-shadow-[0_0_10px_rgba(0,255,135,0.8)]"></i></div>
+            <h3 class="text-2xl font-extrabold text-white mb-1 tracking-tight" data-i18n="checkin">Daily Check-In</h3>
             <p class="text-xs text-textMuted mb-6 text-center" data-i18n="checkin_sub">Earn Cash & Spins</p>
             <div class="checkin-grid w-full mb-8" id="checkin-grid"></div>
-            <button id="btn-claim-checkin" onclick="window.executeCheckin()" class="w-full bg-electric text-navy font-bold py-3.5 rounded-xl hover:bg-cyan-300 transition glow-btn text-sm">Claim Reward</button>
+            <button id="btn-claim-checkin" onclick="window.executeCheckin()" class="w-full bg-emerald text-navy font-bold py-3.5 rounded-xl hover:bg-emerald/90 transition shadow-[0_0_15px_rgba(0,255,135,0.4)] text-sm">Claim Reward</button>
         </div>
     </div>
 
     <!-- Spin Wheel Modal -->
     <div id="modal-spin" class="hide fixed inset-0 z-[250] flex flex-col justify-center items-center bg-black/80 backdrop-blur-md opacity-0 transition-opacity duration-300 w-full h-full">
-        <div class="glass-card w-[90%] max-w-[360px] p-6 flex flex-col items-center relative transform scale-95 transition-transform duration-300">
-            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h3 class="text-2xl font-extrabold text-white mb-1" data-i18n="spin">Spin Wheel</h3>
-            <div class="px-3 py-1 bg-white/10 rounded-full text-xs font-bold text-gold mb-6 border border-gold/30"><span data-i18n="avail_spin">Available Spins</span>: <span id="spin-available-count">0</span></div>
+        <div class="glass-card w-[95%] max-w-[380px] p-6 flex flex-col items-center relative transform scale-95 transition-transform duration-300 shadow-2xl border border-violet/30">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-textMuted hover:text-white bg-white/5 p-1 rounded-full transition z-50"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 class="text-2xl font-extrabold text-white mb-1 tracking-tight drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" data-i18n="spin">Spin Wheel</h3>
+            <div class="px-4 py-1.5 bg-white/10 rounded-full text-xs font-bold text-gold mb-6 border border-gold/30 shadow-inner backdrop-blur-md"><span data-i18n="avail_spin">Available Spins</span>: <span id="spin-available-count" class="text-white ml-1">0</span></div>
+            
             <div class="wheel-wrapper mb-8">
                 <div class="wheel-pointer"></div>
                 <div class="wheel-container" id="wheel">
@@ -397,35 +571,37 @@
                     <div id="wheel-segments"></div>
                 </div>
             </div>
-            <button id="btn-spin" onclick="window.executeSpin()" class="w-full bg-gradient-to-r from-violet to-fuchsia-600 text-white font-bold py-4 rounded-xl hover:opacity-90 transition glow-btn text-sm">SPIN</button>
+            
+            <button id="btn-spin" onclick="window.executeSpin()" class="w-full bg-gradient-to-r from-violet to-fuchsia-600 text-white font-bold py-4 rounded-xl hover:opacity-90 transition shadow-[0_0_20px_rgba(139,92,246,0.5)] text-sm tracking-wider">SPIN NOW</button>
         </div>
     </div>
 
     <!-- Withdraw Modal -->
     <div id="modal-withdraw" class="hide fixed inset-0 z-[250] flex flex-col justify-end items-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300 w-full h-full">
-        <div class="glass-card w-full max-w-[480px] rounded-t-3xl rounded-b-none p-6 transform translate-y-full transition-transform duration-300 border-t border-white/10">
+        <div class="glass-card w-full max-w-[480px] rounded-t-3xl rounded-b-none p-6 transform translate-y-full transition-transform duration-300 border-t border-danger/30 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-white" data-i18n="wit_funds">Withdraw Funds</h3><button onclick="window.closeModals()" class="text-textMuted hover:text-white bg-white/5 p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <div class="flex items-center gap-2"><i data-lucide="arrow-up-circle" class="w-6 h-6 text-danger"></i><h3 class="text-xl font-bold text-white" data-i18n="wit_funds">Withdraw Funds</h3></div>
+                <button onclick="window.closeModals()" class="text-textMuted hover:text-white bg-white/5 p-1 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <form id="form-withdraw" onsubmit="event.preventDefault(); window.submitWithdraw();" class="space-y-4 pb-4">
                 <div>
-                    <select id="wit-method" class="input-dark appearance-none font-semibold text-white" required>
-                        <option value="" disabled selected data-i18n="loading">Loading...</option>
+                    <select id="wit-method" class="input-dark appearance-none font-semibold text-white shadow-inner" required>
+                        <option value="" disabled selected data-i18n="sel_pay">Select Method...</option>
                     </select>
                 </div>
-                <div><input type="text" id="wit-dest" placeholder="Account Number" required class="input-dark"></div>
-                <div><input type="number" id="wit-amount" placeholder="Amount" required class="input-dark font-bold"></div>
-                <button type="submit" id="btn-submit-wit" class="w-full bg-danger text-white font-bold py-4 rounded-xl mt-4 hover:bg-red-500 transition shadow-[0_0_15px_rgba(255,51,102,0.3)]" data-i18n="wit">Confirm</button>
+                <div><input type="text" id="wit-dest" data-i18n="acc_num" placeholder="Account Number" required class="input-dark shadow-inner"></div>
+                <div><input type="number" id="wit-amount" placeholder="Amount" required class="input-dark font-bold shadow-inner"></div>
+                <button type="submit" id="btn-submit-wit" class="w-full bg-danger text-white font-bold py-4 rounded-xl mt-4 hover:bg-red-500 transition shadow-[0_0_15px_rgba(255,51,102,0.4)]" data-i18n="wit">Confirm</button>
             </form>
         </div>
     </div>
 
     <!-- Pending Requests Modal -->
     <div id="modal-pending-tx" class="hide fixed inset-0 z-[250] flex flex-col justify-end items-center bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300 w-full h-full">
-        <div class="glass-card w-full max-w-[480px] rounded-t-3xl rounded-b-none p-6 transform translate-y-full transition-transform duration-300 border-t border-white/10 flex flex-col max-h-[70vh]">
+        <div class="glass-card w-full max-w-[480px] rounded-t-3xl rounded-b-none p-6 transform translate-y-full transition-transform duration-300 border-t border-white/10 shadow-2xl flex flex-col max-h-[70vh]">
             <div class="flex justify-between items-center mb-4 shrink-0">
                 <h3 class="text-xl font-bold text-white flex items-center gap-2" id="pending-tx-title"><i data-lucide="clock" class="text-gold w-5 h-5"></i> Pending</h3>
-                <button onclick="window.closeModals()" class="text-textMuted hover:text-white bg-white/5 p-1 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="window.closeModals()" class="text-textMuted hover:text-white bg-white/5 p-1 rounded-full transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-1 overflow-y-auto no-scrollbar space-y-2" id="pending-tx-list"></div>
         </div>
@@ -450,19 +626,47 @@
         let userWallet = { cachedBalance: 0, totalEarned: 0 };
         let checkInStatus = { streak: 0, lastCheckIn: 0, spins: 0 };
         let ownedRobotIds = []; let allRobotsMap = {};
-        let appSettings = { minDeposit: 100, minWithdraw: 100, day7Reward: 10, checkinReward: 2 };
+        let appSettings = { minDeposit: 100, minWithdraw: 100, day7Reward: 10, checkinReward: 2, signupBonus: 50, refCommission: 5 };
         let paymentMethodsData = [];
         let activeInterval = null;
         let completedTaskIds = [];
-
         let pendingDepositsList = []; let pendingWithdrawalsList = [];
+        let mySupportMessages = [];
+
+        // --- OFFICIAL SOCIAL MEDIA DATA ---
+        const socialPlatforms = [
+            { id: 'facebook', name: 'Facebook', icon: 'fa-brands fa-facebook-f', bg: '#1877F2', text: '#ffffff' },
+            { id: 'instagram', name: 'Instagram', icon: 'fa-brands fa-instagram', bg: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)', text: '#ffffff' },
+            { id: 'tiktok', name: 'TikTok', icon: 'fa-brands fa-tiktok', bg: '#000000', text: '#ffffff' },
+            { id: 'snapchat', name: 'Snapchat', icon: 'fa-brands fa-snapchat', bg: '#FFFC00', text: '#000000' },
+            { id: 'x-twitter', name: 'X', icon: 'fa-brands fa-x-twitter', bg: '#000000', text: '#ffffff' },
+            { id: 'threads', name: 'Threads', icon: 'fa-brands fa-threads', bg: '#000000', text: '#ffffff' },
+            { id: 'pinterest', name: 'Pinterest', icon: 'fa-brands fa-pinterest-p', bg: '#E60023', text: '#ffffff' },
+            { id: 'whatsapp', name: 'WhatsApp', icon: 'fa-brands fa-whatsapp', bg: '#25D366', text: '#ffffff' },
+            { id: 'youtube', name: 'YouTube', icon: 'fa-brands fa-youtube', bg: '#FF0000', text: '#ffffff' },
+            { id: 'linkedin', name: 'LinkedIn', icon: 'fa-brands fa-linkedin-in', bg: '#0A66C2', text: '#ffffff' },
+            { id: 'behance', name: 'Behance', icon: 'fa-brands fa-behance', bg: '#1769ff', text: '#ffffff' },
+            { id: 'skype', name: 'Skype', icon: 'fa-brands fa-skype', bg: '#00AFF0', text: '#ffffff' },
+            { id: 'reddit', name: 'Reddit', icon: 'fa-brands fa-reddit-alien', bg: '#FF4500', text: '#ffffff' },
+            { id: 'messenger', name: 'Messenger', icon: 'fa-brands fa-facebook-messenger', bg: '#0084FF', text: '#ffffff' },
+            { id: 'spotify', name: 'Spotify', icon: 'fa-brands fa-spotify', bg: '#1DB954', text: '#ffffff' },
+            { id: 'vimeo', name: 'Vimeo', icon: 'fa-brands fa-vimeo-v', bg: '#1AB7EA', text: '#ffffff' },
+            { id: 'dribbble', name: 'Dribbble', icon: 'fa-brands fa-dribbble', bg: '#ea4c89', text: '#ffffff' },
+            { id: 'google', name: 'Google+', icon: 'fa-brands fa-google-plus-g', bg: '#db4a39', text: '#ffffff' },
+            { id: 'line', name: 'Line', icon: 'fa-brands fa-line', bg: '#00C300', text: '#ffffff' },
+            { id: 'telegram', name: 'Telegram', icon: 'fa-brands fa-telegram', bg: '#229ED9', text: '#ffffff' },
+            { id: 'wechat', name: 'WeChat', icon: 'fa-brands fa-weixin', bg: '#09B83E', text: '#ffffff' },
+            { id: 'tumblr', name: 'Tumblr', icon: 'fa-brands fa-tumblr', bg: '#35465C', text: '#ffffff' },
+            { id: 'flickr', name: 'Flickr', icon: 'fa-brands fa-flickr', bg: '#ff0084', text: '#ffffff' },
+            { id: 'discord', name: 'Discord', icon: 'fa-brands fa-discord', bg: '#5865F2', text: '#ffffff' }
+        ];
 
         // --- I18N & CURRENCY ---
         window.languages = ['en', 'hi', 'bn'];
-        window.currentLangIndex = 0; // Default EN
+        window.currentLangIndex = 0; 
         window.currentLang = window.languages[window.currentLangIndex];
-        window.currentCurrency = 'BDT'; // BASE is BDT
-        const RATES = { BDT: 1, INR: 1.3, USDT: 1/120 }; 
+        window.currentCurrency = 'BDT'; 
+        const RATES = { BDT: 1, INR: 0.7, USDT: 1/120 }; // Base logic is BDT
 
         const translations = {
             en: {
@@ -472,21 +676,42 @@
                 spin: "Spin Wheel", spin_sub: "Use your free spins", overview: "Quick Overview", act_rob: "Active Robots",
                 tot_earn: "Total Earned", market: "Marketplace", my_miners: "My Miners", tasks: "Tasks & Rewards",
                 wallet: "Wallet", avail_bal: "Available Balance", recent_tx: "Recent Transactions", rob_own: "Robots Owned",
-                avail_spin: "Available Spins", sec_rules: "Security & Rules", help_sup: "Help & Support", logout: "Secure Logout",
+                avail_spin: "Available Spins", sec_rules: "Security & Platform Rules", help_sup: "Help & Support Inbox", logout: "Secure Logout",
                 nav_home: "Home", nav_buy: "Buy", nav_min: "Miners", nav_task: "Tasks", nav_wal: "Wallet",
-                dur: "Duration", days: "Days", rate: "Rate", hr: "hr", buy_btn: "BUY", mining: "MINING",
-                stopped: "STOPPED", act_btn: "Activate (3h)", collect: "Collect", no_rob: "You don't own any robots yet.",
+                dur: "Duration", days: "Days", rate: "Hourly Rate", hr: "hr", buy_btn: "BUY NOW", mining: "MINING",
+                stopped: "STOPPED", act_btn: "Activate", collect: "Collect", no_rob: "You don't own any robots yet.",
                 no_market: "No robots available.", no_task: "No tasks right now.", no_tx: "No transactions yet.",
-                dep_inst: "Deposit Instructions", wit_funds: "Withdraw Funds", sec_title: "Security & Rules",
-                help_title: "Help & Support", sec_p1: "1. Multiple accounts are strictly prohibited.",
-                sec_p2: "2. Provide correct transaction ID during deposit.", sec_p3: "3. False claims will lead to permanent ban.",
-                help_p1: "For any queries, contact our support admin.", dep_i1: "Select payment method & copy number.", 
-                dep_i2: "Send exact amount from your app.", dep_i3: "Copy the Transaction ID (TrxID).", dep_i4: "Paste TrxID below and submit.",
+                dep_inst: "Deposit Instructions", wit_funds: "Withdraw Funds", sec_title: "Security & Platform Guide",
+                help_title: "Help & Support Inbox", help_p1: "Have an issue with deposits, withdrawals, robots, or referrals? Send a message below and it will go directly to the Admin Panel.", 
+                dep_i1: "Select payment method & copy number.", dep_i2: "Send exact amount from your app.", dep_i3: "Copy the Transaction ID (TrxID).", dep_i4: "Paste TrxID below and submit.",
                 loading: "Loading...", start_journey: "Start Your Journey", future_ai: "The future of AI automated mining.",
-                referral: "Referral System", coming_soon: "Coming Soon", owned_btn: "OWNED", ready: "READY",
+                referral: "Referral Program", owned_btn: "OWNED", ready: "READY", price_lbl: "Price",
                 pend_dep: "Pending Deposits", pend_wit: "Pending Withdrawals", visit: "Visit", claim_now: "Claim Now", completed: "Completed",
                 tx_mining: "Mining Reward", tx_spin: "Spin Reward", tx_checkin: "Daily Check-in", tx_task: "Task Reward",
-                tx_deposit: "Deposit", tx_withdrawal: "Withdrawal", tx_purchase: "Robot Purchase", tx_refund: "Refund"
+                tx_deposit: "Deposit", tx_withdrawal: "Withdrawal", tx_purchase: "Robot Purchase", tx_refund: "Refund", tx_ref_comm: "Referral Commission", tx_signup_bonus: "Referral Signup Bonus",
+                err_login: "Incorrect email or password.", err_email_use: "Email is already registered.", err_weak: "Password is too weak (min 6 chars).", err_invalid: "Invalid email format.",
+                ref_ph: "Referral Code (Optional)", sel_pay: "Select Method...", acc_num: "Account Number", send_pay: "Send payment to:",
+                plat_rules: "About NEXORA & Security Rules",
+                r1_title: "5. Anti-Fraud & Multiple Accounts Policy", r1_desc: "Creating multiple accounts on the same device/IP to abuse signup bonuses, using automated scripts/auto-clickers, or submitting fake deposit TrxIDs is strictly prohibited and will result in permanent account suspension.",
+                r2_title: "1. AI Robot Mining & 3-Hour Cycle", r2_desc: "When you purchase a robot from the Marketplace, it activates immediately. Each mining cycle runs for 3 hours. After 3 hours, the status becomes READY—simply click 'Collect' to add the earnings to your wallet, then click 'Activate' to start the next 3-hour cycle. Each robot can be owned once per account.",
+                r3_title: "3. Deposits & Fast Withdrawals", r3_desc: "Always send deposits to the exact number or QR code shown on the Deposit page and submit the valid Transaction ID (TrxID). Withdrawals are processed within 1–24 hours. If a withdrawal request is rejected by the admin, 100% of the amount is automatically refunded to your wallet balance.",
+                r4_title: "4. Referral Bonus & Hourly Commission", r4_desc: "Every user receives a unique 6-character Referral Code. When a new user registers with your code, they get an instant Signup Bonus. Furthermore, whenever your referred user buys a robot and collects mining earnings, you automatically earn an hourly percentage commission!",
+                r5_title: "2. Daily Check-In, Spins & Tasks", r5_desc: "Check in daily to receive instant cash rewards plus 1 Free Spin. Completing 7 consecutive days unlocks the special Gift Box and 5 Bonus Spins (missing a day resets the streak). You can also visit social media links in the Tasks tab for 10 seconds to claim additional instant cash rewards.",
+                contact_admin: "Direct Admin Support Inbox", msg_ph: "Describe your issue or question in detail (include TrxID if related to deposit)...", send_msg: "Send Message to Admin",
+                invite_earn: "Invite & Earn", ref_desc: "Share your unique code with friends! When they sign up using your code, they get an instant Signup Bonus, and you earn hourly commission every time they collect robot mining rewards.",
+                copy: "Copy", tot_invited: "Total Invited", comm_earned: "Commission Earned",
+                ref_bonus_hint: "Use a valid referral code to get an instant Signup Bonus!",
+                ref_sub_tag: "Invite friends & earn hourly commission",
+                sec_sub_tag: "Complete platform details, rules & guidelines",
+                help_sub_tag: "Direct message to Admin & ticket status",
+                friend_gets: "Friend Signup Bonus", you_get_comm: "Your Mining Bonus", per_hr_collect: "Commission",
+                your_ref_code: "Your Unique Referral Code", how_ref_works: "How Referral Works",
+                ref_step_1: "Copy your unique referral code above and share it with your friends.",
+                ref_step_2: "When your friend registers using your valid code, they immediately receive the Signup Bonus in their wallet.",
+                ref_step_3: "Whenever your referred friend deposits, buys a robot, and collects hourly mining earnings, you automatically receive commission directly to your wallet!",
+                sec_verified_tag: "100% Automated AI Cloud Mining Ecosystem",
+                sec_intro_desc: "NEXORA MINING is an advanced cloud-based AI robot mining platform. Our system allows users to rent automated mining robots that generate hourly rewards in BDT/USDT/INR, complete social media tasks, spin the lucky wheel, and build a passive income network through referrals.",
+                new_support_msg: "New Message to Admin", my_support_inbox: "My Support Inbox History", no_msg_yet: "No support messages sent yet."
             },
             bn: {
                 app_name: "নেক্সোরা", network: "মাইনিং নেটওয়ার্ক", sign_in: "লগইন", register: "নিবন্ধন",
@@ -495,21 +720,42 @@
                 spin: "স্পিন হুইল", spin_sub: "ফ্রি স্পিন ব্যবহার করুন", overview: "একনজরে", act_rob: "সক্রিয় রোবট",
                 tot_earn: "মোট আয়", market: "মার্কেটপ্লেস", my_miners: "আমার রোবট", tasks: "টাস্ক ও রিওয়ার্ড",
                 wallet: "ওয়ালেট", avail_bal: "বর্তমান ব্যালেন্স", recent_tx: "সাম্প্রতিক লেনদেন", rob_own: "রোবটের সংখ্যা",
-                avail_spin: "ফ্রি স্পিন", sec_rules: "নিরাপত্তা ও নিয়ম", help_sup: "হেল্প এবং সাপোর্ট", logout: "লগআউট",
+                avail_spin: "ফ্রি স্পিন", sec_rules: "নিরাপত্তা ও প্ল্যাটফর্মের নিয়ম", help_sup: "হেল্প এবং সাপোর্ট ইনবক্স", logout: "লগআউট",
                 nav_home: "হোম", nav_buy: "কিনুন", nav_min: "রোবট", nav_task: "টাস্ক", nav_wal: "ওয়ালেট",
-                dur: "মেয়াদ:", days: "দিন", rate: "রেট:", hr: "ঘন্টা", buy_btn: "কিনুন", mining: "চলমান",
-                stopped: "বন্ধ", act_btn: "চালু করুন (৩ ঘণ্টা)", collect: "সংগ্রহ করুন", no_rob: "আপনার কোন রোবট নেই।",
+                dur: "মেয়াদ:", days: "দিন", rate: "প্রতি ঘন্টায় আয়", hr: "ঘন্টা", buy_btn: "কিনুন", mining: "চলমান",
+                stopped: "বন্ধ", act_btn: "চালু করুন", collect: "সংগ্রহ করুন", no_rob: "আপনার কোন রোবট নেই।",
                 no_market: "কোন রোবট নেই।", no_task: "কোন টাস্ক নেই।", no_tx: "কোন লেনদেন নেই।",
-                dep_inst: "ডিপোজিট নিয়মাবলী", wit_funds: "উত্তোলন করুন", sec_title: "নিরাপত্তা ও নিয়ম",
-                help_title: "হেল্প এবং সাপোর্ট", sec_p1: "১. একাধিক একাউন্ট করা সম্পূর্ণ নিষেধ।",
-                sec_p2: "২. সঠিক ট্রানজেকশন আইডি দিন।", sec_p3: "৩. মিথ্যা তথ্য দিলে একাউন্ট ব্যান করা হবে।",
-                help_p1: "যেকোনো প্রয়োজনে এডমিনের সাথে যোগাযোগ করুন।", dep_i1: "নিচের নাম্বারটি কপি করুন।", 
-                dep_i2: "সঠিক পরিমাণ টাকা পাঠান।", dep_i3: "ট্রানজেকশন আইডি কপি করুন।", dep_i4: "নিচে আইডি বসিয়ে সাবমিট করুন।",
+                dep_inst: "ডিপোজিট নিয়মাবলী", wit_funds: "উত্তোলন করুন", sec_title: "নিরাপত্তা ও বিস্তারিত গাইড",
+                help_title: "হেল্প ও সাপোর্ট ইনবক্স", help_p1: "ডিপোজিট, উইথড্র, রোবট বা রেফারেল সংক্রান্ত যেকোনো সমস্যায় নিচে মেসেজ লিখুন। এটি সরাসরি অ্যাডমিন প্যানেলে চলে যাবে।", 
+                dep_i1: "পেমেন্ট মেথড সিলেক্ট করুন এবং নাম্বার কপি করুন।", dep_i2: "আপনার অ্যাপ থেকে সঠিক পরিমাণ টাকা পাঠান।", dep_i3: "ট্রানজেকশন আইডি (TrxID) কপি করুন।", dep_i4: "নিচে TrxID বসিয়ে সাবমিট করুন।",
                 loading: "লোড হচ্ছে...", start_journey: "যাত্রা শুরু করুন", future_ai: "অটো মাইনিং এর ভবিষ্যৎ।",
-                referral: "রেফারেল সিস্টেম", coming_soon: "শীঘ্রই আসছে", owned_btn: "আপনার আছে", ready: "প্রস্তুত",
+                referral: "রেফারেল প্রোগ্রাম", owned_btn: "আপনার আছে", ready: "প্রস্তুত", price_lbl: "মূল্য",
                 pend_dep: "পেন্ডিং ডিপোজিট", pend_wit: "পেন্ডিং উত্তোলন", visit: "ভিজিট করুন", claim_now: "ক্লেম নাউ", completed: "সম্পন্ন",
                 tx_mining: "মাইনিং রিওয়ার্ড", tx_spin: "স্পিন রিওয়ার্ড", tx_checkin: "ডেলি চেকিং", tx_task: "টাস্ক রিওয়ার্ড",
-                tx_deposit: "ডিপোজিট", tx_withdrawal: "উত্তোলন", tx_purchase: "রোবট ক্রয়", tx_refund: "রিফান্ড"
+                tx_deposit: "ডিপোজিট", tx_withdrawal: "উত্তোলন", tx_purchase: "রোবট ক্রয়", tx_refund: "রিফান্ড", tx_ref_comm: "রেফারেল কমিশন", tx_signup_bonus: "রেফারেল সাইনআপ বোনাস",
+                err_login: "ভুল ইমেইল বা পাসওয়ার্ড।", err_email_use: "এই ইমেইল দিয়ে ইতিমধ্যে অ্যাকাউন্ট খোলা হয়েছে।", err_weak: "পাসওয়ার্ড খুবই দুর্বল (কমপক্ষে ৬ অক্ষর)।", err_invalid: "ইমেইল সঠিক নয়।",
+                ref_ph: "রেফারেল কোড (ঐচ্ছিক)", sel_pay: "মেথড সিলেক্ট করুন...", acc_num: "একাউন্ট নাম্বার", send_pay: "এই নাম্বারে টাকা পাঠান:",
+                plat_rules: "নেক্সোরা সম্পর্কে ও সিকিউরিটি নিয়মাবলী",
+                r1_title: "৫. অ্যান্টি-ফ্রড এবং মাল্টিপল একাউন্ট পলিসি", r1_desc: "বোনাস নেওয়ার জন্য একই ডিভাইসে একাধিক একাউন্ট খোলা, অটো-ক্লিকার ব্যবহার করা বা ভুয়া TrxID দেওয়া সম্পূর্ণ নিষিদ্ধ। এতে একাউন্ট স্থায়ীভাবে ব্যান হবে।",
+                r2_title: "১. এআই রোবট মাইনিং ও ৩ ঘণ্টার সাইকেল", r2_desc: "মার্কেটপ্লেস থেকে রোবট কেনার সাথে সাথেই মাইনিং শুরু হয়। প্রতি ৩ ঘণ্টা পর পর মাইনিং সম্পন্ন হলে 'Collect' বাটনে ক্লিক করে টাকা ওয়ালেটে যোগ করতে হবে এবং পুনরায় 'Activate' দিয়ে পরবর্তী সাইকেল চালু করতে হবে।",
+                r3_title: "৩. ডিপোজিট এবং দ্রুত উইথড্রয়াল", r3_desc: "ডিপোজিট পেজে দেওয়া নাম্বারে বা কিউআর কোডে টাকা পাঠিয়ে সঠিক TrxID দিয়ে সাবমিট করুন। উইথড্র রিকোয়েস্ট ১-২৪ ঘণ্টার মধ্যে সম্পন্ন হয়। কোনো কারণে উইথড্র রিজেক্ট হলে সম্পূর্ণ টাকা অটোমেটিক আপনার ওয়ালেটে রিফান্ড হয়ে যাবে।",
+                r4_title: "৪. রেফারেল বোনাস ও প্রতি ঘণ্টায় কমিশন", r4_desc: "প্রত্যেক ইউজারের জন্য একটি আলাদা ৬-অক্ষরের রেফারেল কোড থাকে। আপনার সঠিক কোড ব্যবহার করে কেউ সাইন-আপ করলেই সে সাইন-আপ বোনাস পাবে এবং সে রোবট কিনে মাইনিং কালেক্ট করলে আপনি আজীবন কমিশন পাবেন!",
+                r5_title: "২. ডেইলি চেক-ইন, স্পিন ও সোশ্যাল টাস্ক", r5_desc: "প্রতিদিন চেক-ইন করলে নগদ টাকা ও ১টি ফ্রি স্পিন পাবেন। টানা ৭ দিন চেক-ইন করলে ৭ম দিনে স্পেশাল গিফট বক্স ও ৫টি ফ্রি স্পিন পাবেন। এছাড়া টাস্ক পেজে ১০ সেকেন্ড লিংক ভিজিট করেও ইনস্ট্যান্ট রিওয়ার্ড আয় করতে পারবেন।",
+                contact_admin: "সরাসরি অ্যাডমিন সাপোর্ট ইনবক্স", msg_ph: "আপনার সমস্যার কথা বিস্তারিত লিখুন (ডিপোজিট সমস্যা হলে TrxID উল্লেখ করুন)...", send_msg: "অ্যাডমিনকে মেসেজ পাঠান",
+                invite_earn: "ইনভাইট এবং আয়", ref_desc: "আপনার ইউনিক কোডটি বন্ধুদের শেয়ার করুন! তারা আপনার কোড দিয়ে একাউন্ট খুললে সাইন-আপ বোনাস পাবে, এবং তারা রোবট কিনে মাইনিং কালেক্ট করলে আপনি প্রতিবার কমিশন পাবেন।",
+                copy: "কপি", tot_invited: "মোট ইনভাইট", comm_earned: "মোট কমিশন আয়",
+                ref_bonus_hint: "সঠিক রেফারেল কোড ব্যবহার করলে সাথে সাথে সাইন-আপ বোনাস পাবেন!",
+                ref_sub_tag: "বন্ধুদের ইনভাইট করুন ও প্রতি ঘণ্টায় কমিশন পান",
+                sec_sub_tag: "ওয়েবসাইটের সম্পূর্ণ নিয়মাবলী ও বিস্তারিত তথ্য",
+                help_sub_tag: "সরাসরি অ্যাডমিন ইনবক্স ও মেসেজ স্ট্যাটাস",
+                friend_gets: "বন্ধু সাইনআপ বোনাস পাবে", you_get_comm: "আপনার মাইনিং কমিশন", per_hr_collect: "কমিশন",
+                your_ref_code: "আপনার ইউনিক রেফারেল কোড", how_ref_works: "রেফারেল প্রোগ্রাম যেভাবে কাজ করে",
+                ref_step_1: "উপরের কপি বাটনে ক্লিক করে আপনার ইউনিক রেফারেল কোডটি বন্ধুদের সাথে শেয়ার করুন।",
+                ref_step_2: "আপনার বন্ধু যখন রেজিস্ট্রেশন করার সময় আপনার সঠিক কোডটি ব্যবহার করবে, সে সাথে সাথে সাইন-আপ বোনাস পেয়ে যাবে।",
+                ref_step_3: "আপনার রেফার করা বন্ধু ডিপোজিট করে রোবট কিনলে এবং প্রতি ৩ ঘণ্টা পর মাইনিং রিওয়ার্ড কালেক্ট করলে আপনি সাথে সাথে শতকরা কমিশন আপনার ওয়ালেটে পাবেন!",
+                sec_verified_tag: "১০০% অটোমেটেড এআই ক্লাউড মাইনিং ইকোসিস্টেম",
+                sec_intro_desc: "নেক্সোরা মাইনিং একটি আধুনিক ক্লাউড-ভিত্তিক এআই রোবট আর্নিং প্ল্যাটফর্ম। এখানে আপনি রোবট কিনে প্রতি ঘণ্টায় আয় করতে পারবেন, ডেইলি চেক-ইন ও স্পিন করতে পারবেন, সোশ্যাল মিডিয়া টাস্ক পূরণ করতে পারবেন এবং রেফার করে প্যাসিভ ইনকাম করতে পারবেন।",
+                new_support_msg: "অ্যাডমিনের কাছে নতুন মেসেজ", my_support_inbox: "আমার পাঠানো মেসেজ সমূহ", no_msg_yet: "এখনো কোনো মেসেজ পাঠানো হয়নি।"
             },
             hi: {
                 app_name: "नेक्सोरा", network: "माइनिंग नेटवर्क", sign_in: "साइन इन", register: "रजिस्टर",
@@ -518,21 +764,42 @@
                 spin: "स्पिन व्हील", spin_sub: "अपने फ्री स्पिन का उपयोग करें", overview: "एक नज़र में", act_rob: "सक्रिय रोबोट",
                 tot_earn: "कुल कमाई", market: "मार्केटप्लेस", my_miners: "मेरे माइनर", tasks: "टास्क और इनाम",
                 wallet: "वॉलेट", avail_bal: "उपलब्ध बैलेंस", recent_tx: "हाल के लेनदेन", rob_own: "रोबोट स्वामित्व",
-                avail_spin: "उपलब्ध स्पिन", sec_rules: "सुरक्षा और नियम", help_sup: "मदद और सपोर्ट", logout: "लॉगआउट",
+                avail_spin: "उपलब्ध स्पिन", sec_rules: "सुरक्षा और प्लेटफ़ॉर्म नियम", help_sup: "मदद और सपोर्ट इनबॉक्स", logout: "लॉगआउट",
                 nav_home: "होम", nav_buy: "खरीदें", nav_min: "माइनर", nav_task: "टास्क", nav_wal: "वॉलेट",
-                dur: "अवधि:", days: "दिन", rate: "दर:", hr: "घंटा", buy_btn: "खरीदें", mining: "माइनिंग चालू",
-                stopped: "रुका हुआ", act_btn: "सक्रिय करें (3 घंटे)", collect: "इकट्ठा करें", no_rob: "आपके पास कोई रोबोट नहीं है।",
+                dur: "अवधि:", days: "दिन", rate: "प्रति घंटा दर", hr: "घंटा", buy_btn: "खरीदें", mining: "माइनिंग चालू",
+                stopped: "रुका हुआ", act_btn: "सक्रिय करें", collect: "इकट्ठा करें", no_rob: "आपके पास कोई रोबोट नहीं है।",
                 no_market: "कोई रोबोट नहीं है।", no_task: "कोई टास्क नहीं है।", no_tx: "कोई लेनदेन नहीं है।",
-                dep_inst: "जमा करने के निर्देश", wit_funds: "फंड निकालें", sec_title: "सुरक्षा और नियम",
-                help_title: "मदद और सहायता", sec_p1: "1. एकाधिक खाते सख्त वर्जित हैं।",
-                sec_p2: "2. सही लेनदेन आईडी प्रदान करें।", sec_p3: "3. झूठे दावे पर प्रतिबंध लगेगा।",
-                help_p1: "किसी भी प्रश्न के लिए, एडमिन से संपर्क करें।", dep_i1: "नीचे दिए गए नंबर को कॉपी करें।", 
-                dep_i2: "सटीक राशि भेजें।", dep_i3: "लेनदेन आईडी कॉपी करें।", dep_i4: "आईडी पेस्ट करें और सबमिट करें।",
+                dep_inst: "जमा करने के निर्देश", wit_funds: "फंड निकालें", sec_title: "सुरक्षा और नियम गाइड",
+                help_title: "मदद और सहायता इनबॉक्स", help_p1: "जमा, निकासी, रोबोट या रेफरल से संबंधित किसी भी समस्या के लिए नीचे संदेश भेजें। यह सीधे एडमिन पैनल में जाएगा।", 
+                dep_i1: "भुगतान विधि चुनें और नंबर कॉपी करें।", dep_i2: "सटीक राशि भेजें।", dep_i3: "लेनदेन आईडी कॉपी करें।", dep_i4: "आईडी पेस्ट करें और सबमिट करें।",
                 loading: "लोड हो रहा है...", start_journey: "अपनी यात्रा शुरू करें", future_ai: "AI स्वचालित माइनिंग।",
-                referral: "रेफरल सिस्टम", coming_soon: "जल्द आ रहा है", owned_btn: "स्वामित्व", ready: "तैयार",
+                referral: "रेफरल प्रोग्राम", owned_btn: "स्वामित्व", ready: "तैयार", price_lbl: "कीमत",
                 pend_dep: "लंबित जमा", pend_wit: "लंबित निकासी", visit: "विजिट करें", claim_now: "दावा करें", completed: "पूरा हुआ",
                 tx_mining: "माइनिंग इनाम", tx_spin: "स्पिन इनाम", tx_checkin: "दैनिक चेक-इन", tx_task: "टास्क इनाम",
-                tx_deposit: "जमा", tx_withdrawal: "निकासी", tx_purchase: "रोबोट खरीद", tx_refund: "वापसी"
+                tx_deposit: "जमा", tx_withdrawal: "निकासी", tx_purchase: "रोबोट खरीद", tx_refund: "वापसी", tx_ref_comm: "रेफरल कमीशन", tx_signup_bonus: "साइनअप बोनस",
+                err_login: "ग़लत ईमेल या पासवर्ड।", err_email_use: "ईमेल पहले से पंजीकृत है।", err_weak: "पासवर्ड बहुत कमजोर है।", err_invalid: "अमान्य ईमेल प्रारूप।",
+                ref_ph: "रेफरल कोड (वैकल्पिक)", sel_pay: "विधि चुनें...", acc_num: "खाता संख्या", send_pay: "इस नंबर पर भुगतान भेजें:",
+                plat_rules: "नेक्सोरा और सुरक्षा नियम",
+                r1_title: "5. एकाधिक खाते और धोखाधड़ी नीति", r1_desc: "बोनस के लिए एक ही डिवाइस पर कई खाते बनाना या नकली TrxID सबमिट करना सख्त वर्जित है।",
+                r2_title: "1. AI रोबोट माइनिंग और 3-घंटे का चक्र", r2_desc: "रोबोट खरीदने के तुरंत बाद माइनिंग शुरू हो जाती है। हर 3 घंटे के बाद अपनी कमाई कलेक्ट करें और फिर से सक्रिय करें।",
+                r3_title: "3. जमा और त्वरित निकासी", r3_desc: "हमेशा सही TrxID प्रदान करें। यदि कोई निकासी अस्वीकार कर दी जाती है, तो राशि तुरंत आपके वॉलेट में वापस कर दी जाती है।",
+                r4_title: "4. रेफरल बोनस और प्रति घंटा कमीशन", r4_desc: "जब कोई नया उपयोगकर्ता आपके कोड के साथ साइन अप करता है, तो उसे साइनअप बोनस मिलता है और आपको उसकी माइनिंग कमाई से कमीशन मिलता है!",
+                r5_title: "2. दैनिक चेक-इन, स्पिन और टास्क", r5_desc: "नकद और मुफ्त स्पिन पाने के लिए रोजाना चेक-इन करें। लगातार 7 दिनों तक चेक-इन करने पर विशेष गिफ्ट बॉक्स मिलता है।",
+                contact_admin: "एडमिन सपोर्ट इनबॉक्स", msg_ph: "अपनी समस्या का विस्तार से वर्णन करें...", send_msg: "एडमिन को संदेश भेजें",
+                invite_earn: "आमंत्रित करें और कमाएं", ref_desc: "अपना कोड साझा करें! नए उपयोगकर्ताओं को साइनअप बोनस मिलता है, और आपको उनकी रोबोट कमाई पर प्रति घंटा कमीशन मिलता है।",
+                copy: "कॉपी", tot_invited: "कुल आमंत्रित", comm_earned: "कुल कमीशन",
+                ref_bonus_hint: "तुरंत साइनअप बोनस पाने के लिए वैध रेफरल कोड का उपयोग करें!",
+                ref_sub_tag: "दोस्तों को आमंत्रित करें और कमीशन कमाएं",
+                sec_sub_tag: "प्लेटफ़ॉर्म के नियम और पूरी जानकारी",
+                help_sub_tag: "सीधे एडमिन को संदेश भेजें",
+                friend_gets: "दोस्त का साइनअप बोनस", you_get_comm: "आपका माइनिंग बोनस", per_hr_collect: "कमीशन",
+                your_ref_code: "आपका यूनिक रेफरल कोड", how_ref_works: "रेफरल कैसे काम करता है",
+                ref_step_1: "ऊपर दिया गया अपना यूनिक रेफरल कोड कॉपी करें और दोस्तों के साथ शेयर करें।",
+                ref_step_2: "जब आपका दोस्त आपके वैध कोड से रजिस्टर करता है, तो उसे तुरंत वॉलेट में साइनअप बोनस मिलता है।",
+                ref_step_3: "जब भी आपका रेफर किया गया दोस्त रोबोट खरीदता है और माइनिंग कलेक्ट करता है, तो आपको स्वचालित रूप से कमीशन मिलता है!",
+                sec_verified_tag: "100% स्वचालित एआई क्लाउड माइनिंग",
+                sec_intro_desc: "नेक्सोरा माइनिंग एक उन्नत एआई रोबोट माइनिंग प्लेटफॉर्म है जहां आप रोबोट किराए पर लेकर, टास्क पूरे करके और रेफरल के जरिए कमाई कर सकते हैं।",
+                new_support_msg: "एडमिन को नया संदेश", my_support_inbox: "मेरे भेजे गए संदेश", no_msg_yet: "अभी तक कोई संदेश नहीं भेजा गया।"
             }
         };
         const t = (key) => translations[window.currentLang][key] || key;
@@ -546,7 +813,7 @@
             document.querySelectorAll('[data-i18n]').forEach(e => {
                 const key = e.getAttribute('data-i18n');
                 if (translations[window.currentLang][key]) {
-                    if (e.tagName === 'INPUT') e.placeholder = translations[window.currentLang][key];
+                    if (e.tagName === 'INPUT' || e.tagName === 'TEXTAREA') e.placeholder = translations[window.currentLang][key];
                     else e.innerText = translations[window.currentLang][key];
                 }
             });
@@ -573,7 +840,7 @@
         const getSym = () => { if(window.currentCurrency === 'USDT') return '$'; if(window.currentCurrency === 'INR') return '₹'; return '৳'; };
 
         // --- UTILS ---
-        const safeCreateIcons = () => { try { lucide.createIcons(); } catch(e){} }; // Prevent SVG bugs
+        const safeCreateIcons = () => { try { lucide.createIcons(); } catch(e){} }; 
         const el = (id) => document.getElementById(id);
         const hide = (id) => el(id).classList.add('hide');
         const show = (id) => el(id).classList.remove('hide');
@@ -582,13 +849,13 @@
             const tEl = el('toast'); el('toast-msg').innerText = msg;
             const iconWrap = el('toast-icon-wrapper'); const icon = el('toast-icon');
             if(type === 'error') {
-                iconWrap.className = 'w-12 h-12 rounded-full bg-danger/10 flex items-center justify-center mb-1';
+                iconWrap.className = 'w-12 h-12 rounded-full bg-danger/10 flex items-center justify-center mb-1 shadow-[0_0_15px_rgba(255,51,102,0.3)]';
                 icon.setAttribute('class', 'w-6 h-6 text-danger'); icon.setAttribute('data-lucide', 'x-circle');
             } else if (type === 'success') {
-                iconWrap.className = 'w-12 h-12 rounded-full bg-emerald/10 flex items-center justify-center mb-1';
+                iconWrap.className = 'w-12 h-12 rounded-full bg-emerald/10 flex items-center justify-center mb-1 shadow-[0_0_15px_rgba(0,255,135,0.3)]';
                 icon.setAttribute('class', 'w-6 h-6 text-emerald'); icon.setAttribute('data-lucide', 'check-circle');
             } else {
-                iconWrap.className = 'w-12 h-12 rounded-full bg-electric/10 flex items-center justify-center mb-1';
+                iconWrap.className = 'w-12 h-12 rounded-full bg-electric/10 flex items-center justify-center mb-1 shadow-[0_0_15px_rgba(0,240,255,0.3)]';
                 icon.setAttribute('class', 'w-6 h-6 text-electric'); icon.setAttribute('data-lucide', 'info');
             }
             safeCreateIcons();
@@ -603,7 +870,7 @@
             setTimeout(()=> target.classList.add('animate-fade-in'), 10);
             const btn = document.querySelector(`.nav-item[data-target="${tabId}"]`);
             if(btn) btn.classList.add('active');
-            el('main-content-area').scrollTo({top:0, behavior:'smooth'});
+            el('main-content-area').scrollTo({top:0, behavior:'auto'});
             localStorage.setItem('nexora_active_tab', tabId);
         };
         document.querySelectorAll('.nav-item').forEach(btn => { btn.addEventListener('click', (e) => window.switchTab(e.currentTarget.dataset.target)); });
@@ -633,23 +900,76 @@
 
         window.handleAuth = async (type) => {
             try {
-                if(type === 'login') await signInWithEmailAndPassword(auth, el('login-email').value, el('login-pass').value);
+                if(type === 'login') {
+                    await signInWithEmailAndPassword(auth, el('login-email').value, el('login-pass').value);
+                    window.showToast("Welcome back!", "success");
+                }
                 else {
+                    const refCodeInput = el('reg-ref').value.trim().toUpperCase();
+                    let referrerUid = null;
+
+                    if(refCodeInput) {
+                        const refSnap = await get(ref(db, `referralCodes/${refCodeInput}`));
+                        if(refSnap.exists()) {
+                            referrerUid = refSnap.val();
+                        } else {
+                            return window.showToast("Invalid Referral Code! Please check or leave blank.", "error");
+                        }
+                    }
+
                     const cred = await createUserWithEmailAndPassword(auth, el('reg-email').value, el('reg-pass').value);
                     const uid = cred.user.uid;
+                    const myNewRefCode = uid.substring(0, 6).toUpperCase();
+
                     try {
-                        await update(ref(db, `users/${uid}/profile`), { name: el('reg-name').value, email: el('reg-email').value, createdAt: serverTimestamp() });
-                        await update(ref(db, `wallets/${uid}`), { cachedBalance: 0, totalEarned: 0 });
+                        // Fetch latest signup bonus setting from appConfig
+                        const bonusSnap = await get(ref(db, `appConfig/rewardSettings/signupBonus`));
+                        const configuredBonus = bonusSnap.exists() ? Number(bonusSnap.val()) : (appSettings.signupBonus || 50);
+
+                        let initBal = 0;
+                        if(referrerUid && referrerUid !== uid) {
+                            initBal = configuredBonus; 
+                        }
+                        
+                        await update(ref(db, `users/${uid}/profile`), {
+                            name: el('reg-name').value,
+                            email: el('reg-email').value,
+                            referralCode: myNewRefCode,
+                            referredBy: referrerUid || null,
+                            totalReferred: 0,
+                            commissionEarned: 0,
+                            createdAt: serverTimestamp()
+                        });
+                        await update(ref(db, `wallets/${uid}`), { cachedBalance: initBal, totalEarned: initBal });
                         await update(ref(db, `users/${uid}/checkIn`), { streak: 0, lastCheckIn: 0, spins: 0 });
-                    } catch(e) {} 
+                        await set(ref(db, `referralCodes/${myNewRefCode}`), uid);
+
+                        if(initBal > 0) {
+                            await push(ref(db, `walletTransactions/${uid}`), {
+                                type: 'signup_bonus',
+                                amount: initBal,
+                                status: 'successful',
+                                createdAt: serverTimestamp()
+                            });
+                        }
+
+                        if(referrerUid && referrerUid !== uid) {
+                            const rProfile = await get(ref(db, `users/${referrerUid}/profile`));
+                            if(rProfile.exists()) {
+                                await update(ref(db, `users/${referrerUid}/profile`), {
+                                    totalReferred: (rProfile.val().totalReferred || 0) + 1
+                                });
+                            }
+                        }
+                    } catch(e) { console.error(e); } 
+                    window.showToast("Account created successfully!", "success");
                 }
-                window.showToast("Authentication successful", "success");
             } catch(e) { 
                 let msg = "An error occurred";
-                if(e.code === 'auth/invalid-credential' || e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password') msg = "Incorrect email or password.";
-                else if(e.code === 'auth/email-already-in-use') msg = "Email is already registered.";
-                else if(e.code === 'auth/weak-password') msg = "Password is too weak (min 6 chars).";
-                else if(e.code === 'auth/invalid-email') msg = "Invalid email format.";
+                if(e.code === 'auth/invalid-credential' || e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password') msg = t('err_login');
+                else if(e.code === 'auth/email-already-in-use') msg = t('err_email_use');
+                else if(e.code === 'auth/weak-password') msg = t('err_weak');
+                else if(e.code === 'auth/invalid-email') msg = t('err_invalid');
                 window.showToast(msg, "error"); 
             }
         };
@@ -659,11 +979,20 @@
             onValue(ref(db, `appConfig`), snap => {
                 if(!snap.exists()) return; const conf = snap.val();
                 if(conf.walletSettings) { appSettings.minDeposit = conf.walletSettings.minDeposit || 100; appSettings.minWithdraw = conf.walletSettings.minWithdraw || 100; }
-                if(conf.rewardSettings) { appSettings.day7Reward = conf.rewardSettings.day7Reward || 10; appSettings.checkinReward = conf.rewardSettings.checkinReward || 2; }
+                if(conf.rewardSettings) { 
+                    appSettings.day7Reward = conf.rewardSettings.day7Reward || 10; 
+                    appSettings.checkinReward = conf.rewardSettings.checkinReward || 2; 
+                    appSettings.signupBonus = conf.rewardSettings.signupBonus || 50; 
+                    appSettings.refCommission = conf.rewardSettings.refCommission || 5;
+                }
+                el('ref-comm-rate').innerText = appSettings.refCommission;
+                if(el('ref-comm-rate-box')) el('ref-comm-rate-box').innerText = appSettings.refCommission;
+                if(el('ref-signup-bonus-display')) el('ref-signup-bonus-display').innerText = formatMoney(appSettings.signupBonus);
+                
                 if(conf.paymentMethods) {
                     paymentMethodsData = [];
-                    let depOpts = `<option value="" disabled selected>Select Payment Method</option>`; 
-                    let witOpts = `<option value="" disabled selected>Select Payment Method</option>`;
+                    let depOpts = `<option value="" disabled selected>${t('sel_pay')}</option>`; 
+                    let witOpts = `<option value="" disabled selected>${t('sel_pay')}</option>`;
                     Object.values(conf.paymentMethods).forEach(pm => {
                         paymentMethodsData.push(pm);
                         if(pm.type === 'deposit' || pm.type === 'both') depOpts += `<option value="${pm.name}">${pm.name}</option>`;
@@ -674,12 +1003,29 @@
                 updateDynamicRenders();
             });
 
-            onValue(ref(db, `users/${uid}/profile`), snap => {
+            onValue(ref(db, `users/${uid}/profile`), async snap => {
                 if(snap.exists()){
                     const p = snap.val(); el('header-user-name').innerText = p.name || 'User';
                     const init = (p.name || 'U').charAt(0).toUpperCase();
                     el('user-avatar-initial').innerText = init; el('profile-avatar-initial').innerText = init;
                     el('profile-name').innerText = p.name || 'User'; el('profile-email').innerText = p.email || '';
+                    
+                    // Auto-generate referral code for existing users who don't have one yet
+                    let refCode = p.referralCode;
+                    if(!refCode) {
+                        refCode = uid.substring(0, 6).toUpperCase();
+                        try {
+                            await update(ref(db, `users/${uid}/profile`), { referralCode: refCode });
+                            await set(ref(db, `referralCodes/${refCode}`), uid);
+                        } catch(err) {}
+                    } else {
+                        // Ensure mapping exists in referralCodes node
+                        set(ref(db, `referralCodes/${refCode}`), uid).catch(()=>{});
+                    }
+
+                    el('ref-my-code').innerText = refCode || '------';
+                    el('ref-total-users').innerText = p.totalReferred || 0;
+                    el('ref-total-earned').innerText = formatMoney(p.commissionEarned || 0);
                 }
             });
 
@@ -693,16 +1039,23 @@
             });
 
             onValue(ref(db, `robotCatalog`), snap => {
-                allRobotsMap = {}; if(snap.exists()) snap.forEach(c => allRobotsMap[c.key] = c.val());
-                renderMarketplace();
+                let tempMap = {};
+                if(snap.exists()) {
+                    snap.forEach(childSnap => { tempMap[childSnap.key] = childSnap.val(); });
+                }
+                allRobotsMap = tempMap;
+                renderMarketplace(); renderMyRobots(); 
             });
 
             onValue(ref(db, `userRobots/${uid}`), snap => {
                 ownedRobotIds = []; let activeRobotsData = [];
-                if(snap.exists()) snap.forEach(c => {
-                    const ur = c.val(); ownedRobotIds.push(ur.robotId);
-                    activeRobotsData.push({ key: c.key, ...ur, catalog: allRobotsMap[ur.robotId] || { name: 'Unknown', rewardRate: 0 } });
-                });
+                if(snap.exists()) {
+                    snap.forEach(childSnap => {
+                        const ur = childSnap.val();
+                        ownedRobotIds.push(ur.robotId);
+                        activeRobotsData.push({ key: childSnap.key, ...ur, catalog: allRobotsMap[ur.robotId] || { name: 'Unknown', rewardRate: 0 } });
+                    });
+                }
                 el('home-total-robots').innerText = activeRobotsData.length; el('profile-stat-robots').innerText = activeRobotsData.length;
                 window.currentActiveRobots = activeRobotsData; renderMarketplace(); renderMyRobots();
                 if(activeInterval) clearInterval(activeInterval);
@@ -724,7 +1077,6 @@
                 txns.sort((a,b) => b.createdAt - a.createdAt); window.currentTxns = txns; renderTransactions();
             });
 
-            // Pending Deposits & Withdrawals for UI
             onValue(ref(db, `depositRequests/${uid}`), snap => {
                 pendingDepositsList = []; let sum = 0;
                 if(snap.exists()) snap.forEach(c => { let r = c.val(); if(r.status === 'pending') { sum += r.amount; pendingDepositsList.push({...r, id: c.key, type:'deposit'}); } });
@@ -735,12 +1087,47 @@
                 if(snap.exists()) snap.forEach(c => { let r = c.val(); if(r.status === 'pending') { sum += r.amount; pendingWithdrawalsList.push({...r, id: c.key, type:'withdrawal'}); } });
                 el('wallet-pend-wit').innerText = formatMoney(sum);
             });
+
+            // Listen to user's own support messages
+            onValue(ref(db, `userSupportMessages/${uid}`), snap => {
+                mySupportMessages = [];
+                if(snap.exists()) {
+                    snap.forEach(c => mySupportMessages.push({ id: c.key, ...c.val() }));
+                    mySupportMessages.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+                }
+                renderSupportHistory();
+            });
+        }
+
+        function renderSupportHistory() {
+            const container = el('user-support-history');
+            if(!container) return;
+            if(!mySupportMessages.length) {
+                container.innerHTML = `<div class="p-6 text-center text-xs text-textMuted glass-card">${t('no_msg_yet')}</div>`;
+                return;
+            }
+            let html = '';
+            mySupportMessages.forEach(m => {
+                const isResolved = m.status === 'resolved';
+                const badgeClass = isResolved ? 'bg-emerald/15 text-emerald border-emerald/30' : 'bg-gold/15 text-gold border-gold/30';
+                const statusLabel = isResolved ? 'Resolved' : 'Pending Review';
+                html += `
+                <div class="glass-card p-3.5 border border-white/10 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] text-textMuted font-mono">${m.createdAt ? new Date(m.createdAt).toLocaleString() : 'Just now'}</span>
+                        <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full border ${badgeClass}">${statusLabel}</span>
+                    </div>
+                    <p class="text-xs text-white leading-relaxed break-words">${m.message}</p>
+                </div>`;
+            });
+            container.innerHTML = html;
         }
 
         function updateDynamicRenders() {
             updateWalletUI(); renderMarketplace(); renderMyRobots(); renderTransactions(); renderTasks();
             const sym = getSym(); const minDep = formatMoney(appSettings.minDeposit); const minWit = formatMoney(appSettings.minWithdraw);
             el('dep-amount').placeholder = `${t('dep')} (Min ${sym}${minDep})`; el('wit-amount').placeholder = `${t('wit')} (Min ${sym}${minWit})`;
+            if(el('ref-signup-bonus-display')) el('ref-signup-bonus-display').innerText = formatMoney(appSettings.signupBonus);
         }
 
         function updateWalletUI() {
@@ -749,34 +1136,50 @@
             el('home-total-earned').innerText = formatMoney(userWallet.totalEarned);
         }
 
+        // Fixed Price Text Alignment & Attractive Marketplace Cards
         function renderMarketplace() {
             let html = ''; const sym = getSym();
-            Object.keys(allRobotsMap).forEach(key => {
+            for(let key in allRobotsMap) {
                 const r = allRobotsMap[key];
-                if(r.enabled) {
-                    const isOwned = ownedRobotIds.includes(key);
+                if(r.enabled !== false) {
+                    const isOwned = ownedRobotIds.includes(key); 
                     const btnHtml = isOwned 
-                        ? `<button disabled class="bg-white/5 border border-white/10 text-textMuted text-xs font-bold px-4 py-2 rounded-lg cursor-not-allowed">${t('owned_btn')}</button>`
-                        : `<button onclick="window.purchaseRobot('${key}', ${r.price}, '${r.name}')" class="bg-electric text-navy text-xs font-bold px-4 py-2 rounded-lg hover:bg-cyan-300 transition glow-btn">${t('buy_btn')}</button>`;
+                        ? `<button disabled class="w-full bg-white/5 border border-white/10 text-textMuted text-xs font-bold py-2.5 rounded-xl cursor-not-allowed shadow-inner uppercase tracking-wider">${t('owned_btn')}</button>`
+                        : `<button onclick="window.purchaseRobot('${key}', ${r.price}, '${r.name}')" class="w-full bg-electric text-navy text-xs font-extrabold py-2.5 rounded-xl hover:bg-cyan-300 transition glow-btn uppercase tracking-wider flex items-center justify-center gap-1.5"><i data-lucide="zap" class="w-3.5 h-3.5"></i> ${t('buy_btn')}</button>`;
 
                     html += `
-                    <div class="robot-marketplace-card p-4 flex flex-col justify-between h-full group">
-                        <div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition duration-300"><i data-lucide="cpu" class="w-16 h-16 text-electric"></i></div>
-                        <div class="flex items-center gap-3 mb-4 relative z-10">
-                            <div class="w-10 h-10 rounded-full bg-electric/10 flex items-center justify-center border border-electric/20 shadow-[0_0_15px_rgba(0,240,255,0.2)] group-hover:scale-110 transition"><i data-lucide="bot" class="w-5 h-5 text-electric"></i></div>
-                            <div>
-                                <h3 class="font-bold text-white text-xs">${r.name}</h3><div class="text-[9px] text-textMuted uppercase">${t('dur')} ${r.duration} ${t('days')}</div>
+                    <div class="robot-marketplace-card p-3.5 flex flex-col justify-between h-full group">
+                        <div>
+                            <div class="flex items-center gap-2.5 mb-3 relative z-10">
+                                <div class="w-10 h-10 rounded-xl bg-electric/10 flex items-center justify-center border border-electric/25 shadow-[0_0_15px_rgba(0,240,255,0.2)] shrink-0 group-hover:scale-105 transition">
+                                    <i data-lucide="bot" class="w-5 h-5 text-electric"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <h3 class="font-bold text-white text-xs truncate">${r.name}</h3>
+                                    <div class="text-[10px] text-textMuted font-medium">${r.duration} ${t('days')}</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-navy/80 border border-white/5 rounded-xl p-2.5 mb-2.5 space-y-1.5 relative z-10">
+                                <div class="flex justify-between items-center text-[10px]">
+                                    <span class="text-textMuted">${t('rate')}</span>
+                                    <span class="font-bold text-emerald">${sym}${formatMoney(r.rewardRate)}/${t('hr')}</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-1.5 border-t border-white/5">
+                                    <span class="text-[10px] text-textMuted uppercase font-semibold">${t('price_lbl')}</span>
+                                    <div class="inline-flex items-baseline gap-0.5 font-extrabold text-white text-sm tracking-tight">
+                                        <span class="text-electric text-xs font-bold">${sym}</span><span>${formatMoney(r.price)}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="relative z-10 space-y-3 mt-auto">
-                            <div class="flex justify-between items-center bg-black/30 p-2 rounded-lg border border-white/5">
-                                <span class="text-[10px] text-textMuted">${t('rate')}</span><span class="text-xs font-bold text-emerald">${sym}${formatMoney(r.rewardRate)}/${t('hr')}</span>
-                            </div>
-                            <div class="flex items-center justify-between"><div class="font-extrabold text-white text-lg">${sym}${formatMoney(r.price)}</div>${btnHtml}</div>
+
+                        <div class="mt-auto relative z-10">
+                            ${btnHtml}
                         </div>
                     </div>`;
                 }
-            });
+            }
             el('marketplace-container').innerHTML = html || `<div class="col-span-2 p-10 text-center text-sm text-textMuted glass-card">${t('no_market')}</div>`;
             safeCreateIcons();
         }
@@ -794,11 +1197,11 @@
                         statusColor = 'text-emerald border-emerald bg-emerald/10'; statusText = t('mining');
                         let remaining = THREE_HOURS - timeSince;
                         let h = Math.floor(remaining / 3600000); let m = Math.floor((remaining % 3600000) / 60000); let s = Math.floor((remaining % 60000) / 1000);
-                        actionHtml = `<div class="text-xs font-bold text-electric tabular-nums bg-electric/10 px-3 py-1.5 rounded border border-electric/20">${h}h ${m}m ${s}s</div>`;
+                        actionHtml = `<div class="text-xs font-bold text-electric tabular-nums bg-electric/10 px-3 py-1.5 rounded border border-electric/20 shadow-sm">${h}h ${m}m ${s}s</div>`;
                     } else {
                         statusColor = 'text-gold border-gold bg-gold/10'; statusText = t('ready');
                         let reward = r.catalog.rewardRate * 3;
-                        actionHtml = `<button onclick="window.collectRobot('${r.key}', ${reward})" class="bg-gold text-navy text-[10px] uppercase font-bold px-4 py-2 rounded-lg hover:bg-yellow-400 transition glow-btn">${t('collect')} ${sym}${formatMoney(reward)}</button>`;
+                        actionHtml = `<button onclick="window.collectRobot('${r.key}', ${reward})" class="bg-gold text-navy text-[10px] uppercase font-bold px-4 py-2 rounded-lg hover:bg-yellow-400 transition glow-btn shadow-md">${t('collect')} ${sym}${formatMoney(reward)}</button>`;
                     }
                 } else {
                     statusColor = 'text-danger border-danger bg-danger/10'; statusText = t('stopped');
@@ -806,17 +1209,17 @@
                 }
 
                 rHtml += `
-                <div class="glass-card p-4 border border-white/5 relative overflow-hidden group">
+                <div class="glass-card p-4 border border-white/5 relative overflow-hidden group shadow-md">
                     <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition"></div>
                     <div class="flex justify-between items-start mb-2 relative z-10">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-cardSolid flex items-center justify-center border border-white/10 group-hover:border-electric/50 transition"><i data-lucide="cpu" class="w-5 h-5 text-electric"></i></div>
-                            <div><div class="font-bold text-white text-sm">${r.catalog.name}</div><div class="text-[10px] text-textMuted">ID: ${r.key.substring(0,8)}</div></div>
+                            <div class="w-10 h-10 rounded-lg bg-cardSolid flex items-center justify-center border border-white/10 group-hover:border-electric/50 transition shadow-inner"><i data-lucide="cpu" class="w-5 h-5 text-electric"></i></div>
+                            <div><div class="font-bold text-white text-sm">${r.catalog.name || 'Robot'}</div><div class="text-[10px] text-textMuted">ID: ${r.key.substring(0,8)}</div></div>
                         </div>
-                        <div class="text-[9px] px-2 py-0.5 rounded border font-bold tracking-wider ${statusColor}">${statusText}</div>
+                        <div class="text-[9px] px-2 py-0.5 rounded border font-bold tracking-wider ${statusColor} shadow-sm">${statusText}</div>
                     </div>
                     <div class="flex items-center justify-between mt-4 pt-3 border-t border-white/5 relative z-10">
-                        <div class="text-xs text-emerald font-medium">${t('rate')} ${sym}${formatMoney(r.catalog.rewardRate)}/${t('hr')}</div>${actionHtml}
+                        <div class="text-xs text-emerald font-medium">${t('rate')}: ${sym}${formatMoney(r.catalog.rewardRate)}/${t('hr')}</div>${actionHtml}
                     </div>
                 </div>`;
             });
@@ -824,41 +1227,29 @@
             safeCreateIcons();
         }
 
-        const getTaskIconData = (cat) => {
-            const map = {
-                'telegram': { icon: 'send', color: '#229ED9', bg: 'rgba(34,158,217,0.1)' },
-                'youtube': { icon: 'youtube', color: '#FF0000', bg: 'rgba(255,0,0,0.1)' },
-                'facebook': { icon: 'facebook', color: '#1877F2', bg: 'rgba(24,119,242,0.1)' },
-                'twitter': { icon: 'twitter', color: '#1DA1F2', bg: 'rgba(29,161,242,0.1)' },
-                'browsing': { icon: 'globe', color: '#00ff87', bg: 'rgba(0,255,135,0.1)' },
-                'download': { icon: 'download', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)' }
-            };
-            return map[cat] || { icon: 'check-square', color: '#94a3b8', bg: 'rgba(148,163,184,0.1)' };
-        };
-
         function renderTasks() {
             if(!window.rawTasksData) return;
             let html = ''; const sym = getSym();
             window.rawTasksData.forEach(ts => {
                 const isCompleted = completedTaskIds.includes(ts.id);
-                const style = getTaskIconData(ts.category);
+                const pData = socialPlatforms.find(p => p.id === ts.category) || { icon: 'fa-solid fa-globe', bg: '#11192b', text: '#ffffff' };
                 
                 let btnHtml = isCompleted 
-                    ? `<button disabled class="text-[10px] font-bold text-emerald bg-emerald/10 border border-emerald/20 px-3 py-1.5 rounded uppercase tracking-wider">${t('completed')}</button>`
-                    : `<button id="btn-task-${ts.id}" onclick="window.startTask('${ts.id}', '${ts.link || '#'}', ${ts.reward})" class="text-[10px] font-bold text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded uppercase tracking-wider transition">${t('visit')}</button>`;
+                    ? `<button disabled class="text-[10px] font-bold text-emerald bg-emerald/10 border border-emerald/20 px-3 py-1.5 rounded uppercase tracking-wider shadow-sm">${t('completed')}</button>`
+                    : `<button id="btn-task-${ts.id}" onclick="window.startTask('${ts.id}', '${ts.link || '#'}', ${ts.reward})" class="text-[10px] font-bold text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded uppercase tracking-wider transition shadow-sm glow-btn">${t('visit')}</button>`;
 
                 html += `
-                <div class="glass-card p-4 border border-white/5 relative overflow-hidden group mb-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 border border-white/5" style="background:${style.bg}"><i data-lucide="${style.icon}" class="w-5 h-5" style="color:${style.color}"></i></div>
-                            <div class="flex flex-col">
-                                <h4 class="font-bold text-white text-sm leading-tight">${ts.title}</h4>
-                                <span class="text-xs font-bold text-gold mt-1">+ ${sym}${formatMoney(ts.reward)}</span>
-                            </div>
+                <div class="task-card">
+                    <div class="flex items-center gap-3">
+                        <div class="task-icon-wrapper" style="background:${pData.bg};">
+                            <i class="${pData.icon} text-xl" style="color:${pData.text};"></i>
                         </div>
-                        ${btnHtml}
+                        <div class="flex flex-col justify-center">
+                            <h4 class="font-bold text-white text-xs leading-tight mb-1 truncate max-w-[140px]">${ts.title}</h4>
+                            <span class="text-xs font-extrabold text-gold drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]">+ ${sym}${formatMoney(ts.reward)}</span>
+                        </div>
                     </div>
+                    ${btnHtml}
                 </div>`;
             });
             el('tasks-container').innerHTML = html || `<div class="p-10 text-center text-sm text-textMuted glass-card">${t('no_task')}</div>`;
@@ -873,7 +1264,9 @@
             'deposit': { k: 'tx_deposit', color: 'text-emerald', icon: 'arrow-down-left', sign: '+' },
             'withdrawal': { k: 'tx_withdrawal', color: 'text-danger', icon: 'arrow-up-right', sign: '-' },
             'purchase': { k: 'tx_purchase', color: 'text-danger', icon: 'shopping-cart', sign: '-' },
-            'refund': { k: 'tx_refund', color: 'text-emerald', icon: 'corner-down-left', sign: '+' }
+            'refund': { k: 'tx_refund', color: 'text-emerald', icon: 'corner-down-left', sign: '+' },
+            'referral_commission': { k: 'tx_ref_comm', color: 'text-emerald', icon: 'users', sign: '+' },
+            'signup_bonus': { k: 'tx_signup_bonus', color: 'text-gold', icon: 'gift', sign: '+' }
         };
 
         function renderTransactions() {
@@ -886,10 +1279,10 @@
                 html += `
                 <div class="flex justify-between items-center p-4 border-b border-white/5 hover:bg-white/5 transition">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-full bg-cardSolid flex items-center justify-center border border-white/5"><i data-lucide="${conf.icon}" class="w-4 h-4 ${conf.color}"></i></div>
+                        <div class="w-9 h-9 rounded-full bg-cardSolid flex items-center justify-center border border-white/5 shadow-inner"><i data-lucide="${conf.icon}" class="w-4 h-4 ${conf.color}"></i></div>
                         <div><div class="capitalize text-white text-sm font-bold">${label}</div><div class="text-[10px] text-textMuted">${new Date(tx.createdAt).toLocaleString()}</div></div>
                     </div>
-                    <span class="font-extrabold ${conf.color} text-sm tracking-wider">${conf.sign}${sym}${formatMoney(tx.amount)}</span>
+                    <span class="font-extrabold ${conf.color} text-sm tracking-wider drop-shadow-md">${conf.sign}${sym}${formatMoney(tx.amount)}</span>
                 </div>`;
             });
             el('wallet-full-history').innerHTML = html || `<div class="p-8 text-center text-sm text-textMuted">${t('no_tx')}</div>`;
@@ -919,6 +1312,28 @@
 
         window.collectRobot = async (userRobotId, reward) => {
             try {
+                // Hourly / Cycle Referral Commission distribution to Referrer
+                const pSnap = await get(ref(db, `users/${currentUser.uid}/profile`));
+                if (pSnap.exists()) {
+                    const pData = pSnap.val();
+                    if (pData.referredBy) {
+                        const commissionRate = (appSettings.refCommission || 5) / 100;
+                        const comm = reward * commissionRate;
+                        const rWalletSnap = await get(ref(db, `wallets/${pData.referredBy}`));
+                        if(rWalletSnap.exists()) {
+                            let rBal = rWalletSnap.val().cachedBalance || 0;
+                            let rEarn = rWalletSnap.val().totalEarned || 0;
+                            await update(ref(db, `wallets/${pData.referredBy}`), { cachedBalance: rBal + comm, totalEarned: rEarn + comm });
+                            await push(ref(db, `walletTransactions/${pData.referredBy}`), { type: 'referral_commission', amount: comm, status: 'successful', createdAt: serverTimestamp() });
+                            
+                            const rProfSnap = await get(ref(db, `users/${pData.referredBy}/profile`));
+                            if(rProfSnap.exists()) {
+                                await update(ref(db, `users/${pData.referredBy}/profile`), { commissionEarned: (rProfSnap.val().commissionEarned || 0) + comm });
+                            }
+                        }
+                    }
+                }
+
                 await update(ref(db, `userRobots/${currentUser.uid}/${userRobotId}`), { lastActivatedAt: 0 });
                 await update(ref(db, `wallets/${currentUser.uid}`), { 
                     cachedBalance: userWallet.cachedBalance + reward,
@@ -954,7 +1369,7 @@
                 });
                 await push(ref(db, `walletTransactions/${currentUser.uid}`), { type: 'task_reward', amount: reward, status: 'successful', createdAt: serverTimestamp() });
                 window.showToast(`Task Complete! Earned ${getSym()}${formatMoney(reward)}`, "success");
-            } catch (e) { window.showToast("Error claiming reward. Check Database Rules.", "error"); }
+            } catch (e) { window.showToast("Error claiming reward.", "error"); }
         };
 
         window.openPage = (id, direction = 'side') => {
@@ -989,12 +1404,12 @@
             if(type === 'deposit') {
                 titleEl.innerHTML = `<i data-lucide="arrow-down-circle" class="text-emerald w-5 h-5"></i> Pending Deposits`;
                 pendingDepositsList.forEach(r => {
-                    html += `<div class="bg-cardSolid border border-white/5 p-4 rounded-xl flex justify-between items-center"><div class="flex flex-col"><span class="text-sm font-bold text-white">${r.paymentMethod}</span><span class="text-[10px] text-textMuted font-mono">Ref: ${r.paymentReference}</span></div><span class="font-bold text-emerald">${sym}${formatMoney(r.amount)}</span></div>`;
+                    html += `<div class="bg-cardSolid border border-white/5 p-4 rounded-xl flex justify-between items-center shadow-md"><div class="flex flex-col"><span class="text-sm font-bold text-white">${r.paymentMethod}</span><span class="text-[10px] text-textMuted font-mono">Ref: ${r.paymentReference}</span></div><span class="font-bold text-emerald">${sym}${formatMoney(r.amount)}</span></div>`;
                 });
             } else {
                 titleEl.innerHTML = `<i data-lucide="arrow-up-circle" class="text-danger w-5 h-5"></i> Pending Withdrawals`;
                 pendingWithdrawalsList.forEach(r => {
-                    html += `<div class="bg-cardSolid border border-white/5 p-4 rounded-xl flex justify-between items-center"><div class="flex flex-col"><span class="text-sm font-bold text-white">${r.paymentMethod}</span><span class="text-[10px] text-textMuted font-mono">Acc: ${r.destinationDetails}</span></div><span class="font-bold text-danger">${sym}${formatMoney(r.amount)}</span></div>`;
+                    html += `<div class="bg-cardSolid border border-white/5 p-4 rounded-xl flex justify-between items-center shadow-md"><div class="flex flex-col"><span class="text-sm font-bold text-white">${r.paymentMethod}</span><span class="text-[10px] text-textMuted font-mono">Acc: ${r.destinationDetails}</span></div><span class="font-bold text-danger">${sym}${formatMoney(r.amount)}</span></div>`;
                 });
             }
             listEl.innerHTML = html || `<div class="p-6 text-center text-sm text-textMuted">No pending requests.</div>`;
@@ -1005,7 +1420,7 @@
             const val = el('dep-method').value; const method = paymentMethodsData.find(m => m.name === val);
             if(method && method.number) {
                 el('dep-display-number').innerText = method.number; el('dep-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${method.number}`;
-            } else { el('dep-display-number').innerText = "Select Method"; el('dep-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEXORA`; }
+            } else { el('dep-display-number').innerText = t('sel_pay'); el('dep-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NEXORA`; }
         };
 
         window.submitDeposit = async () => {
@@ -1019,7 +1434,7 @@
         };
 
         window.submitWithdraw = async () => {
-            if(!el('wit-method').value) return window.showToast("Please select a payment method.", "error");
+            if(!el('wit-method').value) return window.showToast(t('sel_pay'), "error");
             const amt = parseFloat(el('wit-amount').value); const baseAmt = amt / RATES[window.currentCurrency];
             if(baseAmt < appSettings.minWithdraw) return window.showToast(`Min withdraw is ${getSym()}${formatMoney(appSettings.minWithdraw)}`, "error");
             if(baseAmt > userWallet.cachedBalance) return window.showToast("Insufficient balance.", "error");
@@ -1029,6 +1444,35 @@
                 await push(ref(db, `withdrawalRequests/${currentUser.uid}`), { paymentMethod: el('wit-method').value, amount: baseAmt, destinationDetails: el('wit-dest').value, status: 'pending', createdAt: serverTimestamp() });
                 window.showToast("Withdrawal requested.", "success"); el('form-withdraw').reset(); window.closeModals();
             } catch(e) { window.showToast("Error processing withdrawal.", "error"); }
+        };
+
+        window.copyRefCode = () => {
+            const code = el('ref-my-code').innerText;
+            navigator.clipboard.writeText(code);
+            window.showToast("Referral Code Copied!", "success");
+        };
+
+        window.submitSupport = async () => {
+            const msg = el('support-msg').value.trim();
+            if(!msg) return window.showToast("Message cannot be empty.", "error");
+            
+            try {
+                const msgRef = await push(ref(db, `supportMessages`), {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    message: msg,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                // Also save under user's own inbox history node
+                await set(ref(db, `userSupportMessages/${currentUser.uid}/${msgRef.key}`), {
+                    message: msg,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                window.showToast("Message sent to Admin Inbox!", "success");
+                el('support-msg').value = '';
+            } catch(e) { window.showToast("Failed to send message.", "error"); }
         };
 
         // --- CHECKIN & SPIN ---
@@ -1046,10 +1490,10 @@
                 if(i === 7) { classes += ' checkin-day-7'; icon = 'gift'; text = `Gift Box`; }
                 if(i <= currentStreak) classes += ' claimed';
                 else if (i === currentStreak + 1 && canClaim) classes += ' today';
-                html += `<div class="${classes}"><i data-lucide="${icon}" class="w-5 h-5 mb-1"></i><span>${text}</span></div>`;
+                html += `<div class="${classes} shadow-sm"><i data-lucide="${icon}" class="w-5 h-5 mb-1"></i><span>${text}</span></div>`;
             }
             el('checkin-grid').innerHTML = html; el('btn-claim-checkin').disabled = !canClaim;
-            el('btn-claim-checkin').innerText = canClaim ? "Claim Reward" : "Come back tomorrow";
+            el('btn-claim-checkin').innerText = canClaim ? t('claim_now') : "Come back tomorrow";
             safeCreateIcons(); openModal('modal-checkin', 'scale');
         };
 
@@ -1068,11 +1512,11 @@
             } catch(e) { window.showToast("Claim failed", "error"); }
         };
 
-        // PERFECT PHYSICS SPIN WHEEL
+        // ACCURATE PHYSICS SPIN WHEEL
         const spinRewards = [2, 5, 0, 3, 1, 10, 2, 0];
-        const weights = [40, 5, 10, 10, 10, 5, 10, 10]; // Highest probability is index 0 and 6 (2 ৳)
+        const weights = [40, 5, 10, 10, 10, 5, 10, 10]; 
         const colors = ['#00f0ff', '#8b5cf6', '#11192b', '#00ff87', '#00f0ff', '#fbbf24', '#8b5cf6', '#11192b'];
-        let isSpinning = false;
+        let isSpinning = false; let currentRotation = 0;
         
         window.openSpinModal = () => {
             const container = el('wheel'); const angle = 360 / spinRewards.length;
@@ -1080,13 +1524,15 @@
             spinRewards.forEach((r, i) => {
                 const start = i * angle; const end = (i + 1) * angle; 
                 gradientStr.push(`${colors[i]} ${start}deg ${end}deg`);
-                // Calculate correct text angle for Conic Gradient (starts at 12 o'clock / Top)
                 const textAngle = start + (angle/2) - 90;
                 let text = r === 0 ? 'Retry' : `${sym}${formatMoney(r)}`;
                 segmentsHtml += `<div class="wheel-segment-text" style="transform: rotate(${textAngle}deg) translate(0%, -50%);">${text}</div>`;
             });
             container.style.background = `conic-gradient(${gradientStr.join(', ')})`;
-            el('wheel-segments').innerHTML = segmentsHtml; container.style.transform = `rotate(0deg)`;
+            el('wheel-segments').innerHTML = segmentsHtml; 
+            container.style.transition = 'none';
+            container.style.transform = `rotate(${currentRotation % 360}deg)`;
+            setTimeout(() => { container.style.transition = 'transform 4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; }, 50);
             openModal('modal-spin', 'scale');
         };
 
@@ -1095,16 +1541,17 @@
             if((checkInStatus.spins || 0) <= 0) return window.showToast("0 Spins Left!", "error");
 
             isSpinning = true;
-            // Weighted Random Selection
             let randomNum = Math.random() * 100; let weightSum = 0; let resultIdx = 0;
             for(let i=0; i<weights.length; i++) { weightSum += weights[i]; if(randomNum <= weightSum) { resultIdx = i; break; } }
             
             const reward = spinRewards[resultIdx]; const container = el('wheel'); const angle = 360 / spinRewards.length;
             
-            // Exact Physics Rotation calculation
-            // Container rotation needed to point segment to top (where pointer is)
-            const targetRotation = (5 * 360) - ((resultIdx * angle) + (angle / 2));
+            const spins = 5; 
+            const segmentCenterAngle = (resultIdx * angle) + (angle / 2);
+            const targetRotation = currentRotation + (spins * 360) + (360 - (currentRotation % 360)) + (360 - segmentCenterAngle);
+            
             container.style.transform = `rotate(${targetRotation}deg)`;
+            currentRotation = targetRotation;
             
             try { await update(ref(db, `users/${currentUser.uid}/checkIn`), { spins: (checkInStatus.spins - 1) }); } catch(e) {}
 
@@ -1117,11 +1564,11 @@
                         await push(ref(db, `walletTransactions/${currentUser.uid}`), { type: 'spin_reward', amount: reward, status: 'successful', createdAt: serverTimestamp() });
                     } catch(e) {}
                 } else { window.showToast(`Oops, try again!`, "error"); }
-                setTimeout(() => window.closeModals(), 1000);
+                setTimeout(() => window.closeModals(), 1500);
             }, 4000);
         };
 
-        window.toggleLanguage(); window.toggleLanguage(); window.toggleLanguage(); // Init language
+        window.toggleLanguage(); window.toggleLanguage(); window.toggleLanguage(); 
     </script>
 </body>
 </html>
